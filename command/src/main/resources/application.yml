@@ -1,0 +1,29 @@
+server:
+  port: 9700
+
+spring:
+  profiles:
+    active: dev
+
+  datasource:
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:9030/product_db?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&rewriteBatchedStatements=true
+      username: masteruser
+      password: masterpassword
+      minimum-idle: 10
+      maximum-pool-size: 10
+      max-lifetime: 1800000 # 30 minute
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+    open-in-view: false
+    # In 쿼리가 1000개를 넘어가면, 오류가 발생하는 DB들이 있다.
+    # 100 ~ 1000 사이를 선택하는 것을 권장! DB에 순간 부하량이 증가하기 때문이다.
+    # 1000을 선택하는 것이 성능상 좋지만, 결국 DB든 애플리케이션이든 순간 부하를 어디까지 견딜 수 있는지로 결정하면 된다. (정답은 없음)
+    default_batch_fetch_size: 500
