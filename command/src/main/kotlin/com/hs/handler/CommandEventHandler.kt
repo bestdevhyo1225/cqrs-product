@@ -1,8 +1,6 @@
 package com.hs.handler
 
-import com.hs.event.ChangeProductEvent
-import com.hs.event.ChangeProductStockEvent
-import com.hs.event.CreateProductAggregateEvent
+import com.hs.event.ProductEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -18,23 +16,9 @@ class CommandEventHandler {
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    fun onCreateProduct(event: CreateProductAggregateEvent) = runBlocking {
+    fun onHandleProduct(event: ProductEvent) = runBlocking {
         async(Dispatchers.IO) {
-            logger.info("[ Handler - onCreateProduct() ] event : {}", event)
-        }
-    }
-
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    fun onUpdateProduct(event: ChangeProductEvent) = runBlocking {
-        async(Dispatchers.IO) {
-            logger.info("[ Handler - onUpdateProduct() ] event : {}", event)
-        }
-    }
-
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    fun onUpdateProductStock(event: ChangeProductStockEvent) = runBlocking {
-        async(Dispatchers.IO) {
-            logger.info("[ Handler - onUpdateProductStock() ] event : {}", event)
+            logger.info("[ Handler - onHandleProduct() ] event : {}", event)
         }
     }
 }

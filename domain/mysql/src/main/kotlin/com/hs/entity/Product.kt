@@ -3,9 +3,7 @@ package com.hs.entity
 import au.com.console.kassava.kotlinEquals
 import au.com.console.kassava.kotlinHashCode
 import au.com.console.kassava.kotlinToString
-import com.hs.event.ChangeProductEvent
-import com.hs.event.ChangeProductStockEvent
-import com.hs.event.CreateProductAggregateEvent
+import com.hs.event.ProductEvent
 import org.hibernate.annotations.DynamicUpdate
 import org.springframework.context.ApplicationEventPublisher
 import java.lang.IllegalStateException
@@ -52,29 +50,18 @@ class Product(name: String, price: Int, stockCount: Int) {
             name: String,
             price: Int,
             stockCount: Int,
-            productImages: List<ProductImage>,
-            publisher: ApplicationEventPublisher
+            productImages: List<ProductImage>
         ): Product {
             val product = Product(name = name, price = price, stockCount = stockCount)
 
-            val productImageUrls: MutableList<String> = mutableListOf()
-
-            productImages.forEach { productImage ->
-                product.addProductImage(productImage = productImage)
-                productImageUrls.add(productImage.url)
-            }
-
-            publisher.publishEvent(
-                CreateProductAggregateEvent(
-                    name = name,
-                    price = price,
-                    stockCount = stockCount,
-                    productImageUrls = productImageUrls
-                )
-            )
+            productImages.forEach { productImage -> product.addProductImage(productImage = productImage) }
 
             return product
         }
+    }
+
+    fun publishEventOfCreatedProduct(publisher: ApplicationEventPublisher) {
+        publisher.publishEvent(ProductEvent(productId = this.id!!))
     }
 
     fun addProductImage(productImage: ProductImage) {
@@ -87,7 +74,7 @@ class Product(name: String, price: Int, stockCount: Int) {
         this.price = price
         this.stockCount = stockCount
 
-        publisher.publishEvent(ChangeProductEvent(name = name, price = price, stockCount = stockCount))
+        publisher.publishEvent(ProductEvent(productId = this.id!!))
     }
 
     fun changeStockCount(stockCount: Int, publisher: ApplicationEventPublisher) {
@@ -95,6 +82,6 @@ class Product(name: String, price: Int, stockCount: Int) {
 
         this.stockCount -= stockCount
 
-        publisher.publishEvent(ChangeProductStockEvent(stockCount = this.stockCount))
+        publisher.publishEvent(ProductEvent(productId = this.id!!))
     }
 }

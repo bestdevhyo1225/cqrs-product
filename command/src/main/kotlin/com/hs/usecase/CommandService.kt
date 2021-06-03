@@ -32,10 +32,11 @@ class CommandService(
             price = createProductDto.price,
             stockCount = createProductDto.stockCount,
             productImages = productImages,
-            publisher = publisher
         )
 
         productRepository.save(product)
+
+        product.publishEventOfCreatedProduct(publisher = publisher)
 
         logger.info("[ Service - createProduct() ] End")
     }
