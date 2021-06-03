@@ -1,0 +1,51 @@
+version: '3.3'
+
+services:
+  product-rabbitmq:
+    image: rabbitmq:3.8.13-management
+    container_name: product-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: changeme
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  product-write-mysql:
+    image: product-write-mysql
+    volumes:
+      - ./mysql/write/mysql-init-files/:/docker-entrypoint-initdb.d/
+      - ./mysql/write/mysql-config-files/:/etc/mysql/conf.d
+    restart: always
+    container_name: product-write-mysql
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD="true"
+    ports:
+      - '9030:3306'
+    networks:
+      dock_net:
+        ipv4_address: 172.16.0.10
+
+  product-read-mysql:
+    image: product-read-mysql
+    volumes:
+      - ./mysql/read/mysql-init-files/:/docker-entrypoint-initdb.d/
+      - ./mysql/read/mysql-config-files/:/etc/mysql/conf.d
+    restart: always
+    container_name: product-read-mysql
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD="true"
+    ports:
+      - '9031:3306'
+    networks:
+      dock_net:
+        ipv4_address: 172.16.0.11
+    depends_on:
+      - 'product-write-mysql'
+
+networks:
+  dock_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.0.0/16
