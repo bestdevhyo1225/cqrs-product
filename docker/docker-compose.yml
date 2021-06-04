@@ -14,8 +14,8 @@ services:
   product-write-mysql:
     image: product-write-mysql
     volumes:
-      - ./mysql/write/mysql-init-files/:/docker-entrypoint-initdb.d/
-      - ./mysql/write/mysql-config-files/:/etc/mysql/conf.d
+      - ./write/mysql-init-files/:/docker-entrypoint-initdb.d/
+      - ./write/mysql-config-files/:/etc/mysql/conf.d
     restart: always
     container_name: product-write-mysql
     environment:
@@ -29,8 +29,8 @@ services:
   product-read-mysql:
     image: product-read-mysql
     volumes:
-      - ./mysql/read/mysql-init-files/:/docker-entrypoint-initdb.d/
-      - ./mysql/read/mysql-config-files/:/etc/mysql/conf.d
+      - ./read/mysql-init-files/:/docker-entrypoint-initdb.d/
+      - ./read/mysql-config-files/:/etc/mysql/conf.d
     restart: always
     container_name: product-read-mysql
     environment:
