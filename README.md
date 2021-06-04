@@ -5,7 +5,6 @@
 - Command
 - Common
 - Domain
-- External
 - Query
 
 ## Library & Framework
