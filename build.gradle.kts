@@ -68,7 +68,6 @@ project(":command") {
     dependencies {
         implementation(project(":common"))
         implementation(project(":domain:mysql"))
-        implementation(project(":external:rabbitmq"))
     }
 
     (tasks.getByName("processResources") as ProcessResources).apply {
@@ -81,7 +80,6 @@ project(":command") {
 project(":query") {
     dependencies {
         implementation(project(":common"))
-        implementation(project(":external:rabbitmq"))
     }
 
     (tasks.getByName("processResources") as ProcessResources).apply {
