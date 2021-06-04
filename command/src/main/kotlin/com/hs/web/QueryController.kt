@@ -1,5 +1,9 @@
 package com.hs.web
 
+import com.hs.dto.FindProductAggregateDto
+import com.hs.usecase.QueryService
+import com.hs.web.response.SuccessResponse
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -7,10 +11,13 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping(value = ["/products"])
-class QueryController {
+class QueryController(
+    private val queryService: QueryService
+) {
 
     @GetMapping(value = ["{id}"])
-    fun find(@PathVariable(value = "id") productId: Long) {
-        println("OK")
+    fun find(@PathVariable(value = "id") productId: Long): ResponseEntity<SuccessResponse> {
+        val product: FindProductAggregateDto = queryService.findProductAggregate(id = productId)
+        return ResponseEntity.ok(SuccessResponse(data = product))
     }
 }

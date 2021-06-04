@@ -14,6 +14,7 @@ plugins {
     kotlin("plugin.allopen")
     kotlin("plugin.noarg")
     kotlin("plugin.jpa")
+    kotlin("kapt")
 }
 
 allOpen {
@@ -27,5 +28,15 @@ noArg {
 }
 
 dependencies {
+    // query dsl
+    kapt("com.querydsl:querydsl-apt:4.4.0:jpa")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    annotationProcessor(group = "com.querydsl", name = "querydsl-apt", classifier = "jpa")
+
+    // h2 database
     runtimeOnly("com.h2database:h2")
+}
+
+sourceSets["main"].withConvention(org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet::class) {
+    kotlin.srcDir("$buildDir/generated/source/kapt/main")
 }

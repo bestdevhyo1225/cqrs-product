@@ -7,13 +7,22 @@ spring:
 
   datasource:
     hikari:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: jdbc:mysql://localhost:9030/product_db?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&rewriteBatchedStatements=true
-      username: masteruser
-      password: masterpassword
-      minimum-idle: 10
-      maximum-pool-size: 10
-      max-lifetime: 1800000 # 30 minute
+      write:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:9030/product_db?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&rewriteBatchedStatements=true
+        username: masteruser
+        password: masterpassword
+        minimum-idle: 10
+        maximum-pool-size: 10
+        max-lifetime: 1800000 # 30 minute
+      read:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:9031/product_db?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+        username: slaveuser
+        password: slavepassword
+        minimum-idle: 10
+        maximum-pool-size: 10
+        max-lifetime: 1800000 # 30 minute
 
   jpa:
     hibernate:
