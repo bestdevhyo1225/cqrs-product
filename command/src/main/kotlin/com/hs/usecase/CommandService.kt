@@ -21,7 +21,7 @@ class CommandService(
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
-    fun createProduct(createProductDto: CreateProductDto) {
+    fun createProduct(createProductDto: CreateProductDto): Long? {
         logger.info("[ Service - createProduct() ] Start")
 
         val productImages: List<ProductImage> =
@@ -39,6 +39,8 @@ class CommandService(
         product.publishEventOfCreatedProduct(publisher = publisher)
 
         logger.info("[ Service - createProduct() ] End")
+
+        return product.id
     }
 
     fun updateProduct(updateProductDto: UpdateProductDto) {
