@@ -14,5 +14,5 @@ plugins {
 }
 
 dependencies {
-//    implementation("org.springframework:spring-web:5.3.2")
+    implementation("org.springframework:spring-web:5.3.2")
 }

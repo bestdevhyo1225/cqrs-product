@@ -2,11 +2,11 @@ package com.hs.web
 
 import com.hs.dto.CreateProductDto
 import com.hs.dto.UpdateProductDto
+import com.hs.response.SuccessResponse
 import com.hs.usecase.CommandService
 import com.hs.web.request.CreateProductRequest
 import com.hs.web.request.UpdateProductRequest
 import com.hs.web.request.UpdateProductStockRequest
-import com.hs.web.response.SuccessResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -21,7 +21,7 @@ class CommandController(
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    fun create(@Valid @RequestBody request: CreateProductRequest): ResponseEntity<SuccessResponse> {
+    fun create(@Valid @RequestBody request: CreateProductRequest): ResponseEntity<SuccessResponse<Any>> {
         val productId: Long? = commandService.createProduct(
             createProductDto = CreateProductDto(
                 name = request.name,
