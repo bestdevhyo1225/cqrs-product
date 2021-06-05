@@ -1,10 +1,10 @@
 package com.hs.handler.event
 
 import com.hs.dto.PublishProductDto
-import com.hs.entity.EventSendLog
+import com.hs.entity.PublishedEventLog
 import com.hs.event.ProductEvent
 import com.hs.handler.publisher.ProductQueuePublisher
-import com.hs.repository.EnumSendLogRepository
+import com.hs.repository.PublishedEventLogRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -17,7 +17,7 @@ import org.springframework.transaction.event.TransactionalEventListener
 @Component
 class CommandEventHandler(
     private val productQueuePublisher: ProductQueuePublisher,
-    private val eventSendLogRepository: EnumSendLogRepository
+    private val publishedEventLogRepository: PublishedEventLogRepository
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
@@ -27,7 +27,12 @@ class CommandEventHandler(
         async(Dispatchers.IO) {
             logger.info("[ Handler - onHandleProduct() ] event : {}", event)
 
-            eventSendLogRepository.save(EventSendLog(commandCode = event.commandCode, message = event.toString()))
+            publishedEventLogRepository.save(
+                PublishedEventLog(
+                    commandCode = event.commandCode,
+                    message = event.toString()
+                )
+            )
 
             productQueuePublisher.publish(PublishProductDto(productId = event.productId))
         }

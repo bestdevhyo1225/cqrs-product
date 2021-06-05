@@ -13,7 +13,7 @@ import javax.persistence.Enumerated
 import javax.persistence.EnumType
 
 @Entity
-class EventSendLog(commandCode: CommandCode, message: String) {
+class PublishedEventLog(commandCode: CommandCode, message: String) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,8 +36,12 @@ class EventSendLog(commandCode: CommandCode, message: String) {
     override fun hashCode() = kotlinHashCode(properties = equalsAndHashCodeProperties)
 
     companion object {
-        private val equalsAndHashCodeProperties = arrayOf(EventSendLog::id)
-        private val toStringProperties =
-            arrayOf(EventSendLog::id, EventSendLog::commandCode, EventSendLog::message, EventSendLog::createdDate)
+        private val equalsAndHashCodeProperties = arrayOf(PublishedEventLog::id)
+        private val toStringProperties = arrayOf(
+            PublishedEventLog::id,
+            PublishedEventLog::commandCode,
+            PublishedEventLog::message,
+            PublishedEventLog::createdDate
+        )
     }
 }
