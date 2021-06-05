@@ -42,13 +42,11 @@ subprojects {
     }
 
     dependencies {
-        implementation("org.springframework.boot:spring-boot-starter-data-jpa")
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
         implementation("org.jetbrains.kotlin:kotlin-reflect")
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
         implementation("au.com.console:kassava:2.1.0-rc.1")
         implementation( "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
-        implementation("com.querydsl:querydsl-jpa:4.4.0")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         testImplementation("org.springframework.amqp:spring-rabbit-test")
     }

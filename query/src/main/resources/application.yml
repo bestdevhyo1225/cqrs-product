@@ -1,0 +1,28 @@
+server:
+  port: 9800
+
+spring:
+  profiles:
+    active: dev
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: user
+    password: changeme
+    ssl:
+      enabled: false
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 3s
+          max-interval: 10s
+          max-attempts: 5
+        acknowledge-mode: manual
+
+logging:
+  level:
+    com:
+      rabbitmq:
+        client: DEBUG

@@ -36,3 +36,18 @@ spring:
     # 100 ~ 1000 사이를 선택하는 것을 권장! DB에 순간 부하량이 증가하기 때문이다.
     # 1000을 선택하는 것이 성능상 좋지만, 결국 DB든 애플리케이션이든 순간 부하를 어디까지 견딜 수 있는지로 결정하면 된다. (정답은 없음)
     default_batch_fetch_size: 500
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: user
+    password: changeme
+    ssl:
+      enabled: false
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 3s
+          max-interval: 10s
+          max-attempts: 5

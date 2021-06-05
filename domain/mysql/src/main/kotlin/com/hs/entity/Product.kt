@@ -61,7 +61,7 @@ class Product(name: String, price: Int, stockCount: Int) {
     }
 
     fun publishEventOfCreatedProduct(publisher: ApplicationEventPublisher) {
-        publisher.publishEvent(ProductEvent(productId = this.id!!))
+        publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.INSERT))
     }
 
     fun addProductImage(productImage: ProductImage) {
@@ -74,7 +74,7 @@ class Product(name: String, price: Int, stockCount: Int) {
         this.price = price
         this.stockCount = stockCount
 
-        publisher.publishEvent(ProductEvent(productId = this.id!!))
+        publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.UPDATE))
     }
 
     fun changeStockCount(stockCount: Int, publisher: ApplicationEventPublisher) {
@@ -82,6 +82,6 @@ class Product(name: String, price: Int, stockCount: Int) {
 
         this.stockCount -= stockCount
 
-        publisher.publishEvent(ProductEvent(productId = this.id!!))
+        publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.UPDATE_STOCK))
     }
 }
