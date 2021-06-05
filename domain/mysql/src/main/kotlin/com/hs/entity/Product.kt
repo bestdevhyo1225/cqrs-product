@@ -7,6 +7,7 @@ import com.hs.event.ProductEvent
 import org.hibernate.annotations.DynamicUpdate
 import org.springframework.context.ApplicationEventPublisher
 import java.lang.IllegalStateException
+import java.time.LocalDateTime
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.GeneratedValue
@@ -35,6 +36,18 @@ class Product(name: String, price: Int, stockCount: Int) {
     var stockCount: Int = stockCount
         protected set
 
+    @Column(nullable = false, columnDefinition = "datetime")
+    var createdDate: LocalDateTime = LocalDateTime.now()
+        protected set
+
+    @Column(nullable = false, columnDefinition = "datetime")
+    var updatedDate: LocalDateTime = LocalDateTime.now()
+        protected set
+
+    @Column(nullable = true, columnDefinition = "datetime")
+    var deletedDate: LocalDateTime? = null
+        protected set
+
     @OneToMany(mappedBy = "product", cascade = [CascadeType.ALL])
     val productImages: MutableList<ProductImage> = mutableListOf()
 
@@ -44,7 +57,15 @@ class Product(name: String, price: Int, stockCount: Int) {
 
     companion object {
         private val equalsAndHashCodeProperties = arrayOf(Product::id)
-        private val toStringProperties = arrayOf(Product::id, Product::name, Product::price, Product::stockCount)
+        private val toStringProperties = arrayOf(
+            Product::id,
+            Product::name,
+            Product::price,
+            Product::stockCount,
+            Product::createdDate,
+            Product::updatedDate,
+            Product::deletedDate
+        )
 
         fun create(
             name: String,
@@ -73,6 +94,7 @@ class Product(name: String, price: Int, stockCount: Int) {
         this.name = name
         this.price = price
         this.stockCount = stockCount
+        this.updatedDate = LocalDateTime.now()
 
         publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.UPDATE))
     }
@@ -81,6 +103,7 @@ class Product(name: String, price: Int, stockCount: Int) {
         if (this.stockCount - stockCount <= 0) throw IllegalStateException("재고 수량이 0개 이하입니다.")
 
         this.stockCount -= stockCount
+        this.updatedDate = LocalDateTime.now()
 
         publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.UPDATE_STOCK))
     }
