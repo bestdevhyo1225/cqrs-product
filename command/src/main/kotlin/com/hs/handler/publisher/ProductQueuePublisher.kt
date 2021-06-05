@@ -19,7 +19,8 @@ class ProductQueuePublisher(
             .setContentType("application/json")
             .build()
 
-        val message = MessageBuilder.withBody(objectMapper.writeValueAsString(publishProductDto).toByteArray())
+        val message = MessageBuilder
+            .withBody(objectMapper.writeValueAsString(publishProductDto).toByteArray())
             .andProperties(properties)
             .build()
 
