@@ -30,7 +30,7 @@ class CommandService(
         val product = Product.create(
             name = createProductDto.name,
             price = createProductDto.price,
-            stockCount = createProductDto.stockCount,
+            stockQuantity = createProductDto.stockQuantity,
             productImages = productImages,
         )
 
@@ -51,19 +51,19 @@ class CommandService(
         product.changeProduct(
             name = updateProductDto.name,
             price = updateProductDto.price,
-            stockCount = updateProductDto.stockCount,
+            stockQuantity = updateProductDto.stockQuantity,
             publisher = publisher
         )
 
         logger.info("[ Service - updateProduct() ] End")
     }
 
-    fun updateProductStock(id: Long, completeStockCount: Int) {
+    fun updateProductStock(id: Long, completeStockQuantity: Int) {
         logger.info("[ Service - updateProductStock() ] Start")
 
         val product: Product = findProduct(id = id)
 
-        product.changeStockCount(stockCount = completeStockCount, publisher = publisher)
+        product.changeStockCount(stockQuantity = completeStockQuantity, publisher = publisher)
 
         logger.info("[ Service - updateProductStock() ] End")
     }

@@ -11,8 +11,8 @@ data class CreateProductRequest(
     @get:Positive(message = "price는 0 또는 음수가 될 수 없습니다.")
     var price: Int,
 
-    @get:PositiveOrZero(message = "음수가 될 수 없습니다.")
-    var stockCount: Int,
+    @get:PositiveOrZero(message = "stockQuantity는 음수가 될 수 없습니다.")
+    var stockQuantity: Int,
 
     var imageUrls: List<String>
 )

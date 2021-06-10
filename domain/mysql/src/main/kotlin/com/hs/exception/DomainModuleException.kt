@@ -1,4 +1,3 @@
 package com.hs.exception
 
-class DomainModuleException {
-}
+class DomainModuleException(exceptionMessage: ExceptionMessage) : RuntimeException(exceptionMessage.str)

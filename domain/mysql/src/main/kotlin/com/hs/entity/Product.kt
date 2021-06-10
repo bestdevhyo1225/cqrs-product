@@ -4,6 +4,8 @@ import au.com.console.kassava.kotlinEquals
 import au.com.console.kassava.kotlinHashCode
 import au.com.console.kassava.kotlinToString
 import com.hs.event.ProductEvent
+import com.hs.exception.DomainModuleException
+import com.hs.exception.ExceptionMessage
 import org.hibernate.annotations.DynamicUpdate
 import org.springframework.context.ApplicationEventPublisher
 import java.lang.IllegalStateException
@@ -18,7 +20,7 @@ import javax.persistence.CascadeType
 
 @Entity
 @DynamicUpdate
-class Product(name: String, price: Int, stockCount: Int) {
+class Product(name: String, price: Int, stockQuantity: Int) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +35,7 @@ class Product(name: String, price: Int, stockCount: Int) {
         protected set
 
     @Column(nullable = false)
-    var stockCount: Int = stockCount
+    var stockQuantity: Int = stockQuantity
         protected set
 
     @Column(nullable = false, columnDefinition = "datetime")
@@ -61,7 +63,7 @@ class Product(name: String, price: Int, stockCount: Int) {
             Product::id,
             Product::name,
             Product::price,
-            Product::stockCount,
+            Product::stockQuantity,
             Product::createdDate,
             Product::updatedDate,
             Product::deletedDate
@@ -70,10 +72,10 @@ class Product(name: String, price: Int, stockCount: Int) {
         fun create(
             name: String,
             price: Int,
-            stockCount: Int,
+            stockQuantity: Int,
             productImages: List<ProductImage>
         ): Product {
-            val product = Product(name = name, price = price, stockCount = stockCount)
+            val product = Product(name = name, price = price, stockQuantity = stockQuantity)
 
             productImages.forEach { productImage -> product.addProductImage(productImage = productImage) }
 
@@ -82,7 +84,11 @@ class Product(name: String, price: Int, stockCount: Int) {
     }
 
     fun publishEventOfCreatedProduct(publisher: ApplicationEventPublisher) {
-        publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.INSERT))
+        try {
+            publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.INSERT))
+        } catch (exception: NullPointerException) {
+            throw DomainModuleException(exceptionMessage = ExceptionMessage.PRODUCT_ID_IS_NULL)
+        }
     }
 
     fun addProductImage(productImage: ProductImage) {
@@ -90,21 +96,31 @@ class Product(name: String, price: Int, stockCount: Int) {
         productImage.changeProduct(this)
     }
 
-    fun changeProduct(name: String, price: Int, stockCount: Int, publisher: ApplicationEventPublisher) {
+    fun changeProduct(name: String, price: Int, stockQuantity: Int, publisher: ApplicationEventPublisher) {
         this.name = name
         this.price = price
-        this.stockCount = stockCount
+        this.stockQuantity = stockQuantity
         this.updatedDate = LocalDateTime.now()
 
-        publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.UPDATE))
+        try {
+            publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.UPDATE))
+        } catch (exception: NullPointerException) {
+            throw DomainModuleException(exceptionMessage = ExceptionMessage.PRODUCT_ID_IS_NULL)
+        }
     }
 
-    fun changeStockCount(stockCount: Int, publisher: ApplicationEventPublisher) {
-        if (this.stockCount - stockCount <= 0) throw IllegalStateException("재고 수량이 0개 이하입니다.")
+    fun changeStockCount(stockQuantity: Int, publisher: ApplicationEventPublisher) {
+        if (this.stockQuantity - stockQuantity <= 0) {
+            throw DomainModuleException(exceptionMessage = ExceptionMessage.HAVE_EXCEEDED_THE_QUANTITY_AVAILABLE_FOR_PURCHASE)
+        }
 
-        this.stockCount -= stockCount
+        this.stockQuantity -= stockQuantity
         this.updatedDate = LocalDateTime.now()
 
-        publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.UPDATE_STOCK))
+        try {
+            publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.UPDATE_STOCK))
+        } catch (exception: NullPointerException) {
+            throw DomainModuleException(exceptionMessage = ExceptionMessage.PRODUCT_ID_IS_NULL)
+        }
     }
 }

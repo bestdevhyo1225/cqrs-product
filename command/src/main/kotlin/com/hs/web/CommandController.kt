@@ -26,7 +26,7 @@ class CommandController(
             createProductDto = CreateProductDto(
                 name = request.name,
                 price = request.price,
-                stockCount = request.stockCount,
+                stockQuantity = request.stockQuantity,
                 imageUrls = request.imageUrls
             )
         )
@@ -44,7 +44,7 @@ class CommandController(
                 id = productId,
                 name = request.name,
                 price = request.price,
-                stockCount = request.stockCount
+                stockQuantity = request.stockQuantity
             )
         )
     }
@@ -54,6 +54,6 @@ class CommandController(
         @PathVariable(value = "id") productId: Long,
         @Valid @RequestBody request: UpdateProductStockRequest
     ) {
-        commandService.updateProductStock(id = productId, completeStockCount = request.completeStockCount)
+        commandService.updateProductStock(id = productId, completeStockQuantity = request.completeStockQuantity)
     }
 }
