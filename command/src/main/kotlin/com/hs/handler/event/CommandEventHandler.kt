@@ -27,14 +27,14 @@ class CommandEventHandler(
         async(Dispatchers.IO) {
             logger.info("[ Handler - onHandleProduct() ] event : {}", event)
 
+            productQueuePublisher.publish(PublishProductDto(productId = event.productId))
+
             publishedEventLogRepository.save(
                 PublishedEventLog(
                     commandCode = event.commandCode,
                     message = event.toString()
                 )
             )
-
-            productQueuePublisher.publish(PublishProductDto(productId = event.productId))
         }
     }
 }
