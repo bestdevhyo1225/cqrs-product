@@ -80,7 +80,6 @@ class CommandService(
     }
 
     private fun findProduct(id: Long): Product {
-        return productRepository.findByIdOrNull(id = id)
-            ?: throw NoSuchElementException("해당 상품이 존재하지 않습니다.")
+        return productRepository.findByIdOrNull(id = id) ?: throw NoSuchElementException("해당 상품이 존재하지 않습니다.")
     }
 }
