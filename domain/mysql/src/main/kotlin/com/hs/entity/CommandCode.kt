@@ -4,5 +4,6 @@ enum class CommandCode {
     INSERT,
     UPDATE,
     UPDATE_STOCK,
-    DELETE
+    DELETE,
+    CHNAGE_CONFIRM_STATUS
 }

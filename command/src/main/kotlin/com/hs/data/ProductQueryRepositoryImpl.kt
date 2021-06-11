@@ -28,6 +28,7 @@ class ProductQueryRepositoryImpl(private val queryFactory: JPAQueryFactory) : Pr
                     name = entry.key.name,
                     price = entry.key.price,
                     stockQuantity = entry.key.stockQuantity,
+                    confirmStatus = entry.key.confirmStatus.toString(),
                     imageUrls = entry.value.map { productImage -> productImage.url }
                 )
             }.firstOrNull()

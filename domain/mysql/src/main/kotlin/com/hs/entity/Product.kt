@@ -17,6 +17,8 @@ import javax.persistence.GenerationType
 import javax.persistence.Column
 import javax.persistence.OneToMany
 import javax.persistence.CascadeType
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
 
 @Entity
 @DynamicUpdate
@@ -36,6 +38,11 @@ class Product(name: String, price: Int, stockQuantity: Int) {
 
     @Column(nullable = false)
     var stockQuantity: Int = stockQuantity
+        protected set
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    var confirmStatus: ProductConfirmStatus = ProductConfirmStatus.WAIT
         protected set
 
     @Column(nullable = false, columnDefinition = "datetime")
@@ -64,6 +71,7 @@ class Product(name: String, price: Int, stockQuantity: Int) {
             Product::name,
             Product::price,
             Product::stockQuantity,
+            Product::confirmStatus,
             Product::createdDate,
             Product::updatedDate,
             Product::deletedDate
@@ -83,6 +91,11 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         }
     }
 
+    fun addProductImage(productImage: ProductImage) {
+        productImages.add(productImage)
+        productImage.changeProduct(this)
+    }
+
     fun publishEventOfCreatedProduct(publisher: ApplicationEventPublisher) {
         try {
             publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.INSERT))
@@ -91,15 +104,11 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         }
     }
 
-    fun addProductImage(productImage: ProductImage) {
-        productImages.add(productImage)
-        productImage.changeProduct(this)
-    }
-
     fun changeProduct(name: String, price: Int, stockQuantity: Int, publisher: ApplicationEventPublisher) {
         this.name = name
         this.price = price
         this.stockQuantity = stockQuantity
+        this.confirmStatus = ProductConfirmStatus.WAIT
         this.updatedDate = LocalDateTime.now()
 
         try {
@@ -115,10 +124,25 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         }
 
         this.stockQuantity -= stockQuantity
+        this.confirmStatus = ProductConfirmStatus.WAIT
         this.updatedDate = LocalDateTime.now()
 
         try {
             publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.UPDATE_STOCK))
+        } catch (exception: NullPointerException) {
+            throw DomainModuleException(exceptionMessage = ExceptionMessage.PRODUCT_ID_IS_NULL)
+        }
+    }
+
+    fun changeConfirmStatus(strProductConfirmStatus: String, publisher: ApplicationEventPublisher) {
+        val confirmStatus: ProductConfirmStatus =
+            ProductConfirmStatus.convertFromStringToProductConfirmStatus(value = strProductConfirmStatus)
+
+        this.confirmStatus = confirmStatus
+        this.updatedDate = LocalDateTime.now()
+
+        try {
+            publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.CHNAGE_CONFIRM_STATUS))
         } catch (exception: NullPointerException) {
             throw DomainModuleException(exceptionMessage = ExceptionMessage.PRODUCT_ID_IS_NULL)
         }
