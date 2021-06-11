@@ -5,6 +5,7 @@ import com.hs.dto.UpdateProductDto
 import com.hs.response.SuccessResponse
 import com.hs.usecase.CommandService
 import com.hs.web.request.CreateProductRequest
+import com.hs.web.request.UpdateProductConfirmRequest
 import com.hs.web.request.UpdateProductRequest
 import com.hs.web.request.UpdateProductStockRequest
 import org.springframework.http.HttpStatus
@@ -55,5 +56,13 @@ class CommandController(
         @Valid @RequestBody request: UpdateProductStockRequest
     ) {
         commandService.updateProductStock(id = productId, completeStockQuantity = request.completeStockQuantity)
+    }
+
+    @PatchMapping(value = ["{id}/confirm-status"])
+    fun updateConfirmStatus(
+        @PathVariable(value = "id") productId: Long,
+        @Valid @RequestBody request: UpdateProductConfirmRequest
+    ) {
+        commandService.updateProductConfirmStatus(id = productId, strProductConfirmStatus = request.comfirmStatus)
     }
 }

@@ -3,6 +3,7 @@ package com.hs.usecase
 import com.hs.dto.CreateProductDto
 import com.hs.dto.UpdateProductDto
 import com.hs.entity.Product
+import com.hs.entity.ProductConfirmStatus
 import com.hs.entity.ProductImage
 import com.hs.repository.ProductRepository
 import org.slf4j.Logger
@@ -68,7 +69,17 @@ class CommandService(
         logger.info("[ Service - updateProductStock() ] End")
     }
 
-    fun findProduct(id: Long): Product {
+    fun updateProductConfirmStatus(id: Long, strProductConfirmStatus: String) {
+        logger.info("[ Service - updateProductConfirmStatus() ] Start")
+
+        val product: Product = findProduct(id = id)
+
+        product.changeConfirmStatus(strProductConfirmStatus = strProductConfirmStatus, publisher = publisher)
+
+        logger.info("[ Service - updateProductConfirmStatus() ] End")
+    }
+
+    private fun findProduct(id: Long): Product {
         return productRepository.findByIdOrNull(id = id)
             ?: throw NoSuchElementException("해당 상품이 존재하지 않습니다.")
     }
