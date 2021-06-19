@@ -127,12 +127,7 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         this.updatedDate = LocalDateTime.now()
 
         try {
-            publisher.publishEvent(
-                ProductEvent(
-                    productId = this.id!!,
-                    commandCode = CommandCode.UPDATE_STOCK
-                )
-            )
+            publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.UPDATE_STOCK))
         } catch (exception: NullPointerException) {
             throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
         }
@@ -146,12 +141,7 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         this.updatedDate = LocalDateTime.now()
 
         try {
-            publisher.publishEvent(
-                ProductEvent(
-                    productId = this.id!!,
-                    commandCode = CommandCode.CHNAGE_CONFIRM_STATUS
-                )
-            )
+            publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.CHNAGE_CONFIRM_STATUS))
         } catch (exception: NullPointerException) {
             throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
         }
