@@ -30,10 +30,7 @@ class CommandEventHandler(
             productQueuePublisher.publish(PublishProductDto(productId = event.productId))
 
             publishedEventLogRepository.save(
-                PublishedEventLog(
-                    commandCode = event.commandCode,
-                    message = event.toString()
-                )
+                PublishedEventLog(commandCode = event.commandCode, message = event.toString())
             )
         }
     }
