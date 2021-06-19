@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document
         CompoundIndex(name = "PRODUCT_AGGREGATES_IX_SEARCH", def = "{'productId': 1, 'type': 1}", unique = true)
     ]
 )
-class ProductAggreagte(productId: Long, type: ProductAggregateType, data: FindProductAggregateDto) {
+class ProductAggregate(productId: Long, type: ProductAggregateType, data: FindProductAggregateDto) {
 
     @Id
     var id: String? = null
@@ -35,16 +35,16 @@ class ProductAggreagte(productId: Long, type: ProductAggregateType, data: FindPr
     override fun hashCode() = kotlinHashCode(properties = equalsAndHashCodeProperties)
 
     companion object {
-        private val equalsAndHashCodeProperties = arrayOf(ProductAggreagte::id)
+        private val equalsAndHashCodeProperties = arrayOf(ProductAggregate::id)
         private val toStringProperties = arrayOf(
-            ProductAggreagte::id,
-            ProductAggreagte::productId,
-            ProductAggreagte::type,
-            ProductAggreagte::data,
+            ProductAggregate::id,
+            ProductAggregate::productId,
+            ProductAggregate::type,
+            ProductAggregate::data,
         )
 
-        fun create(productAggregateDto: FindProductAggregateDto, type: ProductAggregateType): ProductAggreagte {
-            return ProductAggreagte(
+        fun create(productAggregateDto: FindProductAggregateDto, type: ProductAggregateType): ProductAggregate {
+            return ProductAggregate(
                 productId = productAggregateDto.productId,
                 type = type,
                 data = productAggregateDto
