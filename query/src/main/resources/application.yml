@@ -5,6 +5,10 @@ spring:
   profiles:
     active: dev
 
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/product_db
+
   rabbitmq:
     host: localhost
     port: 5672
@@ -26,3 +30,9 @@ logging:
     com:
       rabbitmq:
         client: DEBUG
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG

@@ -1,4 +1,4 @@
-package com.hs.collection
+package com.hs.entity
 
 import au.com.console.kassava.kotlinEquals
 import au.com.console.kassava.kotlinHashCode

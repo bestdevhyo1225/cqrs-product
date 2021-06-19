@@ -11,6 +11,14 @@ plugins {
 
     kotlin("jvm")
     kotlin("plugin.spring")
+    kotlin("plugin.allopen")
 }
 
-dependencies {}
+allOpen {
+    // MongoDB Document 키워드 Open
+    annotation("org.springframework.data.mongodb.core.mapping.Document")
+}
+
+dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+}

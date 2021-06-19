@@ -1,4 +1,4 @@
-package com.hs.collection
+package com.hs.entity
 
 import org.springframework.data.jpa.repository.JpaRepository
 

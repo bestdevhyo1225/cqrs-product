@@ -1,4 +1,6 @@
 package com.hs.exception
 
-class DomainMongoDBException {
-}
+import com.hs.message.QueryAppExceptionMessage
+
+class DomainMongoException(exceptionMessage: QueryAppExceptionMessage) :
+    RuntimeException(exceptionMessage.localizedMessage)

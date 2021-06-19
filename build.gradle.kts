@@ -46,7 +46,7 @@ subprojects {
         implementation("org.jetbrains.kotlin:kotlin-reflect")
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
         implementation("au.com.console:kassava:2.1.0-rc.1")
-        implementation( "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         testImplementation("org.springframework.amqp:spring-rabbit-test")
     }
@@ -66,7 +66,11 @@ subprojects {
 project(":command") {
     dependencies {
         implementation(project(":common"))
-        implementation(project(":domain:mysql"))
+        implementation(project(":domain:mysql") {
+            dependencies {
+                implementation(project(":common"))
+            }
+        })
     }
 
     (tasks.getByName("processResources") as ProcessResources).apply {
@@ -76,15 +80,14 @@ project(":command") {
     }
 }
 
-project(":domain:mysql") {
-    dependencies {
-        implementation(project(":common"))
-    }
-}
-
 project(":query") {
     dependencies {
         implementation(project(":common"))
+        implementation(project(":domain:mongo") {
+            dependencies {
+                implementation(project(":common"))
+            }
+        })
     }
 
     (tasks.getByName("processResources") as ProcessResources).apply {
