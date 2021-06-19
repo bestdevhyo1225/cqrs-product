@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
-class ProductAggregateCommandService(
+class ProductAggregateCommand(
     private val productAggregateRepository: ProductAggregateRepository
 ) {
 
