@@ -10,7 +10,13 @@ import com.hs.web.request.UpdateProductRequest
 import com.hs.web.request.UpdateProductStockRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
 import java.net.URI
 import javax.validation.Valid
 
@@ -33,7 +39,7 @@ class CommandController(
         )
 
         return ResponseEntity.created(URI.create("/products/$productId"))
-            .body(SuccessResponse(data = object {
+            .body(SuccessResponse(status = "Created", data = object {
                 val productId = productId
             }))
     }

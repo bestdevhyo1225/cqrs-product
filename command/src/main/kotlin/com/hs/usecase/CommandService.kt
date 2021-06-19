@@ -5,6 +5,7 @@ import com.hs.dto.UpdateProductDto
 import com.hs.entity.Product
 import com.hs.entity.ProductConfirmStatus
 import com.hs.entity.ProductImage
+import com.hs.handler.exception.ExceptionMessage
 import com.hs.repository.ProductRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -80,6 +81,7 @@ class CommandService(
     }
 
     private fun findProduct(id: Long): Product {
-        return productRepository.findByIdOrNull(id = id) ?: throw NoSuchElementException("해당 상품이 존재하지 않습니다.")
+        return productRepository.findByIdOrNull(id = id)
+            ?: throw NoSuchElementException(ExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
     }
 }
