@@ -1,7 +1,7 @@
 package com.hs.usecase
 
 import com.hs.entity.ProductAggregate
-import com.hs.entity.ProductAggregateRepository
+import com.hs.repository.ProductAggregateRepository
 import com.hs.entity.ProductAggregateType
 import com.hs.message.QueryAppExceptionMessage
 import org.springframework.stereotype.Service
