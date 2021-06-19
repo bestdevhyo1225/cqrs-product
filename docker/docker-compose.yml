@@ -11,6 +11,13 @@ services:
       - "5672:5672"
       - "15672:15672"
 
+  product-mongo:
+    image: mongo
+    container_name: product-mongo
+    command: mongod --auth
+    ports:
+      - "27017:27017"
+
   product-write-mysql:
     image: product-write-mysql
     volumes:

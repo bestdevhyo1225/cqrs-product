@@ -1,4 +1,4 @@
-package com.hs.entity
+package com.hs.collection
 
 import com.hs.exception.DomainMySqlException
 import com.hs.message.CommandAppExceptionMessage

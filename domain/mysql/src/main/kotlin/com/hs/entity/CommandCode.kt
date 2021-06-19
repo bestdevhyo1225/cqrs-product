@@ -1,4 +1,4 @@
-package com.hs.entity
+package com.hs.collection
 
 enum class CommandCode {
     INSERT,
