@@ -5,7 +5,7 @@ import com.hs.dto.FindProductAggregateDto
 import com.hs.dto.PublishProductDto
 import com.hs.handler.external.CommandApiCallHandler
 import com.hs.response.SuccessResponse
-import com.hs.usecase.ProductAggregateCommandService
+import com.hs.usecase.ProductAggregateCommand
 import com.rabbitmq.client.Channel
 import kotlinx.coroutines.runBlocking
 
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component
 @Component
 class ProductQueueListener(
     private val commandApiCallHandler: CommandApiCallHandler,
-    private val productAggregateCommandService: ProductAggregateCommandService,
+    private val productAggregateCommand: ProductAggregateCommand,
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
@@ -31,7 +31,7 @@ class ProductQueueListener(
         val responseEntity: ResponseEntity<SuccessResponse<FindProductAggregateDto>> =
             commandApiCallHandler.getProductAggregate(url = "http://localhost:9700/products/${publishProductDto.productId}")
 
-        productAggregateCommandService.createOrUpdate(productAggregateDto = responseEntity.body!!.data)
+        productAggregateCommand.createOrUpdate(productAggregateDto = responseEntity.body!!.data)
 
         channel.basicAck(message.messageProperties.deliveryTag, false)
     }
