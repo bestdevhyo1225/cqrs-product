@@ -2,9 +2,9 @@ package com.hs.handler.event
 
 import com.hs.dto.PublishProductDto
 import com.hs.entity.PublishedEventLog
+import com.hs.entity.PublishedEventLogRepository
 import com.hs.event.ProductEvent
 import com.hs.handler.publisher.ProductQueuePublisher
-import com.hs.repository.PublishedEventLogRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking

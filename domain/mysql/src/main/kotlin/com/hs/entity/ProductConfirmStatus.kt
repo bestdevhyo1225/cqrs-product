@@ -1,7 +1,7 @@
 package com.hs.entity
 
-import com.hs.exception.DomainModuleException
-import com.hs.exception.ExceptionMessage
+import com.hs.exception.DomainMySqlException
+import com.hs.message.CommandAppExceptionMessage
 
 enum class ProductConfirmStatus() {
     WAIT,
@@ -13,7 +13,7 @@ enum class ProductConfirmStatus() {
             try {
                 return valueOf(value = value)
             } catch (exception: Exception) {
-                throw DomainModuleException(exceptionMessage = ExceptionMessage.NOT_EXIST_PRODUCT_CONFIRM_STATUS)
+                throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.NOT_EXIST_PRODUCT_CONFIRM_STATUS)
             }
         }
     }

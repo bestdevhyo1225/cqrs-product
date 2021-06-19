@@ -1,6 +1,5 @@
-package com.hs.repository
+package com.hs.entity
 
-import com.hs.entity.Product
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface ProductRepository : JpaRepository<Product, Long>

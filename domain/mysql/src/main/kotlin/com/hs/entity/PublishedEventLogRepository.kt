@@ -1,6 +1,5 @@
-package com.hs.repository
+package com.hs.entity
 
-import com.hs.entity.PublishedEventLog
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface PublishedEventLogRepository : JpaRepository<PublishedEventLog, Long>

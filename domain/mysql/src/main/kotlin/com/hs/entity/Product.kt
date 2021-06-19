@@ -4,11 +4,10 @@ import au.com.console.kassava.kotlinEquals
 import au.com.console.kassava.kotlinHashCode
 import au.com.console.kassava.kotlinToString
 import com.hs.event.ProductEvent
-import com.hs.exception.DomainModuleException
-import com.hs.exception.ExceptionMessage
+import com.hs.exception.DomainMySqlException
+import com.hs.message.CommandAppExceptionMessage
 import org.hibernate.annotations.DynamicUpdate
 import org.springframework.context.ApplicationEventPublisher
-import java.lang.IllegalStateException
 import java.time.LocalDateTime
 import javax.persistence.Entity
 import javax.persistence.Id
@@ -100,7 +99,7 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         try {
             publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.INSERT))
         } catch (exception: NullPointerException) {
-            throw DomainModuleException(exceptionMessage = ExceptionMessage.PRODUCT_ID_IS_NULL)
+            throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
         }
     }
 
@@ -114,13 +113,13 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         try {
             publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.UPDATE))
         } catch (exception: NullPointerException) {
-            throw DomainModuleException(exceptionMessage = ExceptionMessage.PRODUCT_ID_IS_NULL)
+            throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
         }
     }
 
     fun changeStockCount(stockQuantity: Int, publisher: ApplicationEventPublisher) {
         if (this.stockQuantity - stockQuantity <= 0) {
-            throw DomainModuleException(exceptionMessage = ExceptionMessage.HAVE_EXCEEDED_THE_QUANTITY_AVAILABLE_FOR_PURCHASE)
+            throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.HAVE_EXCEEDED_THE_QUANTITY_AVAILABLE_FOR_PURCHASE)
         }
 
         this.stockQuantity -= stockQuantity
@@ -128,9 +127,14 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         this.updatedDate = LocalDateTime.now()
 
         try {
-            publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.UPDATE_STOCK))
+            publisher.publishEvent(
+                ProductEvent(
+                    productId = this.id!!,
+                    commandCode = CommandCode.UPDATE_STOCK
+                )
+            )
         } catch (exception: NullPointerException) {
-            throw DomainModuleException(exceptionMessage = ExceptionMessage.PRODUCT_ID_IS_NULL)
+            throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
         }
     }
 
@@ -142,9 +146,14 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         this.updatedDate = LocalDateTime.now()
 
         try {
-            publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.CHNAGE_CONFIRM_STATUS))
+            publisher.publishEvent(
+                ProductEvent(
+                    productId = this.id!!,
+                    commandCode = CommandCode.CHNAGE_CONFIRM_STATUS
+                )
+            )
         } catch (exception: NullPointerException) {
-            throw DomainModuleException(exceptionMessage = ExceptionMessage.PRODUCT_ID_IS_NULL)
+            throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
         }
     }
 }
