@@ -1,4 +1,4 @@
-package com.hs.handler.external
+package com.hs.infrastructure.resttemplate
 
 import com.hs.dto.FindProductAggregateDto
 import com.hs.response.SuccessResponse

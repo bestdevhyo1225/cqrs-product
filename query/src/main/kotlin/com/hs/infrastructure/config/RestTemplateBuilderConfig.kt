@@ -1,4 +1,4 @@
-package com.hs.config
+package com.hs.infrastructure.config
 
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean

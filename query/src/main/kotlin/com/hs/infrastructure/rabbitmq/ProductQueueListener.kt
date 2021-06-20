@@ -1,11 +1,11 @@
-package com.hs.handler.listener
+package com.hs.infrastructure.rabbitmq
 
-import com.hs.config.RabbitMQConfig
+import com.hs.infrastructure.config.RabbitMQConfig
 import com.hs.dto.FindProductAggregateDto
 import com.hs.dto.PublishProductDto
-import com.hs.handler.external.CommandApiCallHandler
+import com.hs.infrastructure.resttemplate.CommandApiCallHandler
 import com.hs.response.SuccessResponse
-import com.hs.usecase.ProductAggregateCommand
+import com.hs.application.usecase.ProductAggregateCommand
 import com.rabbitmq.client.Channel
 import kotlinx.coroutines.runBlocking
 

@@ -2,7 +2,7 @@ package com.hs.web
 
 import com.hs.entity.ProductAggregate
 import com.hs.response.SuccessResponse
-import com.hs.usecase.ProductAggregateQuery
+import com.hs.application.usecase.ProductAggregateQuery
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping

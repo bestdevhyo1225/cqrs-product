@@ -1,9 +1,9 @@
-package com.hs.usecase
+package com.hs.application.usecase
 
 import com.hs.dto.FindProductAggregateDto
-import com.hs.repository.ProductAggregateRepository
 import com.hs.entity.ProductAggregate
 import com.hs.entity.ProductAggregateType
+import com.hs.repository.ProductAggregateRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service

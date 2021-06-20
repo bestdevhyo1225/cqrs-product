@@ -1,4 +1,4 @@
-package com.hs.usecase
+package com.hs.application.usecase
 
 import com.hs.entity.ProductAggregate
 import com.hs.repository.ProductAggregateRepository

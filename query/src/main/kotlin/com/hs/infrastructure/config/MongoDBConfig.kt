@@ -1,4 +1,4 @@
-package com.hs.config
+package com.hs.infrastructure.config
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.MongoMappingContext
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories
 
 @Configuration
-@EnableMongoRepositories(basePackages = ["com.hs.entity"])
+@EnableMongoRepositories(basePackages = ["com.hs.repository"])
 class MongoDBConfig(
     @Value("\${spring.data.mongodb.uri}")
     private val mongodbUri: String
