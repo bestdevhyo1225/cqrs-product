@@ -1,4 +1,4 @@
-package com.hs.config
+package com.hs.infrastructure.config
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource
 import org.springframework.transaction.support.TransactionSynchronizationManager

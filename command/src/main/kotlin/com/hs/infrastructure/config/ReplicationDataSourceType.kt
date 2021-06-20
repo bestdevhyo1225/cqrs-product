@@ -1,4 +1,4 @@
-package com.hs.config
+package com.hs.infrastructure.config
 
 enum class ReplicationDataSourceType {
     WRITE,

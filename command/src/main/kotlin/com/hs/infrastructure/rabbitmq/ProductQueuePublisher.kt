@@ -1,7 +1,7 @@
-package com.hs.handler.publisher
+package com.hs.infrastructure.rabbitmq
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.hs.config.RabbitMQConfig
+import com.hs.infrastructure.config.RabbitMQConfig
 import com.hs.dto.PublishProductDto
 import org.springframework.amqp.core.MessageBuilder
 import org.springframework.amqp.core.MessagePropertiesBuilder

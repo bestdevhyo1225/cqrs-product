@@ -1,10 +1,10 @@
-package com.hs.handler.event
+package com.hs.application.handler
 
 import com.hs.dto.PublishProductDto
 import com.hs.entity.PublishedEventLog
 import com.hs.repository.PublishedEventLogRepository
 import com.hs.event.ProductEvent
-import com.hs.handler.publisher.ProductQueuePublisher
+import com.hs.infrastructure.rabbitmq.ProductQueuePublisher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking

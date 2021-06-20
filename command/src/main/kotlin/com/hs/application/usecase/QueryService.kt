@@ -1,4 +1,4 @@
-package com.hs.usecase
+package com.hs.application.usecase
 
 import com.hs.dto.FindProductAggregateDto
 import com.hs.message.CommandAppExceptionMessage

@@ -2,7 +2,7 @@ package com.hs.web
 
 import com.hs.dto.FindProductAggregateDto
 import com.hs.response.SuccessResponse
-import com.hs.usecase.QueryService
+import com.hs.application.usecase.QueryService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

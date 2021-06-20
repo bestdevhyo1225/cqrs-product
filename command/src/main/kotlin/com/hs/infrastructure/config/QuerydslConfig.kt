@@ -1,4 +1,4 @@
-package com.hs.config
+package com.hs.infrastructure.config
 
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.context.annotation.Bean

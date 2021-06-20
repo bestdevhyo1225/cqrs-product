@@ -3,7 +3,7 @@ package com.hs.web
 import com.hs.dto.CreateProductDto
 import com.hs.dto.UpdateProductDto
 import com.hs.response.SuccessResponse
-import com.hs.usecase.CommandService
+import com.hs.application.usecase.CommandService
 import com.hs.web.request.CreateProductRequest
 import com.hs.web.request.UpdateProductConfirmRequest
 import com.hs.web.request.UpdateProductRequest

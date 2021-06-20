@@ -1,4 +1,4 @@
-package com.hs.handler.exception
+package com.hs.web
 
 import com.hs.exception.DomainMySqlException
 import com.hs.response.ErrorResponse
@@ -11,7 +11,7 @@ import java.lang.RuntimeException
 import javax.validation.ConstraintViolationException
 
 @RestControllerAdvice
-class GlobalExceptionHandler {
+class CommandAppGlobalExceptionHandler {
 
     @ExceptionHandler(value = [NoSuchElementException::class])
     fun handle(exception: NoSuchElementException): ResponseEntity<ErrorResponse> {
