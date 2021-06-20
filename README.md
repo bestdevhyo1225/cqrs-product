@@ -12,7 +12,9 @@
 - JDK 11
 - Spring Web
 - Spring Data JPA
+- Spring Data MongoDB
 - Spring AMQP (RabbitMQ)
+- Kotlinx Coroutines Core
 - JUnit 5
 
 ## System Architecture
