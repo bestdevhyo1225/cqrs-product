@@ -12,7 +12,7 @@ class ProductAggregateQuery(
 ) {
 
     fun findProductAggregate(productId: Long): ProductAggregate {
-        return productAggregateRepository.findByProductIdAndType(
+        return productAggregateRepository.findByProductIdAndTypeAndIsDisplay(
             productId = productId,
             type = ProductAggregateType.FIND_PRODUCT
         ) ?: throw NoSuchElementException(QueryAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
