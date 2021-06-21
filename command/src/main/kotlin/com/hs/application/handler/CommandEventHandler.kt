@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.hs.application.usecase.EventLogCommandProcessor
 import com.hs.dto.PublishProductDto
 import com.hs.event.ProductEvent
-import com.hs.publisher.ProductQueuePublisher
+import com.hs.service.ProductQueuePublisher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
