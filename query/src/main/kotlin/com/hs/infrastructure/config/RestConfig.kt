@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate
 import java.time.Duration
 
 @Configuration
-class RestTemplateBuilderConfig {
+class RestConfig {
 
     @Bean
     fun restTemplate(): RestTemplate {

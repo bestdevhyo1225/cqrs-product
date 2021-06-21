@@ -3,7 +3,7 @@ package com.hs.infrastructure.rabbitmq
 import com.hs.infrastructure.config.RabbitMQConfig
 import com.hs.dto.FindProductDto
 import com.hs.dto.PublishProductDto
-import com.hs.infrastructure.resttemplate.RestGetRequestor
+import com.hs.infrastructure.rest.RestGetRequestor
 import com.hs.response.SuccessResponse
 import com.hs.application.usecase.ProductAggregateCommandProcessor
 import com.rabbitmq.client.Channel
@@ -32,7 +32,7 @@ class ProductQueueListener(
 
         launch(Dispatchers.IO) {
             val responseEntity: ResponseEntity<SuccessResponse<FindProductDto>> =
-                restGetRequestor.getProductAggregate(url = "http://localhost:9700/products/${publishProductDto.productId}")
+                restGetRequestor.getProductAggregate(productId = publishProductDto.productId)
 
             productAggregateCommandProcessor.createOrUpdate(productDto = responseEntity.body!!.data)
         }
