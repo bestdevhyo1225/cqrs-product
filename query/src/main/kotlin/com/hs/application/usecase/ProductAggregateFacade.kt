@@ -10,7 +10,7 @@ import kotlinx.coroutines.runBlocking
 import org.springframework.stereotype.Service
 
 @Service
-class ProductAggregateManager(
+class ProductAggregateFacade(
     private val restGetRequestor: RestGetRequestor,
     private val productAggregateQueryProcessor: ProductAggregateQueryProcessor,
     private val productAggregateCommandProcessor: ProductAggregateCommandProcessor
