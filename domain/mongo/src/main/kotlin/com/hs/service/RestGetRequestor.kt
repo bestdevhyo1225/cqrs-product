@@ -2,6 +2,6 @@ package com.hs.service
 
 import com.hs.dto.FindProductDto
 
-interface RequestGetHandler {
+interface RestGetRequestor {
     suspend fun asyncGetProduct(productId: Long): FindProductDto
 }

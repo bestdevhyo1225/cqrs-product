@@ -1,6 +1,6 @@
 package com.hs.config
 
-import com.hs.service.RequestGetHandler
+import com.hs.service.RestGetRequestor
 import com.hs.infrastructure.rest.resttemplate.RestTemplateGetRequestor
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
@@ -14,7 +14,7 @@ import java.time.Duration
 class RestConfig {
 
     @Bean
-    fun restGetRequestor(): RequestGetHandler {
+    fun restGetRequestor(): RestGetRequestor {
         val restTemplate: RestTemplate = RestTemplateBuilder()
             .requestFactory { BufferingClientHttpRequestFactory(SimpleClientHttpRequestFactory()) }
             .setConnectTimeout(Duration.ofMillis(5000))

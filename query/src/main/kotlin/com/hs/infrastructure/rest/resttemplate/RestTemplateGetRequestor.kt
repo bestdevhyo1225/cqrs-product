@@ -1,6 +1,6 @@
 package com.hs.infrastructure.rest.resttemplate
 
-import com.hs.service.RequestGetHandler
+import com.hs.service.RestGetRequestor
 import com.hs.dto.FindProductDto
 import com.hs.response.SuccessResponse
 import com.hs.util.ParameterizedTypeReferenceUtils
@@ -13,7 +13,7 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.MediaType
 import org.springframework.web.client.RestTemplate
 
-class RestTemplateGetRequestor(private val restTemplate: RestTemplate) : RequestGetHandler {
+class RestTemplateGetRequestor(private val restTemplate: RestTemplate) : RestGetRequestor {
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
@@ -32,7 +32,7 @@ class RestTemplateGetRequestor(private val restTemplate: RestTemplate) : Request
             ParameterizedTypeReferenceUtils.typeRef<SuccessResponse<FindProductDto>>()
         )
 
-        logger.info("[ RequestGetHandler ] responseEntity : {}", responseEntity)
+        logger.info("[ RestGetRequestor ] responseEntity : {}", responseEntity)
 
         return responseEntity.body!!.data
     }

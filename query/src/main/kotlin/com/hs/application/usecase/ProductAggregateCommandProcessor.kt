@@ -1,6 +1,6 @@
 package com.hs.application.usecase
 
-import com.hs.service.RequestGetHandler
+import com.hs.service.RestGetRequestor
 import com.hs.dto.FindProductDto
 import com.hs.entity.ProductAggregate
 import com.hs.entity.ProductAggregateType.FIND_PRODUCT
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class ProductAggregateCommandProcessor(
-    private val requestGetHandler: RequestGetHandler,
+    private val restGetRequestor: RestGetRequestor,
     private val productAggregateRepository: ProductAggregateRepository,
     private val productAggregateQueryProcessor: ProductAggregateQueryProcessor
 ) {
@@ -24,7 +24,7 @@ class ProductAggregateCommandProcessor(
 
     fun createOrUpdate(productId: Long) = runBlocking {
         val asyncProductDto: Deferred<FindProductDto> =
-            async(Dispatchers.IO) { requestGetHandler.asyncGetProduct(productId = productId) }
+            async(Dispatchers.IO) { restGetRequestor.asyncGetProduct(productId = productId) }
 
         val asyncProductAggregate: Deferred<ProductAggregate?> =
             async(Dispatchers.IO) { productAggregateQueryProcessor.asyncFindProductAggregate(productId = productId) }
