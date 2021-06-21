@@ -10,17 +10,20 @@ import org.springframework.stereotype.Component
 
 @Component
 class ProductQueuePublisher(
-    private val objectMapper: ObjectMapper,
     private val rabbitTemplate: RabbitTemplate,
 ) {
 
-    fun publish(publishProductDto: PublishProductDto) {
+    /*
+    * suspend 키워드가 있으면, 코루틴 컨텍스트 환경에서만 실행할 수 있다는 의미이다. 만약, 해당 키워드를 붙이지 않으면,
+    * 어디에서나 실행할 수 있는 일반 메소드이다.
+    * */
+    suspend fun publish(body: ByteArray) {
         val properties = MessagePropertiesBuilder.newInstance()
             .setContentType("application/json")
             .build()
 
         val message = MessageBuilder
-            .withBody(objectMapper.writeValueAsString(publishProductDto).toByteArray())
+            .withBody(body)
             .andProperties(properties)
             .build()
 

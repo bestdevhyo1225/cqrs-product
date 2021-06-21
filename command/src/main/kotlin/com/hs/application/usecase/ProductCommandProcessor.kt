@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class CommandService(
+class ProductCommandProcessor(
     private val publisher: ApplicationEventPublisher,
     private val productRepository: ProductRepository
 ) {

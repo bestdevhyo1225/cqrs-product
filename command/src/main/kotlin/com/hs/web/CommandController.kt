@@ -3,7 +3,7 @@ package com.hs.web
 import com.hs.dto.CreateProductDto
 import com.hs.dto.UpdateProductDto
 import com.hs.response.SuccessResponse
-import com.hs.application.usecase.CommandService
+import com.hs.application.usecase.ProductCommandProcessor
 import com.hs.web.request.CreateProductRequest
 import com.hs.web.request.UpdateProductConfirmRequest
 import com.hs.web.request.UpdateProductRequest
@@ -23,13 +23,13 @@ import javax.validation.Valid
 @RestController
 @RequestMapping(value = ["/products"])
 class CommandController(
-    private val commandService: CommandService
+    private val productCommandProcessor: ProductCommandProcessor
 ) {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     fun create(@Valid @RequestBody request: CreateProductRequest): ResponseEntity<SuccessResponse<Any>> {
-        val productId: Long? = commandService.createProduct(
+        val productId: Long? = productCommandProcessor.createProduct(
             createProductDto = CreateProductDto(
                 name = request.name,
                 price = request.price,
@@ -46,7 +46,7 @@ class CommandController(
 
     @PatchMapping(value = ["{id}"])
     fun update(@PathVariable(value = "id") productId: Long, @Valid @RequestBody request: UpdateProductRequest) {
-        commandService.updateProduct(
+        productCommandProcessor.updateProduct(
             updateProductDto = UpdateProductDto(
                 id = productId,
                 name = request.name,
@@ -61,7 +61,10 @@ class CommandController(
         @PathVariable(value = "id") productId: Long,
         @Valid @RequestBody request: UpdateProductStockRequest
     ) {
-        commandService.updateProductStock(id = productId, completeStockQuantity = request.completeStockQuantity)
+        productCommandProcessor.updateProductStock(
+            id = productId,
+            completeStockQuantity = request.completeStockQuantity
+        )
     }
 
     @PatchMapping(value = ["{id}/confirm-status"])
@@ -69,6 +72,9 @@ class CommandController(
         @PathVariable(value = "id") productId: Long,
         @Valid @RequestBody request: UpdateProductConfirmRequest
     ) {
-        commandService.updateProductConfirmStatus(id = productId, strProductConfirmStatus = request.comfirmStatus)
+        productCommandProcessor.updateProductConfirmStatus(
+            id = productId,
+            strProductConfirmStatus = request.comfirmStatus
+        )
     }
 }
