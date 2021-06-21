@@ -25,7 +25,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping(value = ["/products"])
-class ProductController(
+class CommandAppController(
     private val productQueryProcessor: ProductQueryProcessor,
     private val productCommandProcessor: ProductCommandProcessor,
 ) {
