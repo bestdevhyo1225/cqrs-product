@@ -1,5 +1,6 @@
 package com.hs.application.usecase
 
+import com.hs.dto.FindProductAggregateDto
 import com.hs.entity.ProductAggregate
 import com.hs.repository.ProductAggregateRepository
 import com.hs.entity.ProductAggregateType
@@ -11,7 +12,7 @@ class ProductAggregateQuery(
     private val productAggregateRepository: ProductAggregateRepository
 ) {
 
-    fun findProductAggregate(productId: Long): ProductAggregate {
+    fun findProductAggregate(productId: Long): FindProductAggregateDto {
         val productAggregate: ProductAggregate = productAggregateRepository.findByProductIdAndType(
             productId = productId,
             type = ProductAggregateType.FIND_PRODUCT
@@ -21,6 +22,14 @@ class ProductAggregateQuery(
             throw NoSuchElementException(QueryAppExceptionMessage.NOT_FOUND_PRODUCT_BY_CREATE_OR_UPDATE.localizedMessage)
         }
 
-        return productAggregate
+        return FindProductAggregateDto(
+            productId = productAggregate.data.productId,
+            name = productAggregate.data.name,
+            price = productAggregate.data.price,
+            stockQuantity = productAggregate.data.stockQuantity,
+            imageUrls = productAggregate.data.imageUrls,
+            createdDatetime = productAggregate.createdDatetime,
+            updatedDatetime = productAggregate.updatedDatetime
+        )
     }
 }
