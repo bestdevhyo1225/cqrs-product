@@ -17,7 +17,7 @@ import org.springframework.transaction.event.TransactionalEventListener
 @Component
 class CommandEventHandler(
     private val objectMapper: ObjectMapper,
-    private val productRabbitMQPublisher: ProductQueuePublisher,
+    private val productQueuePublisher: ProductQueuePublisher,
     private val eventLogCommandProcessor: EventLogCommandProcessor,
 ) {
 
@@ -28,7 +28,7 @@ class CommandEventHandler(
         launch(Dispatchers.IO) {
             logger.info("[ Handler - onHandleProduct() ] event : {}", event)
 
-            productRabbitMQPublisher.publish(
+            productQueuePublisher.publish(
                 body = objectMapper.writeValueAsString(PublishProductDto(productId = event.productId)).toByteArray()
             )
 
