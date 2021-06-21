@@ -4,12 +4,15 @@ import com.hs.dto.CreateProductDto
 import com.hs.dto.UpdateProductDto
 import com.hs.response.SuccessResponse
 import com.hs.application.usecase.ProductCommandProcessor
+import com.hs.application.usecase.ProductQueryProcessor
+import com.hs.dto.FindProductDto
 import com.hs.web.request.CreateProductRequest
 import com.hs.web.request.UpdateProductConfirmRequest
 import com.hs.web.request.UpdateProductRequest
 import com.hs.web.request.UpdateProductStockRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestMapping
@@ -22,9 +25,16 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping(value = ["/products"])
-class CommandController(
-    private val productCommandProcessor: ProductCommandProcessor
+class ProductController(
+    private val productQueryProcessor: ProductQueryProcessor,
+    private val productCommandProcessor: ProductCommandProcessor,
 ) {
+
+    @GetMapping(value = ["{id}"])
+    fun find(@PathVariable(value = "id") productId: Long): ResponseEntity<SuccessResponse<FindProductDto>> {
+        val product: FindProductDto = productQueryProcessor.findProductAggregate(id = productId)
+        return ResponseEntity.ok(SuccessResponse(data = product))
+    }
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
