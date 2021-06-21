@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter
         )
     ]
 )
-class ProductAggregate(productId: Long, type: ProductAggregateType, isDisplay: Boolean, data: FindProductAggregateDto) {
+class ProductAggregate(productId: Long, type: ProductAggregateType, isDisplay: String, data: FindProductAggregateDto) {
 
     @Id
     var id: String? = null
@@ -33,7 +33,7 @@ class ProductAggregate(productId: Long, type: ProductAggregateType, isDisplay: B
     var type: ProductAggregateType = type
         protected set
 
-    var isDisplay: Boolean = isDisplay
+    var isDisplay: String = isDisplay
         protected set
 
     var data: FindProductAggregateDto = data
@@ -66,7 +66,7 @@ class ProductAggregate(productId: Long, type: ProductAggregateType, isDisplay: B
             return ProductAggregate(
                 productId = productAggregateDto.productId,
                 type = type,
-                isDisplay = productAggregateDto.confirmStatus != "WAIT",
+                isDisplay = (productAggregateDto.confirmStatus == "APPROVE").toString(),
                 data = productAggregateDto
             )
         }
@@ -74,6 +74,7 @@ class ProductAggregate(productId: Long, type: ProductAggregateType, isDisplay: B
 
     fun changeProductAggregateData(data: FindProductAggregateDto) {
         this.data = data
+        this.isDisplay = (data.confirmStatus == "APPROVE").toString()
         this.updatedDatetime = LocalDateTime.now().format(DATETIME_FORMATTER).toString()
     }
 }
