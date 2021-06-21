@@ -123,7 +123,6 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         }
 
         this.stockQuantity -= stockQuantity
-        this.confirmStatus = ProductConfirmStatus.WAIT
         this.updatedDate = LocalDateTime.now()
 
         try {
