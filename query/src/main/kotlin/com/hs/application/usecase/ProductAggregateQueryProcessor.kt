@@ -3,7 +3,7 @@ package com.hs.application.usecase
 import com.hs.dto.FindProductAggregateDto
 import com.hs.entity.ProductAggregate
 import com.hs.repository.ProductAggregateRepository
-import com.hs.entity.ProductAggregateType
+import com.hs.entity.ProductAggregateType.FIND_PRODUCT
 import com.hs.message.QueryAppExceptionMessage
 import org.springframework.stereotype.Service
 
@@ -15,7 +15,7 @@ class ProductAggregateQueryProcessor(
     fun findProductAggregate(productId: Long): FindProductAggregateDto {
         val productAggregate: ProductAggregate = productAggregateRepository.findByProductIdAndType(
             productId = productId,
-            type = ProductAggregateType.FIND_PRODUCT
+            type = FIND_PRODUCT
         ) ?: throw NoSuchElementException(QueryAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
 
         if (!productAggregate.isDisplay.toBoolean()) {
@@ -31,5 +31,9 @@ class ProductAggregateQueryProcessor(
             createdDatetime = productAggregate.createdDatetime,
             updatedDatetime = productAggregate.updatedDatetime
         )
+    }
+
+    suspend fun asyncFindProductAggregate(productId: Long): ProductAggregate? {
+        return productAggregateRepository.findByProductIdAndType(productId = productId, type = FIND_PRODUCT)
     }
 }
