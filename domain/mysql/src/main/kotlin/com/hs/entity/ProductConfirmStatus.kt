@@ -6,7 +6,7 @@ import com.hs.message.CommandAppExceptionMessage
 enum class ProductConfirmStatus() {
     WAIT,
     REJECT,
-    APPROVAL;
+    APPROVE;
 
     companion object {
         fun convertFromStringToProductConfirmStatus(value: String): ProductConfirmStatus {
