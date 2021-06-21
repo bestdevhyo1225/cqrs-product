@@ -3,9 +3,9 @@ package com.hs.infrastructure.rabbitmq
 import com.hs.infrastructure.config.RabbitMQConfig
 import com.hs.dto.FindProductDto
 import com.hs.dto.PublishProductDto
-import com.hs.infrastructure.resttemplate.CommandApiCallHandler
+import com.hs.infrastructure.resttemplate.RestGetRequestor
 import com.hs.response.SuccessResponse
-import com.hs.application.usecase.ProductAggregateCommand
+import com.hs.application.usecase.ProductAggregateCommandProcessor
 import com.rabbitmq.client.Channel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,8 +20,8 @@ import org.springframework.stereotype.Component
 
 @Component
 class ProductQueueListener(
-    private val commandApiCallHandler: CommandApiCallHandler,
-    private val productAggregateCommand: ProductAggregateCommand,
+    private val restGetRequestor: RestGetRequestor,
+    private val productAggregateCommandProcessor: ProductAggregateCommandProcessor
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
@@ -32,9 +32,9 @@ class ProductQueueListener(
 
         launch(Dispatchers.IO) {
             val responseEntity: ResponseEntity<SuccessResponse<FindProductDto>> =
-                commandApiCallHandler.getProductAggregate(url = "http://localhost:9700/products/${publishProductDto.productId}")
+                restGetRequestor.getProductAggregate(url = "http://localhost:9700/products/${publishProductDto.productId}")
 
-            productAggregateCommand.createOrUpdate(productDto = responseEntity.body!!.data)
+            productAggregateCommandProcessor.createOrUpdate(productDto = responseEntity.body!!.data)
         }
 
         channel.basicAck(message.messageProperties.deliveryTag, false)

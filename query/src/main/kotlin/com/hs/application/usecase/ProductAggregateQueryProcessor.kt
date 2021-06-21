@@ -8,7 +8,7 @@ import com.hs.message.QueryAppExceptionMessage
 import org.springframework.stereotype.Service
 
 @Service
-class ProductAggregateQuery(
+class ProductAggregateQueryProcessor(
     private val productAggregateRepository: ProductAggregateRepository
 ) {
 

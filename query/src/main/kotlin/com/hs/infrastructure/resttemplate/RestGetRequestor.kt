@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 
 @Component
-class CommandApiCallHandler(private val restTemplate: RestTemplate) {
+class RestGetRequestor(private val restTemplate: RestTemplate) {
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
