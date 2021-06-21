@@ -7,6 +7,9 @@ import com.hs.infrastructure.resttemplate.CommandApiCallHandler
 import com.hs.response.SuccessResponse
 import com.hs.application.usecase.ProductAggregateCommand
 import com.rabbitmq.client.Channel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -24,13 +27,15 @@ class ProductQueueListener(
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
     @RabbitListener(id = "product", queues = [RabbitMQConfig.QueueName.PRODUCT])
-    fun consumeQueue(publishProductDto: PublishProductDto, channel: Channel, message: Message) {
+    fun consumeQueue(publishProductDto: PublishProductDto, channel: Channel, message: Message) = runBlocking {
         logger.info("[ Queue Listener ] publishProductDto : {}", publishProductDto)
 
-        val responseEntity: ResponseEntity<SuccessResponse<FindProductDto>> =
-            commandApiCallHandler.getProductAggregate(url = "http://localhost:9700/products/${publishProductDto.productId}")
+        launch(Dispatchers.IO) {
+            val responseEntity: ResponseEntity<SuccessResponse<FindProductDto>> =
+                commandApiCallHandler.getProductAggregate(url = "http://localhost:9700/products/${publishProductDto.productId}")
 
-        productAggregateCommand.createOrUpdate(productDto = responseEntity.body!!.data)
+            productAggregateCommand.createOrUpdate(productDto = responseEntity.body!!.data)
+        }
 
         channel.basicAck(message.messageProperties.deliveryTag, false)
     }

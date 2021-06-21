@@ -18,7 +18,7 @@ class CommandApiCallHandler(private val restTemplate: RestTemplate) {
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
-    fun getProductAggregate(url: String): ResponseEntity<SuccessResponse<FindProductDto>> {
+    suspend fun getProductAggregate(url: String): ResponseEntity<SuccessResponse<FindProductDto>> {
         val httpHeaders = HttpHeaders()
         httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 

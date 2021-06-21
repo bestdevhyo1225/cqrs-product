@@ -15,7 +15,7 @@ class ProductAggregateCommand(
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
-    fun createOrUpdate(productDto: FindProductDto) {
+    suspend fun createOrUpdate(productDto: FindProductDto) {
         val type = ProductAggregateType.FIND_PRODUCT
         var productAggregate: ProductAggregate? =
             productAggregateRepository.findByProductIdAndType(productId = productDto.productId, type = type)
