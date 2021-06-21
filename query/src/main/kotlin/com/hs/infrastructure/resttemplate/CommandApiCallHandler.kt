@@ -18,6 +18,10 @@ class CommandApiCallHandler(private val restTemplate: RestTemplate) {
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
+    /*
+    * suspend 키워드가 있으면, 코루틴 컨텍스트 환경에서만 실행할 수 있다는 의미이다. 만약, 해당 키워드를 붙이지 않으면,
+    * 어디에서나 실행할 수 있는 일반 메소드이다.
+    * */
     suspend fun getProductAggregate(url: String): ResponseEntity<SuccessResponse<FindProductDto>> {
         val httpHeaders = HttpHeaders()
         httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
