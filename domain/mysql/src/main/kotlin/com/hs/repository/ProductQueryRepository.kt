@@ -1,7 +1,7 @@
 package com.hs.repository
 
-import com.hs.dto.FindProductAggregateDto
+import com.hs.dto.FindProductDto
 
 interface ProductQueryRepository {
-    fun findProductAggregate(id: Long): FindProductAggregateDto?
+    fun findProductAggregate(id: Long): FindProductDto?
 }

@@ -1,6 +1,6 @@
 package com.hs.dto
 
-data class FindProductAggregateDto(
+data class FindProductDto(
     val productId: Long,
     val name: String,
     val price: Int,

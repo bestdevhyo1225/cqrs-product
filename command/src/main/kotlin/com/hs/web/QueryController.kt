@@ -1,6 +1,6 @@
 package com.hs.web
 
-import com.hs.dto.FindProductAggregateDto
+import com.hs.dto.FindProductDto
 import com.hs.response.SuccessResponse
 import com.hs.application.usecase.QueryService
 import org.springframework.http.ResponseEntity
@@ -16,8 +16,8 @@ class QueryController(
 ) {
 
     @GetMapping(value = ["{id}"])
-    fun find(@PathVariable(value = "id") productId: Long): ResponseEntity<SuccessResponse<FindProductAggregateDto>> {
-        val product: FindProductAggregateDto = queryService.findProductAggregate(id = productId)
+    fun find(@PathVariable(value = "id") productId: Long): ResponseEntity<SuccessResponse<FindProductDto>> {
+        val product: FindProductDto = queryService.findProductAggregate(id = productId)
         return ResponseEntity.ok(SuccessResponse(data = product))
     }
 }

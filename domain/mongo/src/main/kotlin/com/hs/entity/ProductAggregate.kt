@@ -3,7 +3,7 @@ package com.hs.entity
 import au.com.console.kassava.kotlinEquals
 import au.com.console.kassava.kotlinHashCode
 import au.com.console.kassava.kotlinToString
-import com.hs.dto.FindProductAggregateDto
+import com.hs.dto.FindProductDto
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.index.CompoundIndex
 import org.springframework.data.mongodb.core.index.CompoundIndexes
@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter
         )
     ]
 )
-class ProductAggregate(productId: Long, type: ProductAggregateType, isDisplay: String, data: FindProductAggregateDto) {
+class ProductAggregate(productId: Long, type: ProductAggregateType, isDisplay: String, data: FindProductDto) {
 
     @Id
     var id: String? = null
@@ -36,7 +36,7 @@ class ProductAggregate(productId: Long, type: ProductAggregateType, isDisplay: S
     var isDisplay: String = isDisplay
         protected set
 
-    var data: FindProductAggregateDto = data
+    var data: FindProductDto = data
         protected set
 
     var createdDatetime: String = LocalDateTime.now().format(DATETIME_FORMATTER).toString()
@@ -62,17 +62,17 @@ class ProductAggregate(productId: Long, type: ProductAggregateType, isDisplay: S
             ProductAggregate::updatedDatetime,
         )
 
-        fun create(productAggregateDto: FindProductAggregateDto, type: ProductAggregateType): ProductAggregate {
+        fun create(productDto: FindProductDto, type: ProductAggregateType): ProductAggregate {
             return ProductAggregate(
-                productId = productAggregateDto.productId,
+                productId = productDto.productId,
                 type = type,
-                isDisplay = (productAggregateDto.confirmStatus == "APPROVE").toString(),
-                data = productAggregateDto
+                isDisplay = (productDto.confirmStatus == "APPROVE").toString(),
+                data = productDto
             )
         }
     }
 
-    fun changeProductAggregateData(data: FindProductAggregateDto) {
+    fun changeProductAggregateData(data: FindProductDto) {
         this.data = data
         this.isDisplay = (data.confirmStatus == "APPROVE").toString()
         this.updatedDatetime = LocalDateTime.now().format(DATETIME_FORMATTER).toString()

@@ -1,7 +1,7 @@
 package com.hs.infrastructure.rabbitmq
 
 import com.hs.infrastructure.config.RabbitMQConfig
-import com.hs.dto.FindProductAggregateDto
+import com.hs.dto.FindProductDto
 import com.hs.dto.PublishProductDto
 import com.hs.infrastructure.resttemplate.CommandApiCallHandler
 import com.hs.response.SuccessResponse
@@ -27,10 +27,10 @@ class ProductQueueListener(
     fun consumeQueue(publishProductDto: PublishProductDto, channel: Channel, message: Message) {
         logger.info("[ Queue Listener ] publishProductDto : {}", publishProductDto)
 
-        val responseEntity: ResponseEntity<SuccessResponse<FindProductAggregateDto>> =
+        val responseEntity: ResponseEntity<SuccessResponse<FindProductDto>> =
             commandApiCallHandler.getProductAggregate(url = "http://localhost:9700/products/${publishProductDto.productId}")
 
-        productAggregateCommand.createOrUpdate(productAggregateDto = responseEntity.body!!.data)
+        productAggregateCommand.createOrUpdate(productDto = responseEntity.body!!.data)
 
         channel.basicAck(message.messageProperties.deliveryTag, false)
     }

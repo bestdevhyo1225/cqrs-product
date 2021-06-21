@@ -1,6 +1,6 @@
 package com.hs.infrastructure.resttemplate
 
-import com.hs.dto.FindProductAggregateDto
+import com.hs.dto.FindProductDto
 import com.hs.response.SuccessResponse
 import com.hs.util.ParameterizedTypeReferenceUtils
 import org.slf4j.Logger
@@ -18,15 +18,15 @@ class CommandApiCallHandler(private val restTemplate: RestTemplate) {
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
-    fun getProductAggregate(url: String): ResponseEntity<SuccessResponse<FindProductAggregateDto>> {
+    fun getProductAggregate(url: String): ResponseEntity<SuccessResponse<FindProductDto>> {
         val httpHeaders = HttpHeaders()
         httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 
-        val responseEntity: ResponseEntity<SuccessResponse<FindProductAggregateDto>> = restTemplate.exchange(
+        val responseEntity: ResponseEntity<SuccessResponse<FindProductDto>> = restTemplate.exchange(
             url,
             HttpMethod.GET,
             HttpEntity(null, httpHeaders),
-            ParameterizedTypeReferenceUtils.typeRef<SuccessResponse<FindProductAggregateDto>>()
+            ParameterizedTypeReferenceUtils.typeRef<SuccessResponse<FindProductDto>>()
         )
 
         logger.info("[ Api Call Handler ] responseEntity : {}", responseEntity)

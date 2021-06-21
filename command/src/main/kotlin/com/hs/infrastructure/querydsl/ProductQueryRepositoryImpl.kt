@@ -1,6 +1,6 @@
 package com.hs.infrastructure.querydsl
 
-import com.hs.dto.FindProductAggregateDto
+import com.hs.dto.FindProductDto
 import com.hs.entity.Product
 import com.hs.entity.ProductImage
 import com.hs.entity.QProduct.product
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class ProductQueryRepositoryImpl(private val queryFactory: JPAQueryFactory) : ProductQueryRepository {
 
-    override fun findProductAggregate(id: Long): FindProductAggregateDto? {
+    override fun findProductAggregate(id: Long): FindProductDto? {
         val productGroup: Map<Product, List<ProductImage>> = queryFactory
             .from(product)
             .innerJoin(product.productImages, productImage)
@@ -23,7 +23,7 @@ class ProductQueryRepositoryImpl(private val queryFactory: JPAQueryFactory) : Pr
 
         return productGroup.entries
             .map { entry ->
-                FindProductAggregateDto(
+                FindProductDto(
                     productId = entry.key.id!!,
                     name = entry.key.name,
                     price = entry.key.price,
