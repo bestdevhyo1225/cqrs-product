@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.hs.application.usecase.EventLogCommandProcessor
 import com.hs.dto.PublishProductDto
 import com.hs.event.ProductEvent
-import com.hs.infrastructure.rabbitmq.ProductQueuePublisher
+import com.hs.publisher.ProductQueuePublisher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -17,8 +17,8 @@ import org.springframework.transaction.event.TransactionalEventListener
 @Component
 class CommandEventHandler(
     private val objectMapper: ObjectMapper,
-    private val productQueuePublisher: ProductQueuePublisher,
-    private val eventLogCommandProcessor: EventLogCommandProcessor
+    private val productRabbitMQPublisher: ProductQueuePublisher,
+    private val eventLogCommandProcessor: EventLogCommandProcessor,
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
@@ -28,7 +28,7 @@ class CommandEventHandler(
         launch(Dispatchers.IO) {
             logger.info("[ Handler - onHandleProduct() ] event : {}", event)
 
-            productQueuePublisher.publish(
+            productRabbitMQPublisher.publish(
                 body = objectMapper.writeValueAsString(PublishProductDto(productId = event.productId)).toByteArray()
             )
 
