@@ -7,7 +7,6 @@ import com.hs.infrastructure.resttemplate.CommandApiCallHandler
 import com.hs.response.SuccessResponse
 import com.hs.application.usecase.ProductAggregateCommand
 import com.rabbitmq.client.Channel
-import kotlinx.coroutines.runBlocking
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -25,7 +24,7 @@ class ProductQueueListener(
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
     @RabbitListener(id = "product", queues = [RabbitMQConfig.QueueName.PRODUCT])
-    fun consumeQueue(publishProductDto: PublishProductDto, channel: Channel, message: Message) = runBlocking {
+    fun consumeQueue(publishProductDto: PublishProductDto, channel: Channel, message: Message) {
         logger.info("[ Queue Listener ] publishProductDto : {}", publishProductDto)
 
         val responseEntity: ResponseEntity<SuccessResponse<FindProductAggregateDto>> =
