@@ -33,7 +33,7 @@ class ProductAggregateQueryProcessor(
         )
     }
 
-    suspend fun asyncFindProductAggregate(productId: Long): ProductAggregate? {
+    suspend fun findProductAggregateForCommand(productId: Long): ProductAggregate? {
         return productAggregateRepository.findByProductIdAndType(productId = productId, type = FIND_PRODUCT)
     }
 }
