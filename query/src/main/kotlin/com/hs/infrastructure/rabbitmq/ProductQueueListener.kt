@@ -27,7 +27,7 @@ class ProductQueueListener(
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
     @RabbitListener(id = "product", queues = [RabbitMQConfig.QueueName.PRODUCT])
-    fun consumeQueue(publishProductDto: PublishProductDto, channel: Channel, message: Message) = runBlocking {
+    fun consume(publishProductDto: PublishProductDto, channel: Channel, message: Message) = runBlocking {
         logger.info("[ Queue Listener ] publishProductDto : {}", publishProductDto)
 
         launch(Dispatchers.IO) {
