@@ -1,4 +1,4 @@
-package com.hs.infrastructure.config
+package com.hs.config
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean

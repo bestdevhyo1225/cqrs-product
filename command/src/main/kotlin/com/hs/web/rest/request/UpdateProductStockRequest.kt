@@ -1,4 +1,4 @@
-package com.hs.web.request
+package com.hs.web.rest.request
 
 import javax.validation.constraints.PositiveOrZero
 

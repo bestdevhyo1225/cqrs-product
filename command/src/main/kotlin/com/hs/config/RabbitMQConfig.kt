@@ -1,4 +1,4 @@
-package com.hs.infrastructure.config
+package com.hs.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature

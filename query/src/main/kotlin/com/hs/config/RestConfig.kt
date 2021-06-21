@@ -1,4 +1,4 @@
-package com.hs.infrastructure.config
+package com.hs.config
 
 import com.hs.infrastructure.rest.RestGetRequestor
 import com.hs.infrastructure.rest.resttemplate.RestTemplateGetRequestor

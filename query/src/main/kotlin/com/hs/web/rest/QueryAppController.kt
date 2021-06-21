@@ -1,4 +1,4 @@
-package com.hs.web
+package com.hs.web.rest
 
 import com.hs.application.usecase.ProductAggregateQueryProcessor
 import com.hs.response.SuccessResponse

@@ -1,7 +1,7 @@
-package com.hs.infrastructure.config
+package com.hs.config
 
-import com.hs.infrastructure.config.property.ReadProperty
-import com.hs.infrastructure.config.property.WriteProperty
+import com.hs.config.property.ReadProperty
+import com.hs.config.property.WriteProperty
 import com.zaxxer.hikari.HikariDataSource
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration

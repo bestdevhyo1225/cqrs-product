@@ -1,4 +1,4 @@
-package com.hs.infrastructure.config.property
+package com.hs.config.property
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding

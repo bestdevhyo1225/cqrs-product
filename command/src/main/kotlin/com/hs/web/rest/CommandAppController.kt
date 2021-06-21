@@ -1,4 +1,4 @@
-package com.hs.web
+package com.hs.web.rest
 
 import com.hs.dto.CreateProductDto
 import com.hs.dto.UpdateProductDto
@@ -6,10 +6,10 @@ import com.hs.response.SuccessResponse
 import com.hs.application.usecase.ProductCommandProcessor
 import com.hs.application.usecase.ProductQueryProcessor
 import com.hs.dto.FindProductDto
-import com.hs.web.request.CreateProductRequest
-import com.hs.web.request.UpdateProductConfirmRequest
-import com.hs.web.request.UpdateProductRequest
-import com.hs.web.request.UpdateProductStockRequest
+import com.hs.web.rest.request.CreateProductRequest
+import com.hs.web.rest.request.UpdateProductConfirmRequest
+import com.hs.web.rest.request.UpdateProductRequest
+import com.hs.web.rest.request.UpdateProductStockRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

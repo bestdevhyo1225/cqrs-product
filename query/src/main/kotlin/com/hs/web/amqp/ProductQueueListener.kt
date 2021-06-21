@@ -1,6 +1,6 @@
-package com.hs.infrastructure.rabbitmq
+package com.hs.web.amqp
 
-import com.hs.infrastructure.config.RabbitMQConfig
+import com.hs.config.RabbitMQConfig
 import com.hs.dto.FindProductDto
 import com.hs.dto.PublishProductDto
 import com.hs.response.SuccessResponse

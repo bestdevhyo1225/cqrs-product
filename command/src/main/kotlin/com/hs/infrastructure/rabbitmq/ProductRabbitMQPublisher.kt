@@ -1,6 +1,6 @@
 package com.hs.infrastructure.rabbitmq
 
-import com.hs.infrastructure.config.RabbitMQConfig
+import com.hs.config.RabbitMQConfig
 import com.hs.publisher.ProductQueuePublisher
 import org.springframework.amqp.core.MessageBuilder
 import org.springframework.amqp.core.MessagePropertiesBuilder
