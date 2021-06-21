@@ -3,9 +3,9 @@ package com.hs.infrastructure.rabbitmq
 import com.hs.infrastructure.config.RabbitMQConfig
 import com.hs.dto.FindProductDto
 import com.hs.dto.PublishProductDto
-import com.hs.infrastructure.rest.RestGetRequestor
 import com.hs.response.SuccessResponse
 import com.hs.application.usecase.ProductAggregateCommandProcessor
+import com.hs.infrastructure.rest.RestGetRequestor
 import com.rabbitmq.client.Channel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
