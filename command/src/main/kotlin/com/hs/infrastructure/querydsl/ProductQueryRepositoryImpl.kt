@@ -5,9 +5,11 @@ import com.hs.entity.Product
 import com.hs.entity.ProductImage
 import com.hs.entity.QProduct.product
 import com.hs.entity.QProductImage.productImage
+import com.hs.message.CommandAppExceptionMessage
 import com.hs.repository.ProductQueryRepository
 import com.querydsl.core.group.GroupBy.groupBy
 import com.querydsl.core.group.GroupBy.list
+import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository
 
@@ -18,7 +20,7 @@ class ProductQueryRepositoryImpl(private val queryFactory: JPAQueryFactory) : Pr
         val productGroup: Map<Product, List<ProductImage>> = queryFactory
             .from(product)
             .innerJoin(product.productImages, productImage)
-            .where(product.id.eq(id))
+            .where(productIdEq(id))
             .transform(groupBy(product).`as`(list(productImage)))
 
         return productGroup.entries
@@ -32,5 +34,16 @@ class ProductQueryRepositoryImpl(private val queryFactory: JPAQueryFactory) : Pr
                     imageUrls = entry.value.map { productImage -> productImage.url }
                 )
             }.firstOrNull()
+    }
+
+    override fun findProduct(id: Long): Product? {
+        return queryFactory
+            .selectFrom(product)
+            .where(productIdEq(id))
+            .fetchOne()
+    }
+
+    private fun productIdEq(id: Long): BooleanExpression {
+        return product.id.eq(id)
     }
 }

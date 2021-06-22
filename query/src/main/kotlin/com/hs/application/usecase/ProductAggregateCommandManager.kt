@@ -10,10 +10,10 @@ import kotlinx.coroutines.runBlocking
 import org.springframework.stereotype.Service
 
 @Service
-class ProductAggregateFacade(
+class ProductAggregateCommandManager(
     private val restGetRequestor: RestGetRequestor,
-    private val productAggregateQueryProcessor: ProductAggregateQueryProcessor,
-    private val productAggregateCommandProcessor: ProductAggregateCommandProcessor
+    private val productAggregateQuery: ProductAggregateQuery,
+    private val productAggregateCommand: ProductAggregateCommand
 ) {
 
     fun createOrUpdate(productId: Long) = runBlocking {
@@ -21,13 +21,13 @@ class ProductAggregateFacade(
             async(Dispatchers.IO) { restGetRequestor.getProduct(productId = productId) }
 
         val asyncProductAggregate: Deferred<ProductAggregate?> =
-            async(Dispatchers.IO) { productAggregateQueryProcessor.findProductAggregateForCommand(productId = productId) }
+            async(Dispatchers.IO) { productAggregateQuery.findProductAggregateForCommand(productId = productId) }
 
         val productDto: FindProductDto = asyncProductDto.await()
 
         when (val productAggregate: ProductAggregate? = asyncProductAggregate.await()) {
-            null -> productAggregateCommandProcessor.create(productDto = productDto)
-            else -> productAggregateCommandProcessor.update(
+            null -> productAggregateCommand.create(productDto = productDto)
+            else -> productAggregateCommand.update(
                 productAggregate = productAggregate,
                 productDto = productDto
             )

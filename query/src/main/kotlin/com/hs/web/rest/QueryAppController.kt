@@ -1,6 +1,6 @@
 package com.hs.web.rest
 
-import com.hs.application.usecase.ProductAggregateQueryProcessor
+import com.hs.application.usecase.ProductAggregateQuery
 import com.hs.response.SuccessResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
@@ -14,13 +14,13 @@ import javax.validation.constraints.Min
 @RequestMapping(value = ["/query/products"])
 @Validated
 class QueryAppController(
-    private val productAggregateQueryProcessor: ProductAggregateQueryProcessor
+    private val productAggregateQuery: ProductAggregateQuery
 ) {
 
     @GetMapping(value = ["{id}"])
     fun findProductAggregate(
         @PathVariable(value = "id") @Min(value = 1, message = "1 이상을 입력해야 합니다.") productId: Long
     ): ResponseEntity<SuccessResponse<Any>> {
-        return ResponseEntity.ok(SuccessResponse(data = productAggregateQueryProcessor.findProductAggregate(productId = productId)))
+        return ResponseEntity.ok(SuccessResponse(data = productAggregateQuery.findProductAggregate(productId = productId)))
     }
 }

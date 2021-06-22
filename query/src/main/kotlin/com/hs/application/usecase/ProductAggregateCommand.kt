@@ -7,7 +7,7 @@ import com.hs.repository.ProductAggregateRepository
 import org.springframework.stereotype.Service
 
 @Service
-class ProductAggregateCommandProcessor(
+class ProductAggregateCommand(
     private val productAggregateRepository: ProductAggregateRepository,
 ) {
 

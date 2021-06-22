@@ -2,7 +2,7 @@ package com.hs.web.amqp
 
 import com.hs.config.RabbitMQConfig
 import com.hs.dto.PublishProductDto
-import com.hs.application.usecase.ProductAggregateFacade
+import com.hs.application.usecase.ProductAggregateCommandManager
 import com.rabbitmq.client.Channel
 
 import org.slf4j.Logger
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class ProductQueueListener(
-    private val productAggregateFacade: ProductAggregateFacade
+    private val productAggregateCommandManager: ProductAggregateCommandManager
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
@@ -22,7 +22,7 @@ class ProductQueueListener(
     fun consume(publishProductDto: PublishProductDto, channel: Channel, message: Message) {
         logger.info("[ Queue Listener ] publishProductDto : {}", publishProductDto)
 
-        productAggregateFacade.createOrUpdate(productId = publishProductDto.productId)
+        productAggregateCommandManager.createOrUpdate(productId = publishProductDto.productId)
 
         channel.basicAck(message.messageProperties.deliveryTag, false)
     }
