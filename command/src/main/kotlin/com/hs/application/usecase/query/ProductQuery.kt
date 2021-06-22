@@ -1,4 +1,4 @@
-package com.hs.application.usecase
+package com.hs.application.usecase.query
 
 import com.hs.dto.FindProductDto
 import com.hs.entity.Product
