@@ -3,11 +3,9 @@ package com.hs.web.rest
 import com.hs.dto.CreateProductDto
 import com.hs.dto.UpdateProductDto
 import com.hs.response.SuccessResponse
-import com.hs.application.usecase.command.ProductCreateCommand
-import com.hs.application.usecase.query.ProductQuery
-import com.hs.application.usecase.command.ProductUpdateCommandManager
+import com.hs.application.usecase.ProductCommand
+import com.hs.application.usecase.ProductQuery
 import com.hs.dto.FindProductDto
-import com.hs.entity.Product
 import com.hs.web.rest.request.CreateProductRequest
 import com.hs.web.rest.request.UpdateProductConfirmRequest
 import com.hs.web.rest.request.UpdateProductRequest
@@ -29,8 +27,7 @@ import javax.validation.Valid
 @RequestMapping(value = ["/products"])
 class CommandAppController(
     private val productQuery: ProductQuery,
-    private val productCreateCommand: ProductCreateCommand,
-    private val productUpdateCommandManager: ProductUpdateCommandManager
+    private val productCommand: ProductCommand,
 ) {
 
     @GetMapping(value = ["{id}"])
@@ -42,7 +39,7 @@ class CommandAppController(
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     fun create(@Valid @RequestBody request: CreateProductRequest): ResponseEntity<SuccessResponse<Any>> {
-        val productId: Long? = productCreateCommand.execute(
+        val productId: Long? = productCommand.create(
             createProductDto = CreateProductDto(
                 name = request.name,
                 price = request.price,
@@ -62,7 +59,7 @@ class CommandAppController(
         @PathVariable(value = "id") productId: Long,
         @Valid @RequestBody request: UpdateProductRequest
     ): ResponseEntity<SuccessResponse<Any>> {
-        productUpdateCommandManager.update(
+        productCommand.update(
             updateProductDto = UpdateProductDto(
                 id = productId,
                 name = request.name,
@@ -79,7 +76,7 @@ class CommandAppController(
         @PathVariable(value = "id") productId: Long,
         @Valid @RequestBody request: UpdateProductStockRequest
     ): ResponseEntity<SuccessResponse<Any>> {
-        productUpdateCommandManager.updateStockQuantity(
+        productCommand.updateStockQuantity(
             id = productId,
             completeStockQuantity = request.completeStockQuantity,
         )
@@ -92,7 +89,7 @@ class CommandAppController(
         @PathVariable(value = "id") productId: Long,
         @Valid @RequestBody request: UpdateProductConfirmRequest
     ): ResponseEntity<SuccessResponse<Any>> {
-        productUpdateCommandManager.updateConfirmStatus(
+        productCommand.updateConfirmStatus(
             id = productId,
             strProductConfirmStatus = request.comfirmStatus,
         )

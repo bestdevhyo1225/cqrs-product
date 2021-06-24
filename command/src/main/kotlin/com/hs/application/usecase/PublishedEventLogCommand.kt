@@ -1,4 +1,4 @@
-package com.hs.application.usecase.command
+package com.hs.application.usecase
 
 import com.hs.entity.PublishedEventLog
 import com.hs.event.ProductEvent

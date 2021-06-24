@@ -1,7 +1,7 @@
 package com.hs.application.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.hs.application.usecase.command.PublishedEventLogCommand
+import com.hs.application.usecase.PublishedEventLogCommand
 import com.hs.dto.PublishProductDto
 import com.hs.event.ProductEvent
 import com.hs.service.ProductQueuePublisher

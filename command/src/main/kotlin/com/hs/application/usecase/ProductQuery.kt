@@ -1,4 +1,4 @@
-package com.hs.application.usecase.query
+package com.hs.application.usecase
 
 import com.hs.dto.FindProductDto
 import com.hs.entity.Product
@@ -15,11 +15,6 @@ class ProductQuery(
 
     fun findProductAggregate(id: Long): FindProductDto {
         return productQueryRepository.findProductAggregate(id = id)
-            ?: throw NoSuchElementException(CommandAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
-    }
-
-    fun findProduct(id: Long): Product {
-        return productQueryRepository.findProduct(id = id)
             ?: throw NoSuchElementException(CommandAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
     }
 }
