@@ -4,19 +4,38 @@ import com.hs.dto.FindProductDto
 import com.hs.entity.ProductAggregate
 import com.hs.entity.ProductAggregateType.FIND_PRODUCT
 import com.hs.repository.ProductAggregateRepository
+import com.hs.service.RestGetRequestor
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import org.springframework.stereotype.Service
 
 @Service
 class ProductAggregateCommand(
+    private val restGetRequestor: RestGetRequestor,
     private val productAggregateRepository: ProductAggregateRepository,
 ) {
 
-    fun create(productDto: FindProductDto) {
-        productAggregateRepository.save(ProductAggregate.create(productDto = productDto, type = FIND_PRODUCT))
+    fun createOrUpdate(productId: Long) = runBlocking {
+        val asyncProductDto: Deferred<FindProductDto> =
+            async(Dispatchers.IO) { restGetRequestor.getProduct(productId = productId) }
+
+        val asyncProductAggregate: Deferred<ProductAggregate?> =
+            async(Dispatchers.IO) { findProductAggregate(productId = productId) }
+
+        val productDto: FindProductDto = asyncProductDto.await()
+        var productAggregate: ProductAggregate? = asyncProductAggregate.await()
+
+        when (productAggregate) {
+            null -> productAggregate = ProductAggregate.create(productDto = productDto, type = FIND_PRODUCT)
+            else -> productAggregate.changeProductAggregateData(data = productDto)
+        }
+
+        productAggregateRepository.save(productAggregate)
     }
 
-    fun update(productAggregate: ProductAggregate, productDto: FindProductDto) {
-        productAggregate.changeProductAggregateData(data = productDto)
-        productAggregateRepository.save(productAggregate)
+    suspend fun findProductAggregate(productId: Long): ProductAggregate? {
+        return productAggregateRepository.findByProductIdAndType(productId = productId, type = FIND_PRODUCT)
     }
 }
