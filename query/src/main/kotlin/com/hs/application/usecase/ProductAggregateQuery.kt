@@ -32,8 +32,4 @@ class ProductAggregateQuery(
             updatedDatetime = productAggregate.updatedDatetime
         )
     }
-
-    suspend fun findProductAggregateForCommand(productId: Long): ProductAggregate? {
-        return productAggregateRepository.findByProductIdAndType(productId = productId, type = FIND_PRODUCT)
-    }
 }
