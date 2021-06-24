@@ -25,9 +25,9 @@ class CommandEventHandler(
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     fun onHandleProduct(event: ProductEvent) = runBlocking {
-        launch(Dispatchers.IO) {
-            logger.info("[ Handler - onHandleProduct() ] event : {}", event)
+        logger.info("[ Handler - onHandleProduct() ] event : {}", event)
 
+        launch(Dispatchers.IO) {
             productQueuePublisher.publish(
                 body = objectMapper.writeValueAsString(PublishProductDto(productId = event.productId)).toByteArray()
             )
