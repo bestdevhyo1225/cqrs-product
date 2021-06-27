@@ -72,14 +72,11 @@ class CommandAppController(
     }
 
     @PatchMapping(value = ["{id}/stock"])
-    fun updateStock(
+    fun decreaseStockQuantity(
         @PathVariable(value = "id") productId: Long,
         @Valid @RequestBody request: UpdateProductStockRequest
     ): ResponseEntity<SuccessResponse<Any>> {
-        productCommand.updateStockQuantity(
-            id = productId,
-            completeStockQuantity = request.completeStockQuantity,
-        )
+        productCommand.decreaseStockQuantity(id = productId, completeStockQuantity = request.completeStockQuantity)
 
         return ResponseEntity.ok(SuccessResponse(data = object {}))
     }
@@ -89,10 +86,7 @@ class CommandAppController(
         @PathVariable(value = "id") productId: Long,
         @Valid @RequestBody request: UpdateProductConfirmRequest
     ): ResponseEntity<SuccessResponse<Any>> {
-        productCommand.updateConfirmStatus(
-            id = productId,
-            strProductConfirmStatus = request.comfirmStatus,
-        )
+        productCommand.updateConfirmStatus(id = productId, strProductConfirmStatus = request.comfirmStatus)
 
         return ResponseEntity.ok(SuccessResponse(data = object {}))
     }

@@ -117,7 +117,7 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         }
     }
 
-    fun changeStockCount(stockQuantity: Int, publisher: ApplicationEventPublisher) {
+    fun decreaseStockCount(stockQuantity: Int, publisher: ApplicationEventPublisher) {
         if (this.stockQuantity - stockQuantity <= 0) {
             throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.HAVE_EXCEEDED_THE_QUANTITY_AVAILABLE_FOR_PURCHASE)
         }
@@ -129,7 +129,7 @@ class Product(name: String, price: Int, stockQuantity: Int) {
             publisher.publishEvent(
                 ProductEvent(
                     productId = this.id!!,
-                    productCommandCode = ProductCommandCode.UPDATE_STOCK
+                    productCommandCode = ProductCommandCode.DECREASE_STOCK_QUANTITY
                 )
             )
         } catch (exception: NullPointerException) {
