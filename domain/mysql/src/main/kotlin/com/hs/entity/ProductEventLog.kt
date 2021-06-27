@@ -13,19 +13,19 @@ import javax.persistence.Enumerated
 import javax.persistence.EnumType
 
 @Entity
-class ProductEventLog(commandCode: CommandCode, message: String) {
+class ProductEventLog(productId: Long, productCommandCode: ProductCommandCode) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 50)
-    var commandCode: CommandCode = commandCode
+    @Column(nullable = false)
+    var productId: Long = productId
         protected set
 
-    @Column(nullable = false)
-    var message: String = message
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 50)
+    var productCommandCode: ProductCommandCode = productCommandCode
         protected set
 
     @Column(nullable = false)
@@ -39,8 +39,8 @@ class ProductEventLog(commandCode: CommandCode, message: String) {
         private val equalsAndHashCodeProperties = arrayOf(ProductEventLog::id)
         private val toStringProperties = arrayOf(
             ProductEventLog::id,
-            ProductEventLog::commandCode,
-            ProductEventLog::message,
+            ProductEventLog::productId,
+            ProductEventLog::productCommandCode,
             ProductEventLog::createdDate
         )
     }

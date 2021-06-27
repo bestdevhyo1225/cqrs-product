@@ -97,7 +97,7 @@ class Product(name: String, price: Int, stockQuantity: Int) {
 
     fun publishEventOfCreatedProduct(publisher: ApplicationEventPublisher) {
         try {
-            publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.INSERT))
+            publisher.publishEvent(ProductEvent(productId = this.id!!, productCommandCode = ProductCommandCode.INSERT))
         } catch (exception: NullPointerException) {
             throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
         }
@@ -111,7 +111,7 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         this.updatedDate = LocalDateTime.now()
 
         try {
-            publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.UPDATE))
+            publisher.publishEvent(ProductEvent(productId = this.id!!, productCommandCode = ProductCommandCode.UPDATE))
         } catch (exception: NullPointerException) {
             throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
         }
@@ -126,7 +126,12 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         this.updatedDate = LocalDateTime.now()
 
         try {
-            publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.UPDATE_STOCK))
+            publisher.publishEvent(
+                ProductEvent(
+                    productId = this.id!!,
+                    productCommandCode = ProductCommandCode.UPDATE_STOCK
+                )
+            )
         } catch (exception: NullPointerException) {
             throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
         }
@@ -140,7 +145,12 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         this.updatedDate = LocalDateTime.now()
 
         try {
-            publisher.publishEvent(ProductEvent(productId = this.id!!, commandCode = CommandCode.CHNAGE_CONFIRM_STATUS))
+            publisher.publishEvent(
+                ProductEvent(
+                    productId = this.id!!,
+                    productCommandCode = ProductCommandCode.CHNAGE_CONFIRM_STATUS
+                )
+            )
         } catch (exception: NullPointerException) {
             throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
         }
