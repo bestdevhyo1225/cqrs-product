@@ -29,12 +29,10 @@ class ProductEventHandler(
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     fun onHandleCreateAndUpdateProduct(event: ProductCreateAndUpdateEvent) = runBlocking {
-        logger.info("[ Handler - onHandleCreateAndUpdateProduct() ] event : {}", event)
-
         launch(Dispatchers.IO) {
-            productQueuePublisher.publish(
-                body = objectMapper.writeValueAsString(PublishProductDto(productId = event.productId)).toByteArray()
-            )
+            logger.info("onHandleCreateAndUpdateProduct() method is executed : {}", event)
+
+            publishProductEvent(productId = event.productId)
 
             createProductEventLog(
                 productId = event.productId,
@@ -46,12 +44,10 @@ class ProductEventHandler(
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     fun onHandleDecreaseStockQuantity(event: ProductDecreaseStockQuantityEvent) = runBlocking {
-        logger.info("[ Handler - onHandleDecreaseStockQuantity() ] event : {}", event)
-
         launch(Dispatchers.IO) {
-            productQueuePublisher.publish(
-                body = objectMapper.writeValueAsString(PublishProductDto(productId = event.productId)).toByteArray()
-            )
+            logger.info("onHandleDecreaseStockQuantity() method is executed : {}", event)
+
+            publishProductEvent(productId = event.productId)
 
             createProductEventLog(
                 productId = event.productId,
@@ -63,12 +59,10 @@ class ProductEventHandler(
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     fun onHandleChangeConfirmStatus(event: ProductChangeConfirmStatusEvent) = runBlocking {
-        logger.info("[ Handler - onHandleChangeConfirmStatus() ] event : {}", event)
-
         launch(Dispatchers.IO) {
-            productQueuePublisher.publish(
-                body = objectMapper.writeValueAsString(PublishProductDto(productId = event.productId)).toByteArray()
-            )
+            logger.info("onHandleChangeConfirmStatus() method is executed : {}", event)
+
+            publishProductEvent(productId = event.productId)
 
             createProductEventLog(
                 productId = event.productId,
@@ -76,6 +70,10 @@ class ProductEventHandler(
                 message = event.toString()
             )
         }
+    }
+
+    suspend fun publishProductEvent(productId: Long) {
+        productQueuePublisher.publish(publishProductDto = PublishProductDto(productId = productId))
     }
 
     suspend fun createProductEventLog(productId: Long, productCommandCode: ProductCommandCode, message: String) {

@@ -4,6 +4,8 @@ import com.hs.dto.FindProductDto
 import com.hs.entity.Product
 import com.hs.message.CommandAppExceptionMessage
 import com.hs.repository.ProductQueryRepository
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -13,7 +15,11 @@ class ProductQuery(
     private val productQueryRepository: ProductQueryRepository
 ) {
 
+    private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
+
     fun findProductAggregate(id: Long): FindProductDto {
+        logger.info("findProductAggregate() method is executed")
+
         return productQueryRepository.findProductAggregate(id = id)
             ?: throw NoSuchElementException(CommandAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
     }

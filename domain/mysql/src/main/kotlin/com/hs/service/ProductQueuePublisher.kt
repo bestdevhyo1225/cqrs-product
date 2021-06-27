@@ -1,5 +1,7 @@
 package com.hs.service
 
+import com.hs.dto.PublishProductDto
+
 interface ProductQueuePublisher {
-    suspend fun publish(body: ByteArray)
+    fun publish(publishProductDto: PublishProductDto)
 }
