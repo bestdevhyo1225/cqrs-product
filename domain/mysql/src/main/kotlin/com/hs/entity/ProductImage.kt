@@ -3,7 +3,12 @@ package com.hs.entity
 import au.com.console.kassava.kotlinEquals
 import au.com.console.kassava.kotlinHashCode
 import au.com.console.kassava.kotlinToString
+import com.hs.event.ProductUpdateImageEvent
+import com.hs.exception.DomainMySqlException
+import com.hs.message.CommandAppExceptionMessage
 import org.hibernate.annotations.DynamicUpdate
+import org.springframework.context.ApplicationEventPublisher
+import java.time.LocalDateTime
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.GeneratedValue
@@ -37,6 +42,16 @@ class ProductImage(url: String) {
     companion object {
         private val equalsAndHashCodeProperties = arrayOf(ProductImage::id)
         private val toStringProperties = arrayOf(ProductImage::id, ProductImage::url)
+
+        fun create(imageUrls: List<String>, product: Product): List<ProductImage> {
+            return imageUrls.map { imageUrl ->
+                val productImage = ProductImage(url = imageUrl)
+
+                productImage.changeProduct(product = product)
+
+                productImage
+            }
+        }
     }
 
     fun changeProduct(product: Product) {

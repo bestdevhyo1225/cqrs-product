@@ -5,6 +5,8 @@ import com.hs.dto.UpdateProductDto
 import com.hs.entity.Product
 import com.hs.entity.ProductImage
 import com.hs.message.CommandAppExceptionMessage
+import com.hs.repository.ProductImageRepository
+import com.hs.repository.ProductQueryRepository
 import com.hs.repository.ProductRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -17,7 +19,9 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class ProductCommand(
     private val publisher: ApplicationEventPublisher,
-    private val productRepository: ProductRepository
+    private val productRepository: ProductRepository,
+    private val productQueryRepository: ProductQueryRepository,
+    private val productImageRepository: ProductImageRepository
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
@@ -71,10 +75,29 @@ class ProductCommand(
         product.changeConfirmStatus(strProductConfirmStatus = strProductConfirmStatus, publisher = publisher)
     }
 
+    fun updateImage(id: Long, imageUrls: List<String>) {
+        logger.info("updateImage() method is executed")
+
+        val product: Product = findProductWithFetchJoin(id = id)
+
+        productImageRepository.deleteByProductId(productId = product.id!!)
+
+        productImageRepository.saveAll(ProductImage.create(imageUrls = imageUrls, product = product))
+
+        product.publishEventOfCreateImage(imageUrls = imageUrls, publisher = publisher)
+    }
+
     fun findProduct(id: Long): Product {
         logger.info("findProduct() method is executed")
 
         return productRepository.findByIdOrNull(id = id)
+            ?: throw NoSuchElementException(CommandAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
+    }
+
+    fun findProductWithFetchJoin(id: Long): Product {
+        logger.info("findProductWithFetchJoin() method is executed")
+
+        return productQueryRepository.findProduct(id = id)
             ?: throw NoSuchElementException(CommandAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
     }
 }

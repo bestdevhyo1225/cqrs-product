@@ -6,6 +6,7 @@ import au.com.console.kassava.kotlinToString
 import com.hs.event.ProductChangeConfirmStatusEvent
 import com.hs.event.ProductCreateAndUpdateEvent
 import com.hs.event.ProductDecreaseStockQuantityEvent
+import com.hs.event.ProductUpdateImageEvent
 import com.hs.exception.DomainMySqlException
 import com.hs.message.CommandAppExceptionMessage
 import org.hibernate.annotations.DynamicUpdate
@@ -104,6 +105,23 @@ class Product(name: String, price: Int, stockQuantity: Int) {
                     productId = this.id!!,
                     productCommandCode = ProductCommandCode.INSERT,
                     product = this
+                )
+            )
+        } catch (exception: NullPointerException) {
+            throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
+        }
+    }
+
+    fun publishEventOfCreateImage(imageUrls: List<String>, publisher: ApplicationEventPublisher) {
+        this.confirmStatus = ProductConfirmStatus.WAIT
+        this.updatedDate = LocalDateTime.now()
+
+        try {
+            publisher.publishEvent(
+                ProductUpdateImageEvent(
+                    productId = this.id!!,
+                    productCommandCode = ProductCommandCode.UPDATE_IMAGE,
+                    imageUrls = imageUrls
                 )
             )
         } catch (exception: NullPointerException) {

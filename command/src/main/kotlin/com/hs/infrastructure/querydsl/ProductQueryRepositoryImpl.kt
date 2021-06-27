@@ -35,6 +35,14 @@ class ProductQueryRepositoryImpl(private val queryFactory: JPAQueryFactory) : Pr
             }.firstOrNull()
     }
 
+    override fun findProduct(id: Long): Product? {
+        return queryFactory
+            .selectFrom(product)
+            .innerJoin(product.productImages, productImage).fetchJoin()
+            .where(productIdEq(id))
+            .fetchOne()
+    }
+
     private fun productIdEq(id: Long): BooleanExpression {
         return product.id.eq(id)
     }

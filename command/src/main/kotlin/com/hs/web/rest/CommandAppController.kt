@@ -8,6 +8,7 @@ import com.hs.application.usecase.ProductQuery
 import com.hs.dto.FindProductDto
 import com.hs.web.rest.request.CreateProductRequest
 import com.hs.web.rest.request.UpdateProductConfirmRequest
+import com.hs.web.rest.request.UpdateProductImageRequest
 import com.hs.web.rest.request.UpdateProductRequest
 import com.hs.web.rest.request.UpdateProductStockRequest
 import org.springframework.http.HttpStatus
@@ -87,6 +88,16 @@ class CommandAppController(
         @Valid @RequestBody request: UpdateProductConfirmRequest
     ): ResponseEntity<SuccessResponse<Any>> {
         productCommand.changeConfirmStatus(id = productId, strProductConfirmStatus = request.comfirmStatus)
+
+        return ResponseEntity.ok(SuccessResponse(data = object {}))
+    }
+
+    @PatchMapping(value = ["{id}/images"])
+    fun updateImages(
+        @PathVariable(value = "id") productId: Long,
+        @Valid @RequestBody request: UpdateProductImageRequest
+    ): ResponseEntity<SuccessResponse<Any>> {
+        productCommand.updateImage(id = productId, imageUrls = request.imageUrls)
 
         return ResponseEntity.ok(SuccessResponse(data = object {}))
     }

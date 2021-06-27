@@ -12,7 +12,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.stereotype.Component
 
 @Component
-class ProductRabbitMQPublisher(
+class ProductRabbitMqPublisher(
     private val objectMapper: ObjectMapper,
     private val rabbitTemplate: RabbitTemplate
 ) : ProductQueuePublisher {
