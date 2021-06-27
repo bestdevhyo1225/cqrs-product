@@ -1,6 +1,5 @@
 package com.hs.application.handler
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.hs.dto.PublishProductDto
 import com.hs.entity.ProductCommandCode
 import com.hs.entity.ProductEventLog
@@ -20,7 +19,6 @@ import org.springframework.transaction.event.TransactionalEventListener
 
 @Component
 class ProductEventHandler(
-    private val objectMapper: ObjectMapper,
     private val productQueuePublisher: ProductQueuePublisher,
     private val productEventLogRepository: ProductEventLogRepository
 ) {
@@ -77,6 +75,7 @@ class ProductEventHandler(
     * 어디에서나 실행할 수 있는 일반 메소드이다.
     * */
     suspend fun publishProductEvent(productId: Long) {
+        logger.info("productQueuePublisher : {}", productQueuePublisher)
         productQueuePublisher.publish(publishProductDto = PublishProductDto(productId = productId))
     }
 
