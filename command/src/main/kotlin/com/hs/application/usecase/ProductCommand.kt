@@ -39,7 +39,7 @@ class ProductCommand(
     fun update(updateProductDto: UpdateProductDto) {
         val product: Product = findProduct(id = updateProductDto.id)
 
-        product.changeProduct(
+        product.update(
             name = updateProductDto.name,
             price = updateProductDto.price,
             stockQuantity = updateProductDto.stockQuantity,
@@ -53,7 +53,7 @@ class ProductCommand(
         product.decreaseStockCount(stockQuantity = completeStockQuantity, publisher = publisher)
     }
 
-    fun updateConfirmStatus(id: Long, strProductConfirmStatus: String) {
+    fun changeConfirmStatus(id: Long, strProductConfirmStatus: String) {
         val product: Product = findProduct(id = id)
 
         product.changeConfirmStatus(strProductConfirmStatus = strProductConfirmStatus, publisher = publisher)

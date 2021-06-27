@@ -3,7 +3,9 @@ package com.hs.entity
 import au.com.console.kassava.kotlinEquals
 import au.com.console.kassava.kotlinHashCode
 import au.com.console.kassava.kotlinToString
-import com.hs.event.ProductEvent
+import com.hs.event.ProductChangeConfirmStatusEvent
+import com.hs.event.ProductCreateAndUpdateEvent
+import com.hs.event.ProductDecreaseStockQuantityEvent
 import com.hs.exception.DomainMySqlException
 import com.hs.message.CommandAppExceptionMessage
 import org.hibernate.annotations.DynamicUpdate
@@ -97,13 +99,19 @@ class Product(name: String, price: Int, stockQuantity: Int) {
 
     fun publishEventOfCreatedProduct(publisher: ApplicationEventPublisher) {
         try {
-            publisher.publishEvent(ProductEvent(productId = this.id!!, productCommandCode = ProductCommandCode.INSERT))
+            publisher.publishEvent(
+                ProductCreateAndUpdateEvent(
+                    productId = this.id!!,
+                    productCommandCode = ProductCommandCode.INSERT,
+                    product = this
+                )
+            )
         } catch (exception: NullPointerException) {
             throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
         }
     }
 
-    fun changeProduct(name: String, price: Int, stockQuantity: Int, publisher: ApplicationEventPublisher) {
+    fun update(name: String, price: Int, stockQuantity: Int, publisher: ApplicationEventPublisher) {
         this.name = name
         this.price = price
         this.stockQuantity = stockQuantity
@@ -111,7 +119,13 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         this.updatedDate = LocalDateTime.now()
 
         try {
-            publisher.publishEvent(ProductEvent(productId = this.id!!, productCommandCode = ProductCommandCode.UPDATE))
+            publisher.publishEvent(
+                ProductCreateAndUpdateEvent(
+                    productId = this.id!!,
+                    productCommandCode = ProductCommandCode.UPDATE,
+                    product = this
+                )
+            )
         } catch (exception: NullPointerException) {
             throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
         }
@@ -127,9 +141,10 @@ class Product(name: String, price: Int, stockQuantity: Int) {
 
         try {
             publisher.publishEvent(
-                ProductEvent(
+                ProductDecreaseStockQuantityEvent(
                     productId = this.id!!,
-                    productCommandCode = ProductCommandCode.DECREASE_STOCK_QUANTITY
+                    productCommandCode = ProductCommandCode.DECREASE_STOCK_QUANTITY,
+                    currentStockQuantity = this.stockQuantity
                 )
             )
         } catch (exception: NullPointerException) {
@@ -146,9 +161,10 @@ class Product(name: String, price: Int, stockQuantity: Int) {
 
         try {
             publisher.publishEvent(
-                ProductEvent(
+                ProductChangeConfirmStatusEvent(
                     productId = this.id!!,
-                    productCommandCode = ProductCommandCode.CHNAGE_CONFIRM_STATUS
+                    productCommandCode = ProductCommandCode.CHANGE_CONFIRM_STATUS,
+                    confirmStatus = this.confirmStatus
                 )
             )
         } catch (exception: NullPointerException) {

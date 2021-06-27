@@ -13,7 +13,7 @@ import javax.persistence.Enumerated
 import javax.persistence.EnumType
 
 @Entity
-class ProductEventLog(productId: Long, productCommandCode: ProductCommandCode) {
+class ProductEventLog(productId: Long, productCommandCode: ProductCommandCode, message: String = "") {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +26,10 @@ class ProductEventLog(productId: Long, productCommandCode: ProductCommandCode) {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
     var productCommandCode: ProductCommandCode = productCommandCode
+        protected set
+
+    @Column(nullable = false, length = 2500)
+    var message: String = message
         protected set
 
     @Column(nullable = false)
@@ -41,6 +45,7 @@ class ProductEventLog(productId: Long, productCommandCode: ProductCommandCode) {
             ProductEventLog::id,
             ProductEventLog::productId,
             ProductEventLog::productCommandCode,
+            ProductEventLog::message,
             ProductEventLog::createdDate
         )
     }

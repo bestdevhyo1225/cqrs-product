@@ -82,11 +82,11 @@ class CommandAppController(
     }
 
     @PatchMapping(value = ["{id}/confirm-status"])
-    fun updateConfirmStatus(
+    fun changeConfirmStatus(
         @PathVariable(value = "id") productId: Long,
         @Valid @RequestBody request: UpdateProductConfirmRequest
     ): ResponseEntity<SuccessResponse<Any>> {
-        productCommand.updateConfirmStatus(id = productId, strProductConfirmStatus = request.comfirmStatus)
+        productCommand.changeConfirmStatus(id = productId, strProductConfirmStatus = request.comfirmStatus)
 
         return ResponseEntity.ok(SuccessResponse(data = object {}))
     }
