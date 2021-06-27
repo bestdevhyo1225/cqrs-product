@@ -1,6 +1,6 @@
 package com.hs.entity
 
-enum class CommandCode {
+enum class ProductCommandCode {
     INSERT,
     UPDATE,
     UPDATE_STOCK,
