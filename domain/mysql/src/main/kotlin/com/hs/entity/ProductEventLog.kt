@@ -11,8 +11,11 @@ import javax.persistence.GenerationType
 import javax.persistence.Column
 import javax.persistence.Enumerated
 import javax.persistence.EnumType
+import javax.persistence.Index
+import javax.persistence.Table
 
 @Entity
+@Table(indexes = [Index(name = "PRODUCT_EVENT_LOG_IX_PRODUCT", columnList = "productId")])
 class ProductEventLog(productId: Long, productCommandCode: ProductCommandCode, message: String = "") {
 
     @Id
