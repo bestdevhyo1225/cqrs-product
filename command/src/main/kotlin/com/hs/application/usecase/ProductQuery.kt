@@ -1,7 +1,6 @@
 package com.hs.application.usecase
 
 import com.hs.dto.FindProductDto
-import com.hs.entity.Product
 import com.hs.message.CommandAppExceptionMessage
 import com.hs.repository.ProductQueryRepository
 import org.slf4j.Logger
