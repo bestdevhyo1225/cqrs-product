@@ -133,7 +133,9 @@ class Product(name: String, price: Int, stockQuantity: Int) {
 
     fun decreaseStockCount(stockQuantity: Int, publisher: ApplicationEventPublisher) {
         if (this.stockQuantity - stockQuantity <= 0) {
-            throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.HAVE_EXCEEDED_THE_QUANTITY_AVAILABLE_FOR_PURCHASE)
+            throw DomainMySqlException(
+                exceptionMessage = CommandAppExceptionMessage.HAVE_EXCEEDED_THE_QUANTITY_AVAILABLE_FOR_PURCHASE
+            )
         }
 
         this.stockQuantity -= stockQuantity
