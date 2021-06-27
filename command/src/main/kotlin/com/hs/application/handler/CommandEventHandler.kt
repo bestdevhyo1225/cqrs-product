@@ -1,9 +1,10 @@
 package com.hs.application.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.hs.application.usecase.PublishedEventLogCommand
 import com.hs.dto.PublishProductDto
+import com.hs.entity.PublishedEventLog
 import com.hs.event.ProductEvent
+import com.hs.repository.PublishedEventLogRepository
 import com.hs.service.ProductQueuePublisher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,7 +19,7 @@ import org.springframework.transaction.event.TransactionalEventListener
 class CommandEventHandler(
     private val objectMapper: ObjectMapper,
     private val productQueuePublisher: ProductQueuePublisher,
-    private val publishedEventLogCommand: PublishedEventLogCommand,
+    private val publishedEventLogRepository: PublishedEventLogRepository
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
@@ -32,7 +33,9 @@ class CommandEventHandler(
                 body = objectMapper.writeValueAsString(PublishProductDto(productId = event.productId)).toByteArray()
             )
 
-            publishedEventLogCommand.create(event = event)
+            publishedEventLogRepository.save(
+                PublishedEventLog(commandCode = event.commandCode, message = event.toString())
+            )
         }
     }
 }
