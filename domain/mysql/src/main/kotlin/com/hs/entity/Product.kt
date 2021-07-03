@@ -83,11 +83,12 @@ class Product(name: String, price: Int, stockQuantity: Int) {
             name: String,
             price: Int,
             stockQuantity: Int,
-            productImages: List<ProductImage>
+            imageUrls: List<String>
         ): Product {
             val product = Product(name = name, price = price, stockQuantity = stockQuantity)
 
-            productImages.forEach { productImage -> product.addProductImage(productImage = productImage) }
+            imageUrls.map { imageUrl -> ProductImage(url = imageUrl, product = product) }
+                .forEach { productImage -> product.addProductImage(productImage = productImage) }
 
             return product
         }
@@ -95,7 +96,6 @@ class Product(name: String, price: Int, stockQuantity: Int) {
 
     fun addProductImage(productImage: ProductImage) {
         productImages.add(productImage)
-        productImage.changeProduct(this)
     }
 
     fun publishEventOfCreatedProduct(publisher: ApplicationEventPublisher) {

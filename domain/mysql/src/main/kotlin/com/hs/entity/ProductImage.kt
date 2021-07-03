@@ -20,7 +20,7 @@ import javax.persistence.JoinColumn
 
 @Entity
 @DynamicUpdate
-class ProductImage(url: String) {
+class ProductImage(url: String, product: Product) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,8 +31,8 @@ class ProductImage(url: String) {
         protected set
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    var product: Product? = null
+    @JoinColumn(name = "product_id", nullable = false)
+    var product: Product = product
         protected set
 
     override fun toString() = kotlinToString(properties = toStringProperties)
@@ -44,17 +44,7 @@ class ProductImage(url: String) {
         private val toStringProperties = arrayOf(ProductImage::id, ProductImage::url)
 
         fun create(imageUrls: List<String>, product: Product): List<ProductImage> {
-            return imageUrls.map { imageUrl ->
-                val productImage = ProductImage(url = imageUrl)
-
-                productImage.changeProduct(product = product)
-
-                productImage
-            }
+            return imageUrls.map { imageUrl -> ProductImage(url = imageUrl, product = product) }
         }
-    }
-
-    fun changeProduct(product: Product) {
-        this.product = product
     }
 }

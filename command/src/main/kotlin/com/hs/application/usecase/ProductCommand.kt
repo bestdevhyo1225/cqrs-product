@@ -14,6 +14,7 @@ import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
 
 @Service
 @Transactional
@@ -29,14 +30,11 @@ class ProductCommand(
     fun create(createProductDto: CreateProductDto): Long? {
         logger.info("create() method is executed")
 
-        val productImages: List<ProductImage> =
-            createProductDto.imageUrls.map { imageUrl -> ProductImage(url = imageUrl) }
-
         val product = Product.create(
             name = createProductDto.name,
             price = createProductDto.price,
             stockQuantity = createProductDto.stockQuantity,
-            productImages = productImages,
+            imageUrls = createProductDto.imageUrls
         )
 
         productRepository.save(product)
