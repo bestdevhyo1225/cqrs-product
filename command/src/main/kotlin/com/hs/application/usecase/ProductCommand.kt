@@ -80,7 +80,7 @@ class ProductCommand(
 
         productImageRepository.deleteByProductId(productId = product.id!!)
 
-        productImageRepository.saveAll(ProductImage.create(imageUrls = imageUrls, product = product))
+        productImageRepository.saveAll(ProductImage.createList(imageUrls = imageUrls, product = product))
 
         product.publishEventOfCreateImage(imageUrls = imageUrls, publisher = publisher)
     }

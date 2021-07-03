@@ -43,7 +43,7 @@ class ProductImage(url: String, product: Product) {
         private val equalsAndHashCodeProperties = arrayOf(ProductImage::id)
         private val toStringProperties = arrayOf(ProductImage::id, ProductImage::url)
 
-        fun create(imageUrls: List<String>, product: Product): List<ProductImage> {
+        fun createList(imageUrls: List<String>, product: Product): List<ProductImage> {
             return imageUrls.map { imageUrl -> ProductImage(url = imageUrl, product = product) }
         }
     }
