@@ -20,6 +20,8 @@ class ProductQueueListener(
 
     @RabbitListener(id = "product", queues = [RabbitMQConfig.QueueName.PRODUCT])
     fun consume(publishProductDto: PublishProductDto, channel: Channel, message: Message) {
+        logger.info("[ Queue Listener ] channel : {}", channel)
+        logger.info("[ Queue Listener ] message : {}", message)
         logger.info("[ Queue Listener ] publishProductDto : {}", publishProductDto)
 
         productAggregateCommand.createOrUpdate(productId = publishProductDto.productId)
