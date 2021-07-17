@@ -87,7 +87,7 @@ class CommandAppController(
         @PathVariable(value = "id") productId: Long,
         @Valid @RequestBody request: UpdateProductConfirmRequest
     ): ResponseEntity<SuccessResponse<Any>> {
-        productCommand.changeConfirmStatus(id = productId, strProductConfirmStatus = request.comfirmStatus)
+        productCommand.changeConfirmStatus(id = productId, strProductConfirmStatus = request.confirmStatus)
 
         return ResponseEntity.ok(SuccessResponse(data = object {}))
     }
