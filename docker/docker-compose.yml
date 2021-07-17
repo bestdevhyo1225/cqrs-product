@@ -14,7 +14,7 @@ services:
   product-mongo:
     image: mongo
     container_name: product-mongo
-    command: mongod --auth
+#    command: mongod --auth
     ports:
       - "27017:27017"
 
