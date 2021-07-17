@@ -13,8 +13,13 @@ spring:
     active: dev
 
   data:
+    # Application이 종료 되어이야 MongoDB Connection이 끊기는 부분을 확인했음.
+    # db.serverStatus().connections 쿼리를 통해 Connection 상태를 확인할 수 있음
+    # current : 현재 연결중인 Connection 수
+    # available : 사용 가능한 Connection 수
+    # totalCreated : 현재까지 연결된 모든 Connection 수 (닫은 연결도 포함됨.)
     mongodb:
-      uri: mongodb://localhost:27017/product_db
+      uri: mongodb://localhost:27017/product_db?maxPoolSize=100&waitQueueTimeoutMS=5000
 
   rabbitmq:
     host: localhost
@@ -36,10 +41,10 @@ logging:
   level:
     com:
       rabbitmq:
-        client: DEBUG
-    org:
-      springframework:
-        data:
-          mongodb:
-            core:
-              MongoTemplate: DEBUG
+        client: debug
+#    org:
+#      springframework:
+#        data:
+#          mongodb:
+#            core:
+#              MongoTemplate: debug
