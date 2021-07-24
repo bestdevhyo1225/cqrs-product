@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.query.isEqualTo
 import org.springframework.stereotype.Repository
 
 @Repository
-class ProductAggregateMongoOperations(private val mongoOperations: MongoOperations) :
+class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperations) :
     QueryAppProductAggregateRepository {
 
     override fun findByProductIdAndType(productId: Long, type: ProductAggregateType): ProductAggregate? {
