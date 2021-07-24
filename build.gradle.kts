@@ -63,36 +63,35 @@ subprojects {
     }
 }
 
+project(":batch") {
+    dependencies {
+        implementation(project(":common"))
+        implementation(project(":domain:mysql"))
+        implementation(project(":domain:mongo"))
+    }
+}
+
 project(":command") {
     dependencies {
         implementation(project(":common"))
-        implementation(project(":domain:mysql") {
-            dependencies {
-                implementation(project(":common"))
-            }
-        })
-    }
-
-    (tasks.getByName("processResources") as ProcessResources).apply {
-        filesMatching("application.yml") {
-            expand(project.properties)
-        }
+        implementation(project(":domain:mysql"))
     }
 }
 
 project(":query") {
     dependencies {
         implementation(project(":common"))
-        implementation(project(":domain:mongo") {
-            dependencies {
-                implementation(project(":common"))
-            }
-        })
+        implementation(project(":domain:mongo"))
     }
+}
 
-    (tasks.getByName("processResources") as ProcessResources).apply {
-        filesMatching("application.yml") {
-            expand(project.properties)
-        }
+project(":domain:mysql") {
+    dependencies {
+        implementation(project(":common"))
+    }
+}
+project(":domain:mongo") {
+    dependencies {
+        implementation(project(":common"))
     }
 }
