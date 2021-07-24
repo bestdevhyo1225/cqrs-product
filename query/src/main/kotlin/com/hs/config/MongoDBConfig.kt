@@ -10,10 +10,8 @@ import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver
 import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories
 
 @Configuration
-@EnableMongoRepositories(basePackages = ["com.hs.repository"])
 class MongoDBConfig(
     @Value("\${spring.data.mongodb.uri}")
     private val mongodbUri: String

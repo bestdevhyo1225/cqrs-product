@@ -2,14 +2,14 @@ package com.hs.application.usecase
 
 import com.hs.dto.FindProductAggregateDto
 import com.hs.entity.ProductAggregate
-import com.hs.repository.ProductAggregateRepository
 import com.hs.entity.ProductAggregateType.FIND_PRODUCT
 import com.hs.message.QueryAppExceptionMessage
+import com.hs.repository.QueryAppProductAggregateRepository
 import org.springframework.stereotype.Service
 
 @Service
 class ProductAggregateQuery(
-    private val productAggregateRepository: ProductAggregateRepository
+    private val productAggregateRepository: QueryAppProductAggregateRepository
 ) {
 
     fun findProductAggregate(productId: Long): FindProductAggregateDto {
