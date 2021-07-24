@@ -31,8 +31,6 @@ class SyncProductJob(
     private val productAggregateRepository: BatchAppProductAggregateRepository
 ) {
 
-    private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
-
     companion object {
         private const val JOB_NAME = "SyncProductJob"
     }
