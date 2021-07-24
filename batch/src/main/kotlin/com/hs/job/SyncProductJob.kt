@@ -4,7 +4,10 @@ import com.hs.dto.FindProductDto
 import com.hs.entity.Product
 import com.hs.entity.ProductAggregate
 import com.hs.entity.ProductAggregateType.FIND_PRODUCT
+import com.hs.reader.JpaPagingFetchItemReader
 import com.hs.repository.BatchAppProductAggregateRepository
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
@@ -27,6 +30,8 @@ class SyncProductJob(
     private val entityManagerFactory: EntityManagerFactory,
     private val productAggregateRepository: BatchAppProductAggregateRepository
 ) {
+
+    private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
     companion object {
         private const val JOB_NAME = "SyncProductJob"
@@ -51,13 +56,14 @@ class SyncProductJob(
     }
 
     @Bean(name = [JOB_NAME + "_Reader"])
-    fun reader(): JpaPagingItemReader<Product> {
-        return JpaPagingItemReaderBuilder<Product>()
-            .name("syncProductReader")
-            .entityManagerFactory(entityManagerFactory)
-            .pageSize(chunkSize)
-            .queryString("SELECT p FROM Product p JOIN FETCH p.productImages")
-            .build()
+    fun reader(): JpaPagingFetchItemReader<Product> {
+        val reader: JpaPagingFetchItemReader<Product> = JpaPagingFetchItemReader()
+
+        reader.setEntityManagerFactory(entityManagerFactory = entityManagerFactory)
+        reader.setQueryString(queryString = "SELECT p FROM Product p")
+        reader.pageSize = chunkSize
+
+        return reader
     }
 
     @Bean(name = [JOB_NAME + "_Processor"])
@@ -88,6 +94,8 @@ class SyncProductJob(
 
     @Bean(name = [JOB_NAME + "_Writer"])
     fun writer(): ItemWriter<ProductAggregate> {
-        return ItemWriter { productAggregates -> productAggregateRepository.saveAll(productAggregates) }
+        return ItemWriter { productAggregates ->
+            productAggregateRepository.saveAll(productAggregates = productAggregates)
+        }
     }
 }
