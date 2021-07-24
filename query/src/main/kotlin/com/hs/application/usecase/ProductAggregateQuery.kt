@@ -13,14 +13,11 @@ class ProductAggregateQuery(
 ) {
 
     fun findProductAggregate(productId: Long): FindProductAggregateDto {
-        val productAggregate: ProductAggregate = productAggregateRepository.findByProductIdAndType(
+        val productAggregate: ProductAggregate = productAggregateRepository.findByProductIdAndTypeAndIsDisplay(
             productId = productId,
-            type = FIND_PRODUCT
+            type = FIND_PRODUCT,
+            isDisplay = true
         ) ?: throw NoSuchElementException(QueryAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
-
-        if (!productAggregate.isDisplay.toBoolean()) {
-            throw NoSuchElementException(QueryAppExceptionMessage.NOT_FOUND_PRODUCT_BY_CREATE_OR_UPDATE.localizedMessage)
-        }
 
         return FindProductAggregateDto(
             productId = productAggregate.data.productId,

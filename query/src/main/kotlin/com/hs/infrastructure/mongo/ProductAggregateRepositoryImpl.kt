@@ -14,7 +14,26 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
     QueryAppProductAggregateRepository {
 
     override fun findByProductIdAndType(productId: Long, type: ProductAggregateType): ProductAggregate? {
-        val query = Query(Criteria.where("productId").isEqualTo(productId).and("type").isEqualTo(type))
+        val query = Query(
+            Criteria
+                .where("productId").isEqualTo(productId)
+                .and("type").isEqualTo(type)
+        )
+
+        return mongoOperations.findOne(query, ProductAggregate::class.java)
+    }
+
+    override fun findByProductIdAndTypeAndIsDisplay(
+        productId: Long,
+        type: ProductAggregateType,
+        isDisplay: Boolean
+    ): ProductAggregate? {
+        val query = Query(
+            Criteria
+                .where("productId").isEqualTo(productId)
+                .and("type").isEqualTo(type)
+                .and("isDisplay").isEqualTo(isDisplay)
+        )
 
         return mongoOperations.findOne(query, ProductAggregate::class.java)
     }
