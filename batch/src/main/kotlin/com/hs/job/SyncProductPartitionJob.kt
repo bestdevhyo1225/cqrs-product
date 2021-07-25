@@ -106,7 +106,7 @@ class SyncProductPartitionJob(
 
         val datetimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         val startLocalDatetime = LocalDateTime.parse("$startDate 00:00:00", datetimeFormatter)
-        val endLocalDatetime = LocalDateTime.parse("$endDate 00:00:00", datetimeFormatter)
+        val endLocalDatetime = LocalDateTime.parse("$endDate 23:59:59", datetimeFormatter)
 
         return ProductIdRangePartitioner(
             productQueryRepository = productQueryRepository,
