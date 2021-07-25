@@ -3,6 +3,10 @@ package com.hs.infrastructure.mongo
 import com.hs.entity.ProductAggregate
 import com.hs.entity.ProductAggregateType
 import com.hs.repository.QueryAppProductAggregateRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.data.mongodb.core.MongoOperations
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
@@ -14,13 +18,11 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
     QueryAppProductAggregateRepository {
 
     override fun findByProductIdAndType(productId: Long, type: ProductAggregateType): ProductAggregate? {
-        val query = Query(
-            Criteria
-                .where("productId").isEqualTo(productId)
-                .and("type").isEqualTo(type)
-        )
+        val criteria = Criteria
+            .where("productId").isEqualTo(productId)
+            .and("type").isEqualTo(type)
 
-        return mongoOperations.findOne(query, ProductAggregate::class.java)
+        return mongoOperations.findOne(Query(criteria), ProductAggregate::class.java)
     }
 
     override fun findByProductIdAndTypeAndIsDisplay(
@@ -28,14 +30,31 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
         type: ProductAggregateType,
         isDisplay: Boolean
     ): ProductAggregate? {
-        val query = Query(
-            Criteria
-                .where("productId").isEqualTo(productId)
-                .and("type").isEqualTo(type)
-                .and("isDisplay").isEqualTo(isDisplay)
-        )
+        val criteria = Criteria
+            .where("productId").isEqualTo(productId)
+            .and("type").isEqualTo(type)
+            .and("isDisplay").isEqualTo(isDisplay)
 
-        return mongoOperations.findOne(query, ProductAggregate::class.java)
+        return mongoOperations.findOne(Query(criteria), ProductAggregate::class.java)
+    }
+
+    override fun findAllByTypeAndIsDisplay(
+        type: ProductAggregateType,
+        isDisplay: Boolean,
+        pageable: Pageable
+    ): Page<ProductAggregate> {
+        val criteria = Criteria
+            .where("type").isEqualTo(type)
+            .and("isDisplay").isEqualTo(isDisplay)
+
+        val query = Query(criteria)
+            .with(Sort.by(Sort.Direction.DESC, "createdDatetime"))
+            .with(pageable)
+
+        val productAggregates: List<ProductAggregate> = mongoOperations.find(query, ProductAggregate::class.java)
+        val totalCount: Long = mongoOperations.count(query, ProductAggregate::class.java)
+
+        return PageImpl(productAggregates, pageable, totalCount)
     }
 
     override fun insert(productAggregate: ProductAggregate): ProductAggregate? {

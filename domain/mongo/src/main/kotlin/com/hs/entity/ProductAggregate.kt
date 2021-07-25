@@ -5,22 +5,11 @@ import au.com.console.kassava.kotlinHashCode
 import au.com.console.kassava.kotlinToString
 import com.hs.dto.FindProductDto
 import org.springframework.data.annotation.Id
-import org.springframework.data.mongodb.core.index.CompoundIndex
-import org.springframework.data.mongodb.core.index.CompoundIndexes
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Document(collection = "product_aggregates")
-@CompoundIndexes(
-    value = [
-        CompoundIndex(
-            name = "PRODUCT_AGGREGATES_IX_SEARCH",
-            def = "{'productId': 1, 'type': 1, 'isDisplay': 1}",
-            unique = true
-        )
-    ]
-)
 class ProductAggregate(productId: Long, type: ProductAggregateType, isDisplay: Boolean, data: FindProductDto) {
 
     @Id

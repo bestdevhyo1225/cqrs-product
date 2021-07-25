@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.convert.MappingMongoConverter
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext
 
 @Configuration
-class MongoDBConfig(
+class MongoConfig(
     @Value("\${spring.data.mongodb.uri}")
     private val mongodbUri: String
 ) {

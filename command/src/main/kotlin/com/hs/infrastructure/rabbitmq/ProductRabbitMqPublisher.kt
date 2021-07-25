@@ -1,7 +1,7 @@
 package com.hs.infrastructure.rabbitmq
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.hs.config.RabbitMQConfig
+import com.hs.config.RabbitMqConfig
 import com.hs.dto.PublishProductDto
 import com.hs.service.ProductQueuePublisher
 import org.slf4j.Logger
@@ -33,6 +33,6 @@ class ProductRabbitMqPublisher(
             .andProperties(properties)
             .build()
 
-        rabbitTemplate.convertAndSend(RabbitMQConfig.QueueName.PRODUCT, message)
+        rabbitTemplate.convertAndSend(RabbitMqConfig.QueueName.PRODUCT, message)
     }
 }

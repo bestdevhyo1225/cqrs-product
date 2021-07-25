@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Primary
 
 @Configuration
 @EnableRabbit
-class RabbitMQConfig(
+class RabbitMqConfig(
     @Value("\${spring.rabbitmq.host}")
     private val host: String,
 
