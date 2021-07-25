@@ -56,6 +56,7 @@ class MongoConfig(
                     Document()
                         .append("type", 1)
                         .append("isDisplay", 1)
+                        .append("productId", -1)
                         .append("createdDatetime", -1)
                 )
             )

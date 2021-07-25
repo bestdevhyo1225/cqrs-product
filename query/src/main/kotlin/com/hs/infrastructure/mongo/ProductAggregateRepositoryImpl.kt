@@ -48,7 +48,7 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
             .and("isDisplay").isEqualTo(isDisplay)
 
         val query = Query(criteria)
-            .with(Sort.by(Sort.Direction.DESC, "createdDatetime"))
+            .with(Sort.by(Sort.Direction.DESC, "productId", "createdDatetime"))
             .with(pageable)
 
         val productAggregates: List<ProductAggregate> = mongoOperations.find(query, ProductAggregate::class.java)
