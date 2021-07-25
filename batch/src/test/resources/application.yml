@@ -1,0 +1,50 @@
+spring:
+  profiles:
+    active: test
+
+  batch:
+    # program arguments로 job name이 넘어오면, 해당 값과 일치하는 job만 실행하겠다는 의미
+    job:
+      # job.name이 있으면, job.name 값을 할당하고, 없으면 NONE을 할당하겠다는 의미
+      # NONE이 할당되면, 어떤 배치도 실행하지 않겠다는 의미이다.
+      # 즉, 혹시라도 값이 없을때 모든 배치가 실행되지 않도록 막는 역할이다.
+      names: ${job.name:NONE}
+
+#  data:
+    # Application이 종료 되어이야 MongoDB Connection이 끊기는 부분을 확인했음.
+    # db.serverStatus().connections 쿼리를 통해 Connection 상태를 확인할 수 있음
+    # current : 현재 연결중인 Connection 수
+    # available : 사용 가능한 Connection 수
+    # totalCreated : 현재까지 연결된 모든 Connection 수 (닫은 연결도 포함됨.)
+#    mongodb:
+#      uri: mongodb://localhost:27017/product_db?maxidletimems=1800000&maxlifetimems=1800000
+
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        # In 쿼리가 1000개를 넘어가면, 오류가 발생하는 DB들이 있다.
+        # 100 ~ 1000 사이를 선택하는 것을 권장! DB에 순간 부하량이 증가하기 때문이다.
+        # 1000을 선택하는 것이 성능상 좋지만, 결국 DB든 애플리케이션이든 순간 부하를 어디까지 견딜 수 있는지로 결정하면 된다. (정답은 없음)
+        default_batch_fetch_size: 1000
+    open-in-view: false
+
+# Batch 관련
+chunk-size: 10
+
+# Thread Executor 관련
+pool-size: 5
+queue-capacity: 100
+
+logging:
+  level:
+    org.springframework.batch: debug
+    org.springframework.data.mongodb.core.MongoTemplate: debug
