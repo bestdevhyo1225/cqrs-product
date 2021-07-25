@@ -1,7 +1,7 @@
 package com.hs.web.amqp
 
 import com.hs.application.usecase.ProductAggregateCommand
-import com.hs.config.RabbitMQConfig
+import com.hs.config.RabbitMqConfig
 import com.hs.dto.PublishProductDto
 import com.rabbitmq.client.Channel
 
@@ -18,7 +18,7 @@ class ProductQueueListener(
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
-    @RabbitListener(id = "product", queues = [RabbitMQConfig.QueueName.PRODUCT])
+    @RabbitListener(id = "product", queues = [RabbitMqConfig.QueueName.PRODUCT])
     fun consume(publishProductDto: PublishProductDto, channel: Channel, message: Message) {
         logger.info("[ Queue Listener ] channel : {}", channel)
         logger.info("[ Queue Listener ] message : {}", message)
