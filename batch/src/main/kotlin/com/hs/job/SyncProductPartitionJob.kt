@@ -64,8 +64,6 @@ class SyncProductPartitionJob(
 
     @Bean(name = [JOB_NAME + "_PartitionHandler"])
     fun partitionHandler(): TaskExecutorPartitionHandler {
-        logger.info("[ SyncProductPartitionJob ] Start PartitionHandler")
-
         val partitionHandler = TaskExecutorPartitionHandler()
 
         partitionHandler.setTaskExecutor(executor())
@@ -77,8 +75,6 @@ class SyncProductPartitionJob(
 
     @Bean(name = [JOB_NAME])
     fun job(): Job {
-        logger.info("[ SyncProductPartitionJob ] Start Job")
-
         return jobBuilderFactory.get("syncProductPartitionJob")
             .start(stepManager())
             .preventRestart() // 재실행을 막아준다.
@@ -87,8 +83,6 @@ class SyncProductPartitionJob(
 
     @Bean(name = [JOB_NAME + "_StepManager"])
     fun stepManager(): Step {
-        logger.info("[ SyncProductPartitionJob ] Start Step Manager")
-
         return stepBuilderFactory.get("syncProductPartitionStep.Manager")
             .partitioner("Step", partitioner(null, null)) // step에서 사용될 Partitioner 구현체를 등록한다.
             .step(step()) // 파티셔닝될 step을 등록한다. Partitioner 로직에 따라 서로 다른 StepExecutions를 가진 여러개로 생성된다.
@@ -102,8 +96,6 @@ class SyncProductPartitionJob(
         @Value("#{jobParameters['startDate']}") startDate: String?,
         @Value("#{jobParameters['endDate']}") endDate: String?
     ): ProductIdRangePartitioner {
-        logger.info("[ SyncProductPartitionJob ] Start Partitioner")
-
         val datetimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         val startLocalDatetime = LocalDateTime.parse("$startDate 00:00:00", datetimeFormatter)
         val endLocalDatetime = LocalDateTime.parse("$endDate 23:59:59", datetimeFormatter)
@@ -117,8 +109,6 @@ class SyncProductPartitionJob(
 
     @Bean(name = [JOB_NAME + "_Step"])
     fun step(): Step {
-        logger.info("[ SyncProductPartitionJob ] Start Step")
-
         return stepBuilderFactory.get("syncProductPartitionStep")
             .chunk<Product, ProductAggregate>(chunkSize)
             .reader(reader(null, null))
@@ -133,7 +123,7 @@ class SyncProductPartitionJob(
         @Value("#{stepExecutionContext['minId']}") minId: Long?,
         @Value("#{stepExecutionContext['maxId']}") maxId: Long?,
     ): JpaPagingFetchItemReader<Product> {
-        logger.info("[ SyncProductPartitionJob ] Start Reader minId = {}, maxId = {}", minId, maxId)
+        logger.info("minId = {}, maxId = {}", minId, maxId)
 
         val params: Map<String, Long> = mapOf("minId" to (minId ?: 0), "maxId" to (maxId ?: 0))
 
@@ -148,8 +138,6 @@ class SyncProductPartitionJob(
     }
 
     private fun processor(): ItemProcessor<Product, ProductAggregate> {
-        logger.info("[ SyncProductPartitionJob ] Start Processor")
-
         return ItemProcessor<Product, ProductAggregate> { product ->
             val productDto = FindProductDto(
                 productId = product.id!!,
@@ -176,8 +164,6 @@ class SyncProductPartitionJob(
 
     @Bean(name = [JOB_NAME + "_Writer"])
     fun writer(): ItemWriter<ProductAggregate> {
-        logger.info("[ SyncProductPartitionJob ] Start Writer")
-
         return ItemWriter { productAggregates ->
             productAggregateRepository.saveAll(productAggregates = productAggregates)
         }
