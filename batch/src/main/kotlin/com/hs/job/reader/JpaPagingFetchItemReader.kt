@@ -1,4 +1,4 @@
-package com.hs.reader
+package com.hs.job.reader
 
 import org.springframework.batch.item.database.AbstractPagingItemReader
 import org.springframework.batch.item.database.orm.JpaQueryProvider
@@ -11,8 +11,7 @@ import javax.persistence.EntityManager
 import javax.persistence.EntityManagerFactory
 import javax.persistence.Query
 
-
-class JpaPagingFetchItemReader<T> : AbstractPagingItemReader<T>() {
+open class JpaPagingFetchItemReader<T> : AbstractPagingItemReader<T>() {
 
     private val jpaPropertyMap: Map<String, Any> = HashMap()
 
