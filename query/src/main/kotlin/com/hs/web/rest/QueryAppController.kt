@@ -1,12 +1,14 @@
 package com.hs.web.rest
 
 import com.hs.application.usecase.ProductAggregateQuery
+import com.hs.entity.ProductAggregate
 import com.hs.response.SuccessResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import javax.validation.constraints.Min
 
@@ -16,6 +18,21 @@ import javax.validation.constraints.Min
 class QueryAppController(
     private val productAggregateQuery: ProductAggregateQuery
 ) {
+
+    @GetMapping
+    fun findProductAggregatesWithPagination(
+        @RequestParam(value = "page", defaultValue = "0") page: Int,
+        @RequestParam(value = "pageSize", defaultValue = "10") pageSize: Int
+    ): ResponseEntity<SuccessResponse<Any>> {
+        return ResponseEntity.ok(
+            SuccessResponse(
+                data = productAggregateQuery.findProductAggregatesWithPagination(
+                    page = page,
+                    pageSize = pageSize
+                )
+            )
+        )
+    }
 
     @GetMapping(value = ["{id}"])
     fun findProductAggregate(
