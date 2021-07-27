@@ -2,6 +2,7 @@
 
 ## Module
 
+- Batch
 - Command
 - Common
 - Domain
@@ -11,6 +12,7 @@
 
 - JDK 11
 - Spring Web
+- Spring Batch
 - Spring Data JPA
 - Spring Data MongoDB
 - Spring AMQP (RabbitMQ)
