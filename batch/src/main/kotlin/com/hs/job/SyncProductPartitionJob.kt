@@ -52,6 +52,7 @@ class SyncProductPartitionJob(
 
         executor.corePoolSize = poolSize
         executor.maxPoolSize = poolSize
+        executor.keepAliveSeconds = 30
         executor.setThreadNamePrefix("partition-exec-")
         // 60초 이후, Core thread가 일정 시간 Task를 받지 않을 경우, Pool에서 정리되고, 모든 자식 스레드가 정리되면, JVM도 종료한다.
         executor.setAllowCoreThreadTimeOut(true)
