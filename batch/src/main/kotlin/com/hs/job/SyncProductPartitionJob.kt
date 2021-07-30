@@ -157,18 +157,18 @@ class SyncProductPartitionJob(
                 imageUrls = product.productImages.map { productImage -> productImage.url }
             )
 
-            val productAggregate: ProductAggregate? =
+
+            var productAggregate: ProductAggregate? =
                 productAggregateRepository.findByProductIdAndType(productId = product.id!!, type = FIND_PRODUCT)
 
-            if (productAggregate != null) {
-                productAggregate.changeProductAggregateData(data = productDto)
-                return@ItemProcessor UpsertProductAggregateVo(productAggregate = productAggregate, isNew = false)
+            val isNew: Boolean = productAggregate == null
+
+            when (productAggregate) {
+                null -> productAggregate = ProductAggregate.create(productDto = productDto, type = FIND_PRODUCT)
+                else -> productAggregate.changeProductAggregateData(data = productDto)
             }
 
-            return@ItemProcessor UpsertProductAggregateVo(
-                productAggregate = ProductAggregate.create(productDto = productDto, type = FIND_PRODUCT),
-                isNew = true
-            )
+            UpsertProductAggregateVo(productAggregate = productAggregate, isNew = isNew)
         }
     }
 
