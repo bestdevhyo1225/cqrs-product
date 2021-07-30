@@ -52,11 +52,15 @@ class SyncProductPartitionJob(
 
         executor.corePoolSize = poolSize
         executor.maxPoolSize = poolSize
+        /*
+        * [ keepAliveSeconds : 30초 ]
+        * - 30초가 지나서도 Core Thread Pool의 Thread가 사용되지 않을 경우, 해당 Thread는 종료된다.
+        * */
         executor.keepAliveSeconds = 30
         executor.setThreadNamePrefix("partition-exec-")
         /*
          * [ allowCoreThreadTimeOut : true ]
-         * - Core thread가 일정 시간 Task를 받지 않을 경우, Pool에서 정리되고, 모든 자식 스레드가 정리되면, JVM도 종료된다.
+         * - Core Thread가 일정 시간 Task를 받지 않을 경우, Pool에서 정리되고, 모든 자식 Thread가 정리되면, JVM도 종료된다.
          * */
         executor.setAllowCoreThreadTimeOut(true)
         // Queue 대기열 및 Task 가 완료된 이후에 Shutdown 여부
