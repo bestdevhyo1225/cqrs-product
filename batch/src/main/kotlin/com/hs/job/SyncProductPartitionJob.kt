@@ -183,8 +183,13 @@ class SyncProductPartitionJob(
                 else saveProductAggregates.add(it.productAggregate)
             }
 
-            productAggregateRepository.insertAll(productAggregates = insertProductAggregates)
-            productAggregateRepository.saveAll(productAggregates = saveProductAggregates)
+            if (insertProductAggregates.isNotEmpty()) {
+                productAggregateRepository.insertAll(productAggregates = insertProductAggregates)
+            }
+
+            if (saveProductAggregates.isNotEmpty()) {
+                productAggregateRepository.saveAll(productAggregates = saveProductAggregates)
+            }
         }
     }
 }
