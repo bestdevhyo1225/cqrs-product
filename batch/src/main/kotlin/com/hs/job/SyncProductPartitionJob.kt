@@ -8,6 +8,7 @@ import com.hs.job.partitioner.ProductIdRangePartitioner
 import com.hs.job.reader.JpaPagingFetchItemReader
 import com.hs.repository.BatchAppProductAggregateRepository
 import com.hs.repository.BatchAppProductQueryRepository
+import com.hs.vo.UpsertProductAggregateVo
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.batch.core.Job
@@ -118,7 +119,7 @@ class SyncProductPartitionJob(
     @Bean(name = [JOB_NAME + "_Step"])
     fun step(): Step {
         return stepBuilderFactory.get("syncProductPartitionStep")
-            .chunk<Product, ProductAggregate>(chunkSize)
+            .chunk<Product, UpsertProductAggregateVo>(chunkSize)
             .reader(reader(null, null))
             .processor(processor())
             .writer(writer())
@@ -145,8 +146,8 @@ class SyncProductPartitionJob(
         return reader
     }
 
-    private fun processor(): ItemProcessor<Product, ProductAggregate> {
-        return ItemProcessor<Product, ProductAggregate> { product ->
+    private fun processor(): ItemProcessor<Product, UpsertProductAggregateVo> {
+        return ItemProcessor<Product, UpsertProductAggregateVo> { product ->
             val productDto = FindProductDto(
                 productId = product.id!!,
                 name = product.name,
@@ -156,24 +157,34 @@ class SyncProductPartitionJob(
                 imageUrls = product.productImages.map { productImage -> productImage.url }
             )
 
-            var productAggregate: ProductAggregate? = productAggregateRepository.findByProductIdAndType(
-                productId = product.id!!,
-                type = FIND_PRODUCT
-            )
+            val productAggregate: ProductAggregate? =
+                productAggregateRepository.findByProductIdAndType(productId = product.id!!, type = FIND_PRODUCT)
 
-            when (productAggregate) {
-                null -> productAggregate = ProductAggregate.create(productDto = productDto, type = FIND_PRODUCT)
-                else -> productAggregate.changeProductAggregateData(data = productDto)
+            if (productAggregate != null) {
+                productAggregate.changeProductAggregateData(data = productDto)
+                return@ItemProcessor UpsertProductAggregateVo(productAggregate = productAggregate, isNew = false)
             }
 
-            productAggregate
+            return@ItemProcessor UpsertProductAggregateVo(
+                productAggregate = ProductAggregate.create(productDto = productDto, type = FIND_PRODUCT),
+                isNew = true
+            )
         }
     }
 
     @Bean(name = [JOB_NAME + "_Writer"])
-    fun writer(): ItemWriter<ProductAggregate> {
-        return ItemWriter { productAggregates ->
-            productAggregateRepository.saveAll(productAggregates = productAggregates)
+    fun writer(): ItemWriter<UpsertProductAggregateVo> {
+        return ItemWriter { upsertProductAggregateVos ->
+            val insertProductAggregates: MutableList<ProductAggregate> = mutableListOf()
+            val saveProductAggregates: MutableList<ProductAggregate> = mutableListOf()
+
+            upsertProductAggregateVos.forEach {
+                if (it.isNew) insertProductAggregates.add(it.productAggregate)
+                else saveProductAggregates.add(it.productAggregate)
+            }
+
+            productAggregateRepository.insertAll(productAggregates = insertProductAggregates)
+            productAggregateRepository.saveAll(productAggregates = saveProductAggregates)
         }
     }
 }
