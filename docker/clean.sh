@@ -20,3 +20,6 @@ docker rmi $(docker images --filter=reference="rabbitmq" -q)
 
 # Docker Newtork Remove
 docker network rm docker_dock_net
+
+# Docker Volume Remove All
+docker volume prune -f
