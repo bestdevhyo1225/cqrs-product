@@ -19,7 +19,7 @@ spring:
     # available : 사용 가능한 Connection 수
     # totalCreated : 현재까지 연결된 모든 Connection 수 (닫은 연결도 포함됨.)
     mongodb:
-      uri: mongodb://localhost:27017/product_db?maxpoolsize=100&waitqueuetimeoutms=3000&maxidletimems=1800000&maxlifetimems=1800000
+      uri: mongodb://product:1234@localhost:27017/product_db?maxpoolsize=100&waitqueuetimeoutms=3000&maxidletimems=1800000&maxlifetimems=1800000
 
   rabbitmq:
     host: localhost
