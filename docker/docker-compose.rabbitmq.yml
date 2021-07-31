@@ -11,8 +11,8 @@ services:
       - "5672:5672"
       - "15672:15672"
     networks:
-      - product-rabbitmq-network
+      - product_rabbitmq_net
 
 networks:
-  product-rabbitmq-network:
+  product_rabbitmq_net:
     driver: bridge

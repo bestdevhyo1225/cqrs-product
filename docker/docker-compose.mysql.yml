@@ -13,7 +13,7 @@ services:
     ports:
       - '9030:3306'
     networks:
-      product-mysql-network:
+      product_mysql_net:
         ipv4_address: 172.16.0.10
 
   product-read-mysql:
@@ -28,13 +28,13 @@ services:
     ports:
       - '9031:3306'
     networks:
-      product-mysql-network:
+      product_mysql_net:
         ipv4_address: 172.16.0.11
     depends_on:
       - 'product-write-mysql'
 
 networks:
-  product-mysql-network:
+  product_mysql_net:
     driver: bridge
     ipam:
       config:

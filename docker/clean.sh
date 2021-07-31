@@ -19,9 +19,9 @@ docker rmi $(docker images --filter=reference="mongo" -q)
 docker rmi $(docker images --filter=reference="rabbitmq" -q)
 
 # Docker Newtork Remove
-docker network rm docker_product-mongo-network
-docker network rm docker_product-mysql-network
-docker network rm docker_product-rabbitmq-network
+docker network rm docker_product_mongo_net
+docker network rm docker_product_mysql_net
+docker network rm docker_product_rabbitmq_net
 
 # Docker Volume Remove All
 docker volume prune -f

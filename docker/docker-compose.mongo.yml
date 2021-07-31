@@ -10,8 +10,8 @@ services:
     command: [--auth]
     restart: always
     networks:
-      - product-mongo-network
+      - product_mongo_net
 
 networks:
-  product-mongo-network:
+  product_mongo_net:
     driver: bridge
