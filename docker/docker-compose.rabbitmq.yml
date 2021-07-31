@@ -1,0 +1,18 @@
+version: '3.3'
+
+services:
+  product-rabbitmq:
+    image: rabbitmq:3.8.13-management
+    container_name: product-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: changeme
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - product-rabbitmq-network
+
+networks:
+  product-rabbitmq-network:
+    driver: bridge

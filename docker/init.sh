@@ -7,7 +7,13 @@ docker build -f mysql.Dockerfile -t product-write-mysql .
 docker build -f mysql.Dockerfile -t product-read-mysql .
 
 # execute mymaster, myslave container
-docker-compose up -d
+docker-compose -f docker-compose.mysql.yml up -d
+
+# execute rabbitmq container
+docker-compose -f docker-compose.rabbitmq.yml up -d
+
+# execute mongo container
+docker-compose -f docker-compose.mongo.yml up -d
 
 sleep 20
 

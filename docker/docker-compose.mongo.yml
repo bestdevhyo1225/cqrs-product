@@ -1,0 +1,17 @@
+version: '3.3'
+
+services:
+  product-mongo:
+    image: mongo
+    container_name: product-mongo
+    ports:
+      - "27017:27017"
+    # Authentication를 설정하기 위해서, command: [--auth]를 주석 처리해야한다. 나머지 내용은 따로 정리하고 링크를 달 것!
+    command: [--auth]
+    restart: always
+    networks:
+      - product-mongo-network
+
+networks:
+  product-mongo-network:
+    driver: bridge
