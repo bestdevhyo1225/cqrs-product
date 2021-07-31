@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 # make mymaster image
-docker build -t product-write-mysql .
+docker build -f mysql.Dockerfile -t product-write-mysql .
 
 # make myslave image
-docker build -t product-read-mysql .
+docker build -f mysql.Dockerfile -t product-read-mysql .
 
 # execute mymaster, myslave container
 docker-compose up -d
