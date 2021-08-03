@@ -33,7 +33,6 @@ dependencies {
     kapt("com.querydsl:querydsl-apt:4.4.0:jpa")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     annotationProcessor(group = "com.querydsl", name = "querydsl-apt", classifier = "jpa")
-    runtimeOnly("com.h2database:h2")
 }
 
 sourceSets["main"].withConvention(org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet::class) {
