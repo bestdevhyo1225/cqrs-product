@@ -3,14 +3,9 @@ package com.hs.entity
 import au.com.console.kassava.kotlinEquals
 import au.com.console.kassava.kotlinHashCode
 import au.com.console.kassava.kotlinToString
-import com.hs.event.ProductChangeConfirmStatusEvent
-import com.hs.event.ProductCreateAndUpdateEvent
-import com.hs.event.ProductDecreaseStockQuantityEvent
-import com.hs.event.ProductUpdateImageEvent
 import com.hs.exception.DomainMySqlException
 import com.hs.message.CommandAppExceptionMessage
 import org.hibernate.annotations.DynamicUpdate
-import org.springframework.context.ApplicationEventPublisher
 import java.time.LocalDateTime
 import javax.persistence.Entity
 import javax.persistence.Id
@@ -98,58 +93,20 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         productImages.add(productImage)
     }
 
-    fun publishEventOfCreatedProduct(publisher: ApplicationEventPublisher) {
-        try {
-            publisher.publishEvent(
-                ProductCreateAndUpdateEvent(
-                    productId = this.id!!,
-                    productCommandCode = ProductCommandCode.INSERT,
-                    product = this
-                )
-            )
-        } catch (exception: NullPointerException) {
-            throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
-        }
-    }
-
-    fun publishEventOfCreateImage(imageUrls: List<String>, publisher: ApplicationEventPublisher) {
+    fun updateImage() {
         this.confirmStatus = ProductConfirmStatus.WAIT
         this.updatedDate = LocalDateTime.now()
-
-        try {
-            publisher.publishEvent(
-                ProductUpdateImageEvent(
-                    productId = this.id!!,
-                    productCommandCode = ProductCommandCode.UPDATE_IMAGE,
-                    imageUrls = imageUrls
-                )
-            )
-        } catch (exception: NullPointerException) {
-            throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
-        }
     }
 
-    fun update(name: String, price: Int, stockQuantity: Int, publisher: ApplicationEventPublisher) {
+    fun update(name: String, price: Int, stockQuantity: Int) {
         this.name = name
         this.price = price
         this.stockQuantity = stockQuantity
         this.confirmStatus = ProductConfirmStatus.WAIT
         this.updatedDate = LocalDateTime.now()
-
-        try {
-            publisher.publishEvent(
-                ProductCreateAndUpdateEvent(
-                    productId = this.id!!,
-                    productCommandCode = ProductCommandCode.UPDATE,
-                    product = this
-                )
-            )
-        } catch (exception: NullPointerException) {
-            throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
-        }
     }
 
-    fun decreaseStockCount(stockQuantity: Int, publisher: ApplicationEventPublisher) {
+    fun decreaseStockCount(stockQuantity: Int) {
         if (this.stockQuantity - stockQuantity <= 0) {
             throw DomainMySqlException(
                 exceptionMessage = CommandAppExceptionMessage.HAVE_EXCEEDED_THE_QUANTITY_AVAILABLE_FOR_PURCHASE
@@ -158,37 +115,13 @@ class Product(name: String, price: Int, stockQuantity: Int) {
 
         this.stockQuantity -= stockQuantity
         this.updatedDate = LocalDateTime.now()
-
-        try {
-            publisher.publishEvent(
-                ProductDecreaseStockQuantityEvent(
-                    productId = this.id!!,
-                    productCommandCode = ProductCommandCode.DECREASE_STOCK_QUANTITY,
-                    currentStockQuantity = this.stockQuantity
-                )
-            )
-        } catch (exception: NullPointerException) {
-            throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
-        }
     }
 
-    fun changeConfirmStatus(strProductConfirmStatus: String, publisher: ApplicationEventPublisher) {
+    fun changeConfirmStatus(strProductConfirmStatus: String) {
         val confirmStatus: ProductConfirmStatus =
             ProductConfirmStatus.convertFromStringToProductConfirmStatus(value = strProductConfirmStatus)
 
         this.confirmStatus = confirmStatus
         this.updatedDate = LocalDateTime.now()
-
-        try {
-            publisher.publishEvent(
-                ProductChangeConfirmStatusEvent(
-                    productId = this.id!!,
-                    productCommandCode = ProductCommandCode.CHANGE_CONFIRM_STATUS,
-                    confirmStatus = this.confirmStatus
-                )
-            )
-        } catch (exception: NullPointerException) {
-            throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
-        }
     }
 }
