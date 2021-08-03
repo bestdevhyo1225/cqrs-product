@@ -19,6 +19,10 @@
 - Kotlinx Coroutines Core
 - JUnit 5
 
+## Issue 해결 과정
+
+- [Mongo DB 인증 기능 추가 하기(Docker 기반)](https://hyos-dev-log.tistory.com/4)
+
 ## 시스템 아키텍쳐
 
 ![image](https://user-images.githubusercontent.com/23515771/127999493-441ce63c-1ad3-4abe-bc6c-6808f13b2c9e.png)
