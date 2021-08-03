@@ -1,4 +1,4 @@
-package com.hs.web.rest
+package com.hs.adapter.rest
 
 import com.hs.application.usecase.ProductAggregateQuery
 import com.hs.entity.ProductAggregate

@@ -1,4 +1,4 @@
-package com.hs.web
+package com.hs.adapter
 
 import com.hs.exception.DomainMongoException
 import com.hs.response.ErrorResponse

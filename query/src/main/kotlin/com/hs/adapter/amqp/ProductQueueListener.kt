@@ -1,4 +1,4 @@
-package com.hs.web.amqp
+package com.hs.adapter.amqp
 
 import com.hs.application.usecase.ProductAggregateCommand
 import com.hs.config.RabbitMqConfig
