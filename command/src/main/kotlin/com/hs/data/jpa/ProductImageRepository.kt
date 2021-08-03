@@ -1,4 +1,4 @@
-package com.hs.repository
+package com.hs.data.jpa
 
 import com.hs.entity.ProductImage
 import org.springframework.data.jpa.repository.JpaRepository

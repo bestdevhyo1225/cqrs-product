@@ -6,7 +6,7 @@ import com.hs.event.ProductChangeConfirmStatusEvent
 import com.hs.event.ProductCreateAndUpdateEvent
 import com.hs.event.ProductDecreaseStockQuantityEvent
 import com.hs.event.ProductUpdateImageEvent
-import com.hs.repository.ProductEventLogRepository
+import com.hs.data.jpa.ProductEventLogRepository
 import com.hs.service.ProductQueuePublisher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
