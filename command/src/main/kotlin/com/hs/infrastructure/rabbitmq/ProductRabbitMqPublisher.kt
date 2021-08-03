@@ -2,7 +2,7 @@ package com.hs.infrastructure.rabbitmq
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.hs.config.RabbitMqConfig
-import com.hs.dto.PublishProductDto
+import com.hs.infrastructure.rabbitmq.event.PublishProductEvent
 import com.hs.service.ProductQueuePublisher
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -19,14 +19,14 @@ class ProductRabbitMqPublisher(
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
-    override fun publish(publishProductDto: PublishProductDto) {
+    override fun publish(productId: Long) {
         logger.info("publish() method is executed")
 
         val properties = MessagePropertiesBuilder.newInstance()
             .setContentType("application/json")
             .build()
 
-        val body = objectMapper.writeValueAsBytes(PublishProductDto(productId = publishProductDto.productId))
+        val body = objectMapper.writeValueAsBytes(PublishProductEvent(productId = productId))
 
         val message = MessageBuilder
             .withBody(body)

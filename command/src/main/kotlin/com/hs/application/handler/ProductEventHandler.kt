@@ -1,6 +1,5 @@
 package com.hs.application.handler
 
-import com.hs.dto.PublishProductDto
 import com.hs.entity.ProductCommandCode
 import com.hs.entity.ProductEventLog
 import com.hs.event.ProductChangeConfirmStatusEvent
@@ -91,7 +90,7 @@ class ProductEventHandler(
     * 어디에서나 실행할 수 있는 일반 메소드이다.
     * */
     suspend fun publishProductEvent(productId: Long) {
-        productQueuePublisher.publish(publishProductDto = PublishProductDto(productId = productId))
+        productQueuePublisher.publish(productId = productId)
     }
 
     /*
