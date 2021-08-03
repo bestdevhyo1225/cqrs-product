@@ -23,9 +23,9 @@
 
 - [Mongo DB 인증 기능 추가 하기(Docker 기반)](https://hyos-dev-log.tistory.com/4)
 
-## 시스템 아키텍쳐
+## 시스템 전체 아키텍쳐
 
-![image](https://user-images.githubusercontent.com/23515771/127999493-441ce63c-1ad3-4abe-bc6c-6808f13b2c9e.png)
+![image](https://user-images.githubusercontent.com/23515771/128012900-d897a8de-ce09-4c19-a6bd-9207044500a3.png)
 
 ## 헥사고날 아키텍쳐
 
