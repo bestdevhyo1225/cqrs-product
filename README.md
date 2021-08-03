@@ -28,4 +28,3 @@
 - `Command`, `Query` 모듈은 `헥사고날 아키텍쳐`를 따른다.
 
 ![image](https://user-images.githubusercontent.com/23515771/128000044-b4520de0-035e-4930-8a81-95bf3e8c9e59.png)
-
