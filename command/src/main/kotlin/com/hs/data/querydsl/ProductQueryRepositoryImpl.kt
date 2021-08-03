@@ -1,4 +1,4 @@
-package com.hs.infrastructure.querydsl
+package com.hs.data.querydsl
 
 import com.hs.dto.FindProductDto
 import com.hs.entity.Product
