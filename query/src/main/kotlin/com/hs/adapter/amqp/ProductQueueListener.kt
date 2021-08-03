@@ -1,8 +1,8 @@
 package com.hs.adapter.amqp
 
+import com.hs.adapter.amqp.event.ConsumeProductEvent
 import com.hs.application.usecase.ProductAggregateCommand
 import com.hs.config.RabbitMqConfig
-import com.hs.dto.PublishProductDto
 import com.rabbitmq.client.Channel
 
 import org.slf4j.Logger
@@ -19,12 +19,12 @@ class ProductQueueListener(
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
     @RabbitListener(id = "product", queues = [RabbitMqConfig.QueueName.PRODUCT])
-    fun consume(publishProductDto: PublishProductDto, channel: Channel, message: Message) {
+    fun consume(consumeProductEvent: ConsumeProductEvent, channel: Channel, message: Message) {
         logger.info("[ Queue Listener ] channel : {}", channel)
         logger.info("[ Queue Listener ] message : {}", message)
-        logger.info("[ Queue Listener ] publishProductDto : {}", publishProductDto)
+        logger.info("[ Queue Listener ] consumeProductEvent : {}", consumeProductEvent)
 
-        productAggregateCommand.createOrUpdate(productId = publishProductDto.productId)
+        productAggregateCommand.createOrUpdate(productId = consumeProductEvent.productId)
 
         channel.basicAck(message.messageProperties.deliveryTag, false)
     }
