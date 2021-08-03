@@ -1,4 +1,6 @@
 package com.hs.application.exception
 
-class ApplicationLayerException {
-}
+import com.hs.message.CommandAppExceptionMessage
+
+class ApplicationLayerException(exceptionMessage: CommandAppExceptionMessage) :
+    RuntimeException(exceptionMessage.localizedMessage)

@@ -1,5 +1,6 @@
 package com.hs.application.usecase
 
+import com.hs.application.exception.ApplicationLayerException
 import com.hs.dto.CreateProductDto
 import com.hs.dto.UpdateProductDto
 import com.hs.entity.Product
@@ -8,6 +9,11 @@ import com.hs.message.CommandAppExceptionMessage
 import com.hs.data.jpa.ProductImageRepository
 import com.hs.repository.ProductQueryRepository
 import com.hs.data.jpa.ProductRepository
+import com.hs.entity.ProductCommandCode
+import com.hs.event.ProductChangeConfirmStatusEvent
+import com.hs.event.ProductCreateAndUpdateEvent
+import com.hs.event.ProductDecreaseStockQuantityEvent
+import com.hs.event.ProductUpdateImageEvent
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationEventPublisher
@@ -38,7 +44,17 @@ class ProductCommand(
 
         productRepository.save(product)
 
-        product.publishEventOfCreatedProduct(publisher = publisher)
+        try {
+            publisher.publishEvent(
+                ProductCreateAndUpdateEvent(
+                    productId = product.id!!,
+                    productCommandCode = ProductCommandCode.INSERT,
+                    product = product
+                )
+            )
+        } catch (exception: NullPointerException) {
+            throw ApplicationLayerException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
+        }
 
         return product.id
     }
@@ -52,8 +68,19 @@ class ProductCommand(
             name = updateProductDto.name,
             price = updateProductDto.price,
             stockQuantity = updateProductDto.stockQuantity,
-            publisher = publisher
         )
+
+        try {
+            publisher.publishEvent(
+                ProductCreateAndUpdateEvent(
+                    productId = product.id!!,
+                    productCommandCode = ProductCommandCode.UPDATE,
+                    product = product
+                )
+            )
+        } catch (exception: NullPointerException) {
+            throw ApplicationLayerException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
+        }
     }
 
     fun decreaseStockQuantity(id: Long, completeStockQuantity: Int) {
@@ -61,7 +88,19 @@ class ProductCommand(
 
         val product: Product = findProduct(id = id)
 
-        product.decreaseStockCount(stockQuantity = completeStockQuantity, publisher = publisher)
+        product.decreaseStockCount(stockQuantity = completeStockQuantity)
+
+        try {
+            publisher.publishEvent(
+                ProductDecreaseStockQuantityEvent(
+                    productId = product.id!!,
+                    productCommandCode = ProductCommandCode.DECREASE_STOCK_QUANTITY,
+                    currentStockQuantity = product.stockQuantity
+                )
+            )
+        } catch (exception: NullPointerException) {
+            throw ApplicationLayerException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
+        }
     }
 
     fun changeConfirmStatus(id: Long, strProductConfirmStatus: String) {
@@ -69,7 +108,19 @@ class ProductCommand(
 
         val product: Product = findProduct(id = id)
 
-        product.changeConfirmStatus(strProductConfirmStatus = strProductConfirmStatus, publisher = publisher)
+        product.changeConfirmStatus(strProductConfirmStatus = strProductConfirmStatus)
+
+        try {
+            publisher.publishEvent(
+                ProductChangeConfirmStatusEvent(
+                    productId = product.id!!,
+                    productCommandCode = ProductCommandCode.CHANGE_CONFIRM_STATUS,
+                    confirmStatus = product.confirmStatus
+                )
+            )
+        } catch (exception: NullPointerException) {
+            throw ApplicationLayerException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
+        }
     }
 
     fun updateImage(id: Long, imageUrls: List<String>) {
@@ -81,7 +132,19 @@ class ProductCommand(
 
         productImageRepository.saveAll(ProductImage.createList(imageUrls = imageUrls, product = product))
 
-        product.publishEventOfCreateImage(imageUrls = imageUrls, publisher = publisher)
+        product.updateImage()
+
+        try {
+            publisher.publishEvent(
+                ProductUpdateImageEvent(
+                    productId = product.id!!,
+                    productCommandCode = ProductCommandCode.UPDATE_IMAGE,
+                    imageUrls = imageUrls
+                )
+            )
+        } catch (exception: NullPointerException) {
+            throw ApplicationLayerException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
+        }
     }
 
     fun findProduct(id: Long): Product {

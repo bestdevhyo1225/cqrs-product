@@ -1,5 +1,6 @@
 package com.hs.adapter
 
+import com.hs.application.exception.ApplicationLayerException
 import com.hs.exception.DomainMySqlException
 import com.hs.response.ErrorResponse
 import org.springframework.http.HttpStatus
@@ -24,6 +25,7 @@ class CommandAppGlobalExceptionHandler {
     @ExceptionHandler(
         value = [
             DomainMySqlException::class,
+            ApplicationLayerException::class,
             ConstraintViolationException::class
         ]
     )
