@@ -1,4 +1,4 @@
-package com.hs.web.rest.request
+package com.hs.adapter.rest.request
 
 import javax.validation.constraints.NotBlank
 
