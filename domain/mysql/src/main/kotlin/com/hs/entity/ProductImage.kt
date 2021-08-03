@@ -1,8 +1,5 @@
 package com.hs.entity
 
-import au.com.console.kassava.kotlinEquals
-import au.com.console.kassava.kotlinHashCode
-import au.com.console.kassava.kotlinToString
 import org.hibernate.annotations.DynamicUpdate
 import javax.persistence.Entity
 import javax.persistence.Id
@@ -30,14 +27,26 @@ class ProductImage(url: String, product: Product) {
     var product: Product = product
         protected set
 
-    override fun toString() = kotlinToString(properties = toStringProperties)
-    override fun equals(other: Any?) = kotlinEquals(other = other, properties = equalsAndHashCodeProperties)
-    override fun hashCode() = kotlinHashCode(properties = equalsAndHashCodeProperties)
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as ProductImage
+
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return id?.hashCode() ?: 0
+    }
+
+    override fun toString(): String {
+        return "ProductImage(id=$id, url=$url)"
+    }
 
     companion object {
-        private val equalsAndHashCodeProperties = arrayOf(ProductImage::id)
-        private val toStringProperties = arrayOf(ProductImage::id, ProductImage::url)
-
         fun createList(imageUrls: List<String>, product: Product): List<ProductImage> {
             return imageUrls.map { imageUrl -> ProductImage(url = imageUrl, product = product) }
         }

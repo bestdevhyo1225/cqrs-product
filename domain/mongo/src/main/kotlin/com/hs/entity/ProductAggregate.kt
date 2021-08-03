@@ -1,8 +1,5 @@
 package com.hs.entity
 
-import au.com.console.kassava.kotlinEquals
-import au.com.console.kassava.kotlinHashCode
-import au.com.console.kassava.kotlinToString
 import com.hs.dto.FindProductDto
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
@@ -34,22 +31,28 @@ class ProductAggregate(productId: Long, type: ProductAggregateType, isDisplay: B
     var updatedDatetime: String = LocalDateTime.now().format(DATETIME_FORMATTER).toString()
         protected set
 
-    override fun toString() = kotlinToString(properties = toStringProperties)
-    override fun equals(other: Any?) = kotlinEquals(other = other, properties = equalsAndHashCodeProperties)
-    override fun hashCode() = kotlinHashCode(properties = equalsAndHashCodeProperties)
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as ProductAggregate
+
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return id?.hashCode() ?: 0
+    }
+
+    override fun toString(): String {
+        return "ProductAggregate(id=$id, productId=$productId, type=$type, isDisplay=$isDisplay, data=$data, " +
+                "createdDatetime=$createdDatetime, updatedDatetime=$updatedDatetime)"
+    }
 
     companion object {
         private val DATETIME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        private val equalsAndHashCodeProperties = arrayOf(ProductAggregate::id)
-        private val toStringProperties = arrayOf(
-            ProductAggregate::id,
-            ProductAggregate::productId,
-            ProductAggregate::type,
-            ProductAggregate::isDisplay,
-            ProductAggregate::data,
-            ProductAggregate::createdDatetime,
-            ProductAggregate::updatedDatetime,
-        )
 
         fun create(productDto: FindProductDto, type: ProductAggregateType): ProductAggregate {
             return ProductAggregate(

@@ -1,8 +1,5 @@
 package com.hs.entity
 
-import au.com.console.kassava.kotlinEquals
-import au.com.console.kassava.kotlinHashCode
-import au.com.console.kassava.kotlinToString
 import java.time.LocalDateTime
 import javax.persistence.Entity
 import javax.persistence.Id
@@ -38,18 +35,23 @@ class ProductEventLog(productId: Long, productCommandCode: ProductCommandCode, m
     @Column(nullable = false)
     val createdDate: LocalDateTime = LocalDateTime.now()
 
-    override fun toString() = kotlinToString(properties = toStringProperties)
-    override fun equals(other: Any?) = kotlinEquals(other = other, properties = equalsAndHashCodeProperties)
-    override fun hashCode() = kotlinHashCode(properties = equalsAndHashCodeProperties)
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
 
-    companion object {
-        private val equalsAndHashCodeProperties = arrayOf(ProductEventLog::id)
-        private val toStringProperties = arrayOf(
-            ProductEventLog::id,
-            ProductEventLog::productId,
-            ProductEventLog::productCommandCode,
-            ProductEventLog::message,
-            ProductEventLog::createdDate
-        )
+        other as ProductEventLog
+
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return id?.hashCode() ?: 0
+    }
+
+    override fun toString(): String {
+        return "ProductEventLog(id=$id, productId=$productId, productCommandCode=$productCommandCode, " +
+                "message=$message, createdDate=$createdDate)"
     }
 }
