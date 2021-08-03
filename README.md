@@ -19,6 +19,13 @@
 - Kotlinx Coroutines Core
 - JUnit 5
 
-## System Architecture
+## 시스템 아키텍쳐
 
-![image](https://user-images.githubusercontent.com/23515771/121531264-3836e380-ca39-11eb-9c59-8c98287388a1.png)
+![image](https://user-images.githubusercontent.com/23515771/127999493-441ce63c-1ad3-4abe-bc6c-6808f13b2c9e.png)
+
+## 헥사고날 아키텍쳐
+
+- `Command`, `Query` 모듈은 `헥사고날 아키텍쳐`를 따른다.
+
+![image](https://user-images.githubusercontent.com/23515771/128000044-b4520de0-035e-4930-8a81-95bf3e8c9e59.png)
+
