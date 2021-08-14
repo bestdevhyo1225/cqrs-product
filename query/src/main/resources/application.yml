@@ -4,9 +4,6 @@ server:
 #    threads:
 #      min-spare: 20
 #      max: 200
-#    # 하나의 Tomcat 인스턴스가 유지할 수 있는 Connection의 수
-#    # 현재 연결되어 있는 실제 Connection의 수가 아니고, 현재 사용중인 Socket FD(File Descriptor)의 수를 의미한다.
-#    max-connections: 8192
 
 spring:
   profiles:
