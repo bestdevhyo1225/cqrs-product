@@ -38,4 +38,4 @@ spring:
 logging:
   level:
     com.rabbitmq.client: debug
-    org.springframework.data.mongodb.core.MongoTemplate: debug
+#    org.springframework.data.mongodb.core.MongoTemplate: debug
