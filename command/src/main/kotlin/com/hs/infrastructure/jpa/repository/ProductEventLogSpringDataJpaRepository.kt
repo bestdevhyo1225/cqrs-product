@@ -1,4 +1,4 @@
-package com.hs.data.jpa.repository
+package com.hs.infrastructure.jpa.repository
 
 import com.hs.entity.ProductEventLog
 import org.springframework.data.jpa.repository.JpaRepository

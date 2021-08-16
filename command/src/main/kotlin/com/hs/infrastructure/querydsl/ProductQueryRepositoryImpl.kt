@@ -1,4 +1,4 @@
-package com.hs.data.querydsl
+package com.hs.infrastructure.querydsl
 
 import com.hs.entity.Product
 import com.hs.entity.QProduct.product
