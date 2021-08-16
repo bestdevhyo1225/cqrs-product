@@ -3,9 +3,11 @@ package com.hs.data.jpa
 import com.hs.entity.ProductImage
 import com.hs.repository.ProductImageRepository
 import org.springframework.stereotype.Repository
+import org.springframework.transaction.annotation.Transactional
 import javax.persistence.EntityManager
 
 @Repository
+@Transactional
 class ProductImageJpaRepository(private val entityManager: EntityManager) : ProductImageRepository {
 
     override fun saveAll(productImages: List<ProductImage>): List<ProductImage> {
