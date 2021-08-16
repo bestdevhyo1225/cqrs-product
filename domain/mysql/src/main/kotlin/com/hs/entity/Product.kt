@@ -79,7 +79,7 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         productImages.add(productImage)
     }
 
-    fun updateImage() {
+    fun updateWaitConfirmStatusByUpdatedImage() {
         this.confirmStatus = ProductConfirmStatus.WAIT
         this.updatedDate = LocalDateTime.now()
     }
@@ -103,7 +103,7 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         this.updatedDate = LocalDateTime.now()
     }
 
-    fun changeConfirmStatus(strProductConfirmStatus: String) {
+    fun updateConfirmStatus(strProductConfirmStatus: String) {
         val confirmStatus: ProductConfirmStatus =
             ProductConfirmStatus.convertFromStringToProductConfirmStatus(value = strProductConfirmStatus)
 

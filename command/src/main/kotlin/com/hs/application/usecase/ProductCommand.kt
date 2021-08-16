@@ -107,7 +107,7 @@ class ProductCommand(
 
         val product: Product = findProduct(id = id)
 
-        product.changeConfirmStatus(strProductConfirmStatus = strProductConfirmStatus)
+        product.updateConfirmStatus(strProductConfirmStatus = strProductConfirmStatus)
 
         try {
             publisher.publishEvent(
@@ -131,7 +131,7 @@ class ProductCommand(
 
         productImageRepository.saveAll(ProductImage.create(imageUrls = imageUrls, product = product))
 
-        product.updateImage()
+        product.updateWaitConfirmStatusByUpdatedImage()
 
         try {
             publisher.publishEvent(
