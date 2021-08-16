@@ -54,21 +54,6 @@ class Product(name: String, price: Int, stockQuantity: Int) {
     @OneToMany(mappedBy = "product", cascade = [CascadeType.ALL])
     val productImages: MutableList<ProductImage> = mutableListOf()
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Product
-
-        if (id != other.id) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        return id?.hashCode() ?: 0
-    }
-
     override fun toString(): String {
         return "Product(id=$id, name=$name, price=$price, stockQuantity=$stockQuantity, confirmStatus=$confirmStatus, " +
                 "createdDate=$createdDate, updatedDate=$updatedDate, deletedDate=$deletedDate)"

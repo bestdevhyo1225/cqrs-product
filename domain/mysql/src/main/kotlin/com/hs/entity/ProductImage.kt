@@ -27,28 +27,13 @@ class ProductImage(url: String, product: Product) {
     var product: Product = product
         protected set
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as ProductImage
-
-        if (id != other.id) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        return id?.hashCode() ?: 0
-    }
-
     override fun toString(): String {
         return "ProductImage(id=$id, url=$url)"
     }
 
     companion object {
-        fun createList(imageUrls: List<String>, product: Product): List<ProductImage> {
-            return imageUrls.map { imageUrl -> ProductImage(url = imageUrl, product = product) }
+        fun create(imageUrl: String, product: Product): ProductImage {
+            return ProductImage(url = imageUrl, product = product)
         }
     }
 }
