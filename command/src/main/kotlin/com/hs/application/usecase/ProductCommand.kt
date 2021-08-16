@@ -150,7 +150,7 @@ class ProductCommand(
     fun findProduct(id: Long): Product {
         logger.info("findProduct() method is executed")
 
-        return productRepository.findByIdOrNull(id = id)
+        return productQueryRepository.findProduct(id = id)
             ?: throw NoSuchElementException(CommandAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
     }
 

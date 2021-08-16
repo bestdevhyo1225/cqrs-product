@@ -11,6 +11,13 @@ import org.springframework.stereotype.Repository
 @Repository
 class ProductQueryRepositoryImpl(private val queryFactory: JPAQueryFactory) : ProductQueryRepository {
 
+    override fun findProduct(id: Long): Product? {
+        return queryFactory
+            .selectFrom(product)
+            .where(productIdEq(id))
+            .fetchOne()
+    }
+
     override fun findProductWithFetchJoin(id: Long): Product? {
         return queryFactory
             .selectFrom(product)
