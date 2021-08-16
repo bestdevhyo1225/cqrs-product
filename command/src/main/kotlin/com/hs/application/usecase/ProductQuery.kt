@@ -27,7 +27,7 @@ class ProductQuery(
             productId = product.id!!,
             name = product.name,
             price = product.price,
-            stockQuantity = product.price,
+            stockQuantity = product.stockQuantity,
             confirmStatus = product.confirmStatus.toString(),
             imageUrls = product.productImages.map { productImage -> productImage.url }
         )
