@@ -6,14 +6,14 @@ import com.hs.dto.UpdateProductDto
 import com.hs.entity.Product
 import com.hs.entity.ProductImage
 import com.hs.message.CommandAppExceptionMessage
-import com.hs.data.jpa.ProductImageRepository
 import com.hs.repository.ProductQueryRepository
-import com.hs.data.jpa.ProductRepository
 import com.hs.entity.ProductCommandCode
 import com.hs.event.ProductChangeConfirmStatusEvent
 import com.hs.event.ProductCreateAndUpdateEvent
 import com.hs.event.ProductDecreaseStockQuantityEvent
 import com.hs.event.ProductUpdateImageEvent
+import com.hs.repository.ProductImageRepository
+import com.hs.repository.ProductRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationEventPublisher
@@ -129,7 +129,9 @@ class ProductCommand(
 
         productImageRepository.deleteByProductId(productId = product.id!!)
 
-        productImageRepository.saveAll(ProductImage.createList(imageUrls = imageUrls, product = product))
+        imageUrls.forEach {
+            productImageRepository.save(ProductImage.create(imageUrl = it, product = product))
+        }
 
         product.updateImage()
 
