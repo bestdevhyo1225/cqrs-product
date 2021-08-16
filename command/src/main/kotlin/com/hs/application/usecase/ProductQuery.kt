@@ -1,6 +1,7 @@
 package com.hs.application.usecase
 
 import com.hs.dto.FindProductDto
+import com.hs.entity.Product
 import com.hs.message.CommandAppExceptionMessage
 import com.hs.repository.ProductQueryRepository
 import org.slf4j.Logger
@@ -19,7 +20,16 @@ class ProductQuery(
     fun findProductAggregate(id: Long): FindProductDto {
         logger.info("findProductAggregate() method is executed")
 
-        return productQueryRepository.findProductAggregate(id = id)
+        val product: Product = productQueryRepository.findProductWithFetchJoin(id = id)
             ?: throw NoSuchElementException(CommandAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
+
+        return FindProductDto(
+            productId = product.id!!,
+            name = product.name,
+            price = product.price,
+            stockQuantity = product.price,
+            confirmStatus = product.confirmStatus.toString(),
+            imageUrls = product.productImages.map { productImage -> productImage.url }
+        )
     }
 }

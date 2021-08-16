@@ -89,6 +89,7 @@ project(":domain:mysql") {
         implementation(project(":common"))
     }
 }
+
 project(":domain:mongo") {
     dependencies {
         implementation(project(":common"))

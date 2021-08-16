@@ -157,7 +157,7 @@ class ProductCommand(
     fun findProductWithFetchJoin(id: Long): Product {
         logger.info("findProductWithFetchJoin() method is executed")
 
-        return productQueryRepository.findProduct(id = id)
+        return productQueryRepository.findProductWithFetchJoin(id = id)
             ?: throw NoSuchElementException(CommandAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
     }
 }
