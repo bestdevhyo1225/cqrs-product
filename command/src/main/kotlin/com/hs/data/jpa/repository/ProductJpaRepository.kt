@@ -1,4 +1,4 @@
-package com.hs.data.jpa
+package com.hs.data.jpa.repository
 
 import com.hs.entity.Product
 import com.hs.repository.ProductRepository
