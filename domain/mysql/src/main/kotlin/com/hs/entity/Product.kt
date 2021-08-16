@@ -79,19 +79,6 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         productImages.add(productImage)
     }
 
-    fun updateWaitConfirmStatusByUpdatedImage() {
-        this.confirmStatus = ProductConfirmStatus.WAIT
-        this.updatedDate = LocalDateTime.now()
-    }
-
-    fun update(name: String, price: Int, stockQuantity: Int) {
-        this.name = name
-        this.price = price
-        this.stockQuantity = stockQuantity
-        this.confirmStatus = ProductConfirmStatus.WAIT
-        this.updatedDate = LocalDateTime.now()
-    }
-
     fun decreaseStockCount(stockQuantity: Int) {
         if (this.stockQuantity - stockQuantity <= 0) {
             throw DomainMySqlException(
@@ -103,11 +90,24 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         this.updatedDate = LocalDateTime.now()
     }
 
+    fun update(name: String, price: Int, stockQuantity: Int) {
+        this.name = name
+        this.price = price
+        this.stockQuantity = stockQuantity
+        this.confirmStatus = ProductConfirmStatus.WAIT
+        this.updatedDate = LocalDateTime.now()
+    }
+
     fun updateConfirmStatus(strProductConfirmStatus: String) {
         val confirmStatus: ProductConfirmStatus =
             ProductConfirmStatus.convertFromStringToProductConfirmStatus(value = strProductConfirmStatus)
 
         this.confirmStatus = confirmStatus
+        this.updatedDate = LocalDateTime.now()
+    }
+
+    fun updateWaitConfirmStatusByUpdatedImage() {
+        this.confirmStatus = ProductConfirmStatus.WAIT
         this.updatedDate = LocalDateTime.now()
     }
 }
