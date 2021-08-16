@@ -32,8 +32,8 @@ class ProductImage(url: String, product: Product) {
     }
 
     companion object {
-        fun create(imageUrl: String, product: Product): ProductImage {
-            return ProductImage(url = imageUrl, product = product)
+        fun create(imageUrls: List<String>, product: Product): List<ProductImage> {
+            return imageUrls.map { ProductImage(url = it, product = product) }
         }
     }
 }

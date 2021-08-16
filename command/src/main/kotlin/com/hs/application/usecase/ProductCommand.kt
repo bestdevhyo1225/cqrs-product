@@ -129,9 +129,7 @@ class ProductCommand(
 
         productImageRepository.deleteByProductId(productId = product.id!!)
 
-        imageUrls.forEach {
-            productImageRepository.save(ProductImage.create(imageUrl = it, product = product))
-        }
+        productImageRepository.saveAll(ProductImage.create(imageUrls = imageUrls, product = product))
 
         product.updateImage()
 

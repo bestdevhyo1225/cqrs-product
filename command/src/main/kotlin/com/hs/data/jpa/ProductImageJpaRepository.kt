@@ -2,17 +2,20 @@ package com.hs.data.jpa
 
 import com.hs.entity.ProductImage
 import com.hs.repository.ProductImageRepository
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Modifying
-import org.springframework.data.jpa.repository.Query
+import org.springframework.stereotype.Repository
+import javax.persistence.EntityManager
 
-interface ProductImageJpaRepository : ProductImageRepository, JpaRepository<ProductImage, Long> {
+@Repository
+class ProductImageJpaRepository(private val entityManager: EntityManager) : ProductImageRepository {
 
-    /*
-    * @Modifying은 INSERT, UPDATE, DELETE 쿼리에서 사용하고, 주로 벌크 연산시 적용하는 어노테이션이다.
-    * - clearAutomatically 옵션은 영속성 컨텍스트를 Clear 할 것인지를 지정하는 속성이다.
-    * */
-    @Modifying
-    @Query(value = "DELETE FROM ProductImage pi WHERE pi.product.id = :productId")
-    override fun deleteByProductId(productId: Long)
+    override fun saveAll(productImages: List<ProductImage>): List<ProductImage> {
+        productImages.forEach { entityManager.persist(it) }
+        return productImages
+    }
+
+    override fun deleteByProductId(productId: Long) {
+        entityManager.createQuery("DELETE FROM ProductImage pi WHERE pi.product.id = :productId")
+            .setParameter("productId", productId)
+            .executeUpdate()
+    }
 }
