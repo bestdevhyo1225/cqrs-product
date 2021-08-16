@@ -98,16 +98,8 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         this.updatedDate = LocalDateTime.now()
     }
 
-    fun updateConfirmStatus(strProductConfirmStatus: String) {
-        val confirmStatus: ProductConfirmStatus =
-            ProductConfirmStatus.convertFromStringToProductConfirmStatus(value = strProductConfirmStatus)
-
+    fun updateConfirmStatus(confirmStatus: ProductConfirmStatus) {
         this.confirmStatus = confirmStatus
-        this.updatedDate = LocalDateTime.now()
-    }
-
-    fun updateWaitConfirmStatusByUpdatedImage() {
-        this.confirmStatus = ProductConfirmStatus.WAIT
         this.updatedDate = LocalDateTime.now()
     }
 }

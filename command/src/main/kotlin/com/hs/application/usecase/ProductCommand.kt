@@ -8,6 +8,7 @@ import com.hs.entity.ProductImage
 import com.hs.message.CommandAppExceptionMessage
 import com.hs.repository.ProductQueryRepository
 import com.hs.entity.ProductCommandCode
+import com.hs.entity.ProductConfirmStatus
 import com.hs.event.ProductChangeConfirmStatusEvent
 import com.hs.event.ProductCreateAndUpdateEvent
 import com.hs.event.ProductDecreaseStockQuantityEvent
@@ -105,9 +106,12 @@ class ProductCommand(
     fun changeConfirmStatus(id: Long, strProductConfirmStatus: String) {
         logger.info("changeConfirmStatus() method is executed")
 
+        val confirmStatus: ProductConfirmStatus =
+            ProductConfirmStatus.convertFromStringToProductConfirmStatus(value = strProductConfirmStatus)
+
         val product: Product = findProduct(id = id)
 
-        product.updateConfirmStatus(strProductConfirmStatus = strProductConfirmStatus)
+        product.updateConfirmStatus(confirmStatus = confirmStatus)
 
         try {
             publisher.publishEvent(
@@ -128,10 +132,8 @@ class ProductCommand(
         val product: Product = findProductWithFetchJoin(id = id)
 
         productImageRepository.deleteByProductId(productId = product.id!!)
-
         productImageRepository.saveAll(ProductImage.create(imageUrls = imageUrls, product = product))
-
-        product.updateWaitConfirmStatusByUpdatedImage()
+        product.updateConfirmStatus(confirmStatus = ProductConfirmStatus.WAIT)
 
         try {
             publisher.publishEvent(
