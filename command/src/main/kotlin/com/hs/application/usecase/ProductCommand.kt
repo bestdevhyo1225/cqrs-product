@@ -4,22 +4,26 @@ import com.hs.application.exception.ApplicationLayerException
 import com.hs.dto.CreateProductDto
 import com.hs.dto.UpdateProductDto
 import com.hs.entity.Product
-import com.hs.entity.ProductImage
-import com.hs.message.CommandAppExceptionMessage
-import com.hs.repository.ProductQueryRepository
 import com.hs.entity.ProductCommandCode
 import com.hs.entity.ProductConfirmStatus
+import com.hs.entity.ProductImage
 import com.hs.event.ProductChangeConfirmStatusEvent
 import com.hs.event.ProductCreateAndUpdateEvent
 import com.hs.event.ProductDecreaseStockQuantityEvent
 import com.hs.event.ProductUpdateImageEvent
+import com.hs.message.CommandAppExceptionMessage
 import com.hs.repository.ProductImageRepository
+import com.hs.repository.ProductQueryRepository
 import com.hs.repository.ProductRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.reactive.TransactionSynchronization.STATUS_COMMITTED
+import org.springframework.transaction.reactive.TransactionSynchronization.STATUS_ROLLED_BACK
+import org.springframework.transaction.support.TransactionSynchronization
+import org.springframework.transaction.support.TransactionSynchronizationManager
 
 @Service
 @Transactional
@@ -34,6 +38,16 @@ class ProductCommand(
 
     fun create(createProductDto: CreateProductDto): Long? {
         logger.info("create() method is executed")
+
+        TransactionSynchronizationManager.registerSynchronization(
+            object : TransactionSynchronization {
+                override fun afterCompletion(status: Int) {
+                    if (status == STATUS_ROLLED_BACK) {
+                        logger.info("RollBack!!!")
+                    }
+                }
+            }
+        )
 
         val product = Product.create(
             name = createProductDto.name,
