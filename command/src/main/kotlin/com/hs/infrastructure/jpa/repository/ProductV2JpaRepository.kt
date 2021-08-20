@@ -1,6 +1,7 @@
 package com.hs.infrastructure.jpa.repository
 
 import com.hs.entity.ProductV2
+import com.hs.infrastructure.jpa.mapper.EntityMapper
 import com.hs.infrastructure.jpa.persistence.ProductPersistence
 import com.hs.repository.ProductV2Repository
 import org.springframework.stereotype.Repository
@@ -39,7 +40,7 @@ class ProductV2JpaRepository(private val entityManager: EntityManager) : Product
 
     override fun findProduct(id: Long): ProductV2? {
         val productPersistence: ProductPersistence? = entityManager.find(ProductPersistence::class.java, id)
-        return productPersistence?.toEntity()
+        return EntityMapper.toProductEntity(productPersistence)
     }
 
     override fun findProductWithFetchJoin(id: Long): ProductV2? {
@@ -51,6 +52,6 @@ class ProductV2JpaRepository(private val entityManager: EntityManager) : Product
             .setParameter("id", id)
             .singleResult
 
-        return productPersistence?.toEntity()
+        return EntityMapper.toProductEntity(productPersistence)
     }
 }
