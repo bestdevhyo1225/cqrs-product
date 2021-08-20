@@ -1,7 +1,6 @@
 package com.hs.infrastructure.jpa.persistence
 
 import com.hs.entity.ProductConfirmStatus
-import com.hs.entity.ProductV2
 import org.hibernate.annotations.DynamicUpdate
 import java.time.LocalDateTime
 import javax.persistence.CascadeType
@@ -90,19 +89,5 @@ class ProductPersistence(name: String, price: Int, stockQuantity: Int) {
         this.stockQuantity = stockQuantity
         this.confirmStatus = ProductConfirmStatus.WAIT
         this.updatedDate = LocalDateTime.now()
-    }
-
-    fun toEntity(): ProductV2? {
-        return ProductV2(
-            id = this.id,
-            name = this.name,
-            price = this.price,
-            stockQuantity = this.stockQuantity,
-            imageUrls = this.productImages.map { it.url },
-            confirmStatus = this.confirmStatus,
-            createdDate = this.createdDate,
-            updatedDate = this.updatedDate,
-            deletedDate = this.deletedDate
-        )
     }
 }
