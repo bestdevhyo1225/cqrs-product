@@ -13,7 +13,7 @@ class ProductV2Query(
     private val productRepository: ProductV2Repository
 ) {
 
-    fun findProduct(id: Long): FindProductDto {
+    fun findProductAggregate(id: Long): FindProductDto {
         val product: ProductV2 = productRepository.findProductWithFetchJoin(id = id)
             ?: throw NoSuchElementException(CommandAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
 

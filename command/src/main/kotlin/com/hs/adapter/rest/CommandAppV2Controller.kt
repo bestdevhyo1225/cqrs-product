@@ -30,7 +30,7 @@ class CommandAppV2Controller(
 
     @GetMapping(value = ["{id}"])
     fun find(@PathVariable(value = "id") productId: Long): ResponseEntity<SuccessResponse<FindProductDto>> {
-        val product: FindProductDto = productQuery.findProduct(id = productId)
+        val product: FindProductDto = productQuery.findProductAggregate(id = productId)
         return ResponseEntity.ok(SuccessResponse(data = product))
     }
 
