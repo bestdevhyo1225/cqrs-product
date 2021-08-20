@@ -115,4 +115,9 @@ class ProductPersistence(
         this.stockQuantity = stockQuantity
         this.updatedDate = LocalDateTime.now()
     }
+
+    fun updateConfirmStatus(confirmStatus: ProductConfirmStatus) {
+        this.confirmStatus = confirmStatus
+        this.updatedDate = LocalDateTime.now()
+    }
 }

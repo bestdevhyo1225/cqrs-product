@@ -1,5 +1,6 @@
 package com.hs.infrastructure.jpa.repository
 
+import com.hs.entity.ProductConfirmStatus
 import com.hs.entity.ProductV2
 import com.hs.infrastructure.jpa.mapper.ProductMapper
 import com.hs.infrastructure.jpa.persistence.ProductPersistence
@@ -23,25 +24,29 @@ class ProductV2JpaRepository(private val entityManager: EntityManager) : Product
     }
 
     override fun update(product: ProductV2) {
-        val productPersistence: ProductPersistence =
-            entityManager.find(ProductPersistence::class.java, product.id!!)
+        val productPersistence: ProductPersistence? = findOne(product.id!!)
 
-        productPersistence.update(
+        productPersistence?.update(
             name = product.name,
             price = product.price,
             stockQuantity = product.stockQuantity
         )
     }
 
-    override fun updateStockQuantity(product: ProductV2) {
-        val productPersistence: ProductPersistence =
-            entityManager.find(ProductPersistence::class.java, product.id!!)
+    override fun updateStockQuantity(id: Long?, stockQuantity: Int) {
+        val productPersistence: ProductPersistence? = findOne(id = id!!)
 
-        productPersistence.decreaseStockCount(stockQuantity = product.stockQuantity)
+        productPersistence?.decreaseStockCount(stockQuantity = stockQuantity)
+    }
+
+    override fun updateConfirmStatus(id: Long?, confirmStatus: ProductConfirmStatus) {
+        val productPersistence: ProductPersistence? = findOne(id = id!!)
+
+        productPersistence?.updateConfirmStatus(confirmStatus = confirmStatus)
     }
 
     override fun findProduct(id: Long): ProductV2? {
-        val productPersistence: ProductPersistence? = entityManager.find(ProductPersistence::class.java, id)
+        val productPersistence: ProductPersistence? = findOne(id = id)
 
         return ProductMapper.toDomainEntity(productPersistence = productPersistence)
     }
@@ -56,5 +61,9 @@ class ProductV2JpaRepository(private val entityManager: EntityManager) : Product
             .singleResult
 
         return ProductMapper.toDomainEntity(productPersistence = productPersistence, usedFetchJoin = true)
+    }
+
+    private fun findOne(id: Long): ProductPersistence? {
+        return entityManager.find(ProductPersistence::class.java, id)
     }
 }

@@ -2,6 +2,7 @@ package com.hs.application.usecase
 
 import com.hs.dto.CreateProductDto
 import com.hs.dto.UpdateProductDto
+import com.hs.entity.ProductConfirmStatus
 import com.hs.entity.ProductV2
 import com.hs.message.CommandAppExceptionMessage
 import com.hs.repository.ProductV2Repository
@@ -44,11 +45,18 @@ class ProductV2Command(
 
         product.decreaseStockCount(stockQuantity = completeStockQuantity)
 
-        productRepository.updateStockQuantity(product = product)
+        productRepository.updateStockQuantity(id = product.id, stockQuantity = product.stockQuantity)
     }
 
     fun changeConfirmStatus(id: Long, strProductConfirmStatus: String) {
+        val confirmStatus: ProductConfirmStatus =
+            ProductConfirmStatus.convertFromStringToProductConfirmStatus(value = strProductConfirmStatus)
 
+        val product: ProductV2 = findProduct(id = id)
+
+        product.updateConfirmStatus(confirmStatus = confirmStatus)
+
+        productRepository.updateConfirmStatus(id = product.id, confirmStatus = product.confirmStatus)
     }
 
     fun updateImage(id: Long, imageUrls: List<String>) {
