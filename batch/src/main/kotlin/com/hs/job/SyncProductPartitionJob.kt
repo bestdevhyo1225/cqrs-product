@@ -1,9 +1,9 @@
 package com.hs.job
 
 import com.hs.dto.FindProductDto
-import com.hs.entity.Product
 import com.hs.entity.ProductAggregate
 import com.hs.entity.ProductAggregateType.FIND_PRODUCT
+import com.hs.entity.ProductPersistence
 import com.hs.job.partitioner.ProductIdRangePartitioner
 import com.hs.job.reader.JpaPagingFetchItemReader
 import com.hs.repository.BatchAppProductAggregateRepository
@@ -119,7 +119,7 @@ class SyncProductPartitionJob(
     @Bean(name = [JOB_NAME + "_Step"])
     fun step(): Step {
         return stepBuilderFactory.get("syncProductPartitionStep")
-            .chunk<Product, UpsertProductAggregateVo>(chunkSize)
+            .chunk<ProductPersistence, UpsertProductAggregateVo>(chunkSize)
             .reader(reader(null, null))
             .processor(processor())
             .writer(writer())
@@ -131,12 +131,12 @@ class SyncProductPartitionJob(
     fun reader(
         @Value("#{stepExecutionContext['minId']}") minId: Long?,
         @Value("#{stepExecutionContext['maxId']}") maxId: Long?,
-    ): JpaPagingFetchItemReader<Product> {
+    ): JpaPagingFetchItemReader<ProductPersistence> {
         logger.info("minId = {}, maxId = {}", minId, maxId)
 
         val params: Map<String, Long> = mapOf("minId" to (minId ?: 0), "maxId" to (maxId ?: 0))
 
-        val reader: JpaPagingFetchItemReader<Product> = JpaPagingFetchItemReader()
+        val reader: JpaPagingFetchItemReader<ProductPersistence> = JpaPagingFetchItemReader()
 
         reader.setEntityManagerFactory(entityManagerFactory = entityManagerFactory)
         reader.setQueryString(queryString = "SELECT p FROM Product p WHERE p.id BETWEEN :minId AND :maxId ORDER BY p.id")
@@ -146,8 +146,8 @@ class SyncProductPartitionJob(
         return reader
     }
 
-    private fun processor(): ItemProcessor<Product, UpsertProductAggregateVo> {
-        return ItemProcessor<Product, UpsertProductAggregateVo> { product ->
+    private fun processor(): ItemProcessor<ProductPersistence, UpsertProductAggregateVo> {
+        return ItemProcessor<ProductPersistence, UpsertProductAggregateVo> { product ->
             val productDto = FindProductDto(
                 productId = product.id!!,
                 name = product.name,

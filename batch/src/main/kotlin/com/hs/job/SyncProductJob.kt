@@ -1,9 +1,9 @@
 package com.hs.job
 
 import com.hs.dto.FindProductDto
-import com.hs.entity.Product
 import com.hs.entity.ProductAggregate
 import com.hs.entity.ProductAggregateType.FIND_PRODUCT
+import com.hs.entity.ProductPersistence
 import com.hs.job.reader.JpaPagingFetchItemReader
 import com.hs.repository.BatchAppProductAggregateRepository
 import org.springframework.batch.core.Job
@@ -42,7 +42,7 @@ class SyncProductJob(
     @Bean(name = [JOB_NAME + "_Step"])
     fun step(): Step {
         return stepBuilderFactory.get("syncProductStep")
-            .chunk<Product, ProductAggregate>(chunkSize)
+            .chunk<ProductPersistence, ProductAggregate>(chunkSize)
             .reader(reader())
             .processor(processor())
             .writer(writer())
@@ -50,8 +50,8 @@ class SyncProductJob(
     }
 
     @Bean(name = [JOB_NAME + "_Reader"])
-    fun reader(): JpaPagingFetchItemReader<Product> {
-        val reader: JpaPagingFetchItemReader<Product> = JpaPagingFetchItemReader()
+    fun reader(): JpaPagingFetchItemReader<ProductPersistence> {
+        val reader: JpaPagingFetchItemReader<ProductPersistence> = JpaPagingFetchItemReader()
 
         reader.setEntityManagerFactory(entityManagerFactory = entityManagerFactory)
         reader.setQueryString(queryString = "SELECT p FROM Product p ORDER BY p.id")
@@ -61,8 +61,8 @@ class SyncProductJob(
     }
 
     @Bean(name = [JOB_NAME + "_Processor"])
-    fun processor(): ItemProcessor<Product, ProductAggregate> {
-        return ItemProcessor<Product, ProductAggregate> { product ->
+    fun processor(): ItemProcessor<ProductPersistence, ProductAggregate> {
+        return ItemProcessor<ProductPersistence, ProductAggregate> { product ->
             val productDto = FindProductDto(
                 productId = product.id!!,
                 name = product.name,
