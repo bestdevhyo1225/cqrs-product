@@ -13,7 +13,7 @@ import javax.persistence.Table
 
 @Entity
 @DynamicUpdate
-@Table(name = "product_image_2")
+@Table(name = "product_image")
 class ProductImagePersistence(url: String, product: ProductPersistence) {
 
     @Id

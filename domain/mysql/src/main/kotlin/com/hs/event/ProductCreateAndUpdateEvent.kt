@@ -1,7 +1,7 @@
 package com.hs.event
 
-import com.hs.entity.Product
 import com.hs.entity.ProductCommandCode
+import com.hs.entity.Product
 
 data class ProductCreateAndUpdateEvent(
     val productId: Long,
@@ -12,5 +12,5 @@ data class ProductCreateAndUpdateEvent(
         "Product(name=${product.name}, " +
                 "price=${product.price}, " +
                 "stockQuantity=${product.stockQuantity}, " +
-                "imageUrls=${product.productImages.map { image -> image.url }})"
+                "imageUrls=${product.imageUrls}"
 }

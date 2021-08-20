@@ -1,14 +1,14 @@
 package com.hs.infrastructure.jpa.mapper
 
-import com.hs.entity.ProductV2
+import com.hs.entity.Product
 import com.hs.infrastructure.jpa.persistence.ProductPersistence
 
 class ProductMapper {
     companion object {
-        fun toDomainEntity(productPersistence: ProductPersistence?, usedFetchJoin: Boolean = false): ProductV2? {
+        fun toDomainEntity(productPersistence: ProductPersistence?, usedFetchJoin: Boolean = false): Product? {
             productPersistence ?: return null
 
-            return ProductV2(
+            return Product(
                 id = productPersistence.id,
                 name = productPersistence.name,
                 price = productPersistence.price,
@@ -21,7 +21,7 @@ class ProductMapper {
             )
         }
 
-        fun toPersistenceEntity(product: ProductV2): ProductPersistence {
+        fun toPersistenceEntity(product: Product): ProductPersistence {
             return ProductPersistence.create(
                 name = product.name,
                 price = product.price,

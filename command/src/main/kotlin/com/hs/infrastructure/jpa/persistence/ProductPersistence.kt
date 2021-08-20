@@ -16,7 +16,7 @@ import javax.persistence.Table
 
 @Entity
 @DynamicUpdate
-@Table(name = "product_2")
+@Table(name = "product")
 class ProductPersistence(
     name: String,
     price: Int,

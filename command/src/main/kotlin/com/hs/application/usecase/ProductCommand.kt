@@ -3,17 +3,14 @@ package com.hs.application.usecase
 import com.hs.application.exception.ApplicationLayerException
 import com.hs.dto.CreateProductDto
 import com.hs.dto.UpdateProductDto
-import com.hs.entity.Product
 import com.hs.entity.ProductCommandCode
 import com.hs.entity.ProductConfirmStatus
-import com.hs.entity.ProductImage
+import com.hs.entity.Product
 import com.hs.event.ProductChangeConfirmStatusEvent
 import com.hs.event.ProductCreateAndUpdateEvent
 import com.hs.event.ProductDecreaseStockQuantityEvent
 import com.hs.event.ProductUpdateImageEvent
 import com.hs.message.CommandAppExceptionMessage
-import com.hs.repository.ProductImageRepository
-import com.hs.repository.ProductQueryRepository
 import com.hs.repository.ProductRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -28,34 +25,28 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 @Transactional
 class ProductCommand(
     private val publisher: ApplicationEventPublisher,
-    private val productRepository: ProductRepository,
-    private val productQueryRepository: ProductQueryRepository,
-    private val productImageRepository: ProductImageRepository
+    private val productRepository: ProductRepository
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
     fun create(createProductDto: CreateProductDto): Long? {
-        logger.info("create() method is executed")
-
         TransactionSynchronizationManager.registerSynchronization(
             object : TransactionSynchronization {
                 override fun afterCompletion(status: Int) {
-                    if (status == STATUS_ROLLED_BACK) {
-                        logger.info("RollBack!!!")
-                    }
+                    if (status == STATUS_ROLLED_BACK) logger.info("Save RollBack!!!")
                 }
             }
         )
 
-        val product = Product.create(
-            name = createProductDto.name,
-            price = createProductDto.price,
-            stockQuantity = createProductDto.stockQuantity,
-            imageUrls = createProductDto.imageUrls
+        val product: Product = productRepository.save(
+            product = Product(
+                name = createProductDto.name,
+                price = createProductDto.price,
+                stockQuantity = createProductDto.stockQuantity,
+                imageUrls = createProductDto.imageUrls
+            )
         )
-
-        productRepository.save(product)
 
         try {
             publisher.publishEvent(
@@ -73,8 +64,6 @@ class ProductCommand(
     }
 
     fun update(updateProductDto: UpdateProductDto) {
-        logger.info("update() method is executed")
-
         val product: Product = findProduct(id = updateProductDto.id)
 
         product.update(
@@ -82,6 +71,8 @@ class ProductCommand(
             price = updateProductDto.price,
             stockQuantity = updateProductDto.stockQuantity,
         )
+
+        productRepository.update(product = product)
 
         try {
             publisher.publishEvent(
@@ -97,11 +88,11 @@ class ProductCommand(
     }
 
     fun decreaseStockQuantity(id: Long, completeStockQuantity: Int) {
-        logger.info("decreaseStockQuantity() method is executed")
-
         val product: Product = findProduct(id = id)
 
         product.decreaseStockCount(stockQuantity = completeStockQuantity)
+
+        productRepository.updateStockQuantity(product = product)
 
         try {
             publisher.publishEvent(
@@ -117,14 +108,14 @@ class ProductCommand(
     }
 
     fun changeConfirmStatus(id: Long, strProductConfirmStatus: String) {
-        logger.info("changeConfirmStatus() method is executed")
-
         val confirmStatus: ProductConfirmStatus =
             ProductConfirmStatus.convertFromStringToProductConfirmStatus(value = strProductConfirmStatus)
 
         val product: Product = findProduct(id = id)
 
         product.updateConfirmStatus(confirmStatus = confirmStatus)
+
+        productRepository.updateConfirmStatus(product = product)
 
         try {
             publisher.publishEvent(
@@ -140,13 +131,13 @@ class ProductCommand(
     }
 
     fun updateImage(id: Long, imageUrls: List<String>) {
-        logger.info("updateImage() method is executed")
-
         val product: Product = findProductWithFetchJoin(id = id)
 
-        productImageRepository.deleteByProductId(productId = product.id!!)
-        productImageRepository.saveAll(ProductImage.create(imageUrls = imageUrls, product = product))
+        productRepository.deleteImageByProductId(productId = product.id!!)
+        productRepository.saveAllImage(product = product, imageUrls = imageUrls)
+
         product.updateConfirmStatus(confirmStatus = ProductConfirmStatus.WAIT)
+        productRepository.updateConfirmStatus(product = product)
 
         try {
             publisher.publishEvent(
@@ -162,16 +153,12 @@ class ProductCommand(
     }
 
     fun findProduct(id: Long): Product {
-        logger.info("findProduct() method is executed")
-
-        return productQueryRepository.findProduct(id = id)
+        return productRepository.findProduct(id = id)
             ?: throw NoSuchElementException(CommandAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
     }
 
     fun findProductWithFetchJoin(id: Long): Product {
-        logger.info("findProductWithFetchJoin() method is executed")
-
-        return productQueryRepository.findProductWithFetchJoin(id = id)
+        return productRepository.findProductWithFetchJoin(id = id)
             ?: throw NoSuchElementException(CommandAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
     }
 }

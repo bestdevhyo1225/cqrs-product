@@ -2,81 +2,65 @@ package com.hs.entity
 
 import com.hs.exception.DomainMySqlException
 import com.hs.message.CommandAppExceptionMessage
-import org.hibernate.annotations.DynamicUpdate
 import java.time.LocalDateTime
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Column
-import javax.persistence.OneToMany
-import javax.persistence.CascadeType
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
 
-@Entity
-@DynamicUpdate
-class Product(name: String, price: Int, stockQuantity: Int) {
+class Product(
+    id: Long? = null,
+    name: String,
+    price: Int,
+    stockQuantity: Int,
+    imageUrls: List<String> = listOf(),
+    confirmStatus: ProductConfirmStatus = ProductConfirmStatus.WAIT,
+    createdDate: LocalDateTime = LocalDateTime.now(),
+    updatedDate: LocalDateTime = LocalDateTime.now(),
+    deletedDate: LocalDateTime? = null,
+) {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
+    var id: Long? = id
+        private set
 
-    @Column(nullable = false)
     var name: String = name
-        protected set
+        private set
 
-    @Column(nullable = false)
     var price: Int = price
-        protected set
+        private set
 
-    @Column(nullable = false)
     var stockQuantity: Int = stockQuantity
-        protected set
+        private set
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    var confirmStatus: ProductConfirmStatus = ProductConfirmStatus.WAIT
-        protected set
+    var imageUrls: List<String> = imageUrls
+        private set
 
-    @Column(nullable = false, columnDefinition = "datetime")
-    var createdDate: LocalDateTime = LocalDateTime.now()
-        protected set
+    var confirmStatus: ProductConfirmStatus = confirmStatus
+        private set
 
-    @Column(nullable = false, columnDefinition = "datetime")
-    var updatedDate: LocalDateTime = LocalDateTime.now()
-        protected set
+    var createdDate: LocalDateTime = createdDate
+        private set
 
-    @Column(nullable = true, columnDefinition = "datetime")
-    var deletedDate: LocalDateTime? = null
-        protected set
+    var updatedDate: LocalDateTime = updatedDate
+        private set
 
-    @OneToMany(mappedBy = "product", cascade = [CascadeType.ALL])
-    val productImages: MutableList<ProductImage> = mutableListOf()
+    var deletedDate: LocalDateTime? = deletedDate
+        private set
 
     override fun toString(): String {
-        return "Product(id=$id, name=$name, price=$price, stockQuantity=$stockQuantity, confirmStatus=$confirmStatus, " +
-                "createdDate=$createdDate, updatedDate=$updatedDate, deletedDate=$deletedDate)"
+        return "Product(" +
+                "id=$id, name=$name, price=$price, stockQuantity=$stockQuantity, imageUrls=$imageUrls, " +
+                "confirmStatus=$confirmStatus, createdDate=$createdDate, updatedDate=$updatedDate, " +
+                "deletedDate=$deletedDate" +
+                ")"
     }
 
-    companion object {
-        fun create(
-            name: String,
-            price: Int,
-            stockQuantity: Int,
-            imageUrls: List<String>
-        ): Product {
-            val product = Product(name = name, price = price, stockQuantity = stockQuantity)
-
-            imageUrls.map { imageUrl -> ProductImage(url = imageUrl, product = product) }
-                .forEach { productImage -> product.addProductImage(productImage = productImage) }
-
-            return product
-        }
+    fun reflectIdAfterPersistence(id: Long?) {
+        this.id = id
     }
 
-    fun addProductImage(productImage: ProductImage) {
-        productImages.add(productImage)
+    fun update(name: String, price: Int, stockQuantity: Int) {
+        this.name = name
+        this.price = price
+        this.stockQuantity = stockQuantity
+        this.confirmStatus = ProductConfirmStatus.WAIT
+        this.updatedDate = LocalDateTime.now()
     }
 
     fun decreaseStockCount(stockQuantity: Int) {
@@ -87,14 +71,6 @@ class Product(name: String, price: Int, stockQuantity: Int) {
         }
 
         this.stockQuantity -= stockQuantity
-        this.updatedDate = LocalDateTime.now()
-    }
-
-    fun update(name: String, price: Int, stockQuantity: Int) {
-        this.name = name
-        this.price = price
-        this.stockQuantity = stockQuantity
-        this.confirmStatus = ProductConfirmStatus.WAIT
         this.updatedDate = LocalDateTime.now()
     }
 

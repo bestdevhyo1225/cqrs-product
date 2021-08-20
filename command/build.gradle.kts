@@ -6,6 +6,7 @@ plugins {
     kotlin("plugin.allopen")
     kotlin("plugin.noarg")
     kotlin("plugin.jpa")
+    kotlin("kapt")
 }
 
 allOpen {
@@ -24,6 +25,13 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.querydsl:querydsl-jpa:4.4.0")
+    kapt("com.querydsl:querydsl-apt:4.4.0:jpa")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    annotationProcessor(group = "com.querydsl", name = "querydsl-apt", classifier = "jpa")
     runtimeOnly("mysql:mysql-connector-java")
     runtimeOnly("com.h2database:h2")
+}
+
+sourceSets["main"].withConvention(org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet::class) {
+    kotlin.srcDir("$buildDir/generated/source/kapt/main")
 }
