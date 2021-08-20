@@ -48,6 +48,6 @@ class ProductV2JpaRepository(private val entityManager: EntityManager) : Product
             .setParameter("id", id)
             .singleResult
 
-        return ProductMapper.toDomainEntity(productPersistence = productPersistence)
+        return ProductMapper.toDomainEntity(productPersistence = productPersistence, usedFetchJoin = true)
     }
 }

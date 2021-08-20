@@ -52,7 +52,7 @@ class ProductV2Command(
     }
 
     fun findProduct(id: Long): ProductV2 {
-        return productRepository.findProductWithFetchJoin(id = id)
+        return productRepository.findProduct(id = id)
             ?: throw NoSuchElementException(CommandAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
     }
 }

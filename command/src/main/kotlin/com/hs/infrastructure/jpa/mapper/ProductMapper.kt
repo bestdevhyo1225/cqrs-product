@@ -5,7 +5,7 @@ import com.hs.infrastructure.jpa.persistence.ProductPersistence
 
 class ProductMapper {
     companion object {
-        fun toDomainEntity(productPersistence: ProductPersistence?): ProductV2? {
+        fun toDomainEntity(productPersistence: ProductPersistence?, usedFetchJoin: Boolean = false): ProductV2? {
             productPersistence ?: return null
 
             return ProductV2(
@@ -13,7 +13,7 @@ class ProductMapper {
                 name = productPersistence.name,
                 price = productPersistence.price,
                 stockQuantity = productPersistence.stockQuantity,
-                imageUrls = productPersistence.productImages.map { it.url },
+                imageUrls = if (usedFetchJoin) productPersistence.productImages.map { it.url } else listOf(),
                 confirmStatus = productPersistence.confirmStatus,
                 createdDate = productPersistence.createdDate,
                 updatedDate = productPersistence.updatedDate,
