@@ -1,12 +1,12 @@
 package com.hs.application.handler
 
 import com.hs.entity.ProductCommandCode
-import com.hs.entity.ProductEventLog
 import com.hs.event.ProductChangeConfirmStatusEvent
 import com.hs.event.ProductCreateAndUpdateEvent
 import com.hs.event.ProductDecreaseStockQuantityEvent
 import com.hs.event.ProductUpdateImageEvent
-import com.hs.repository.ProductEventLogRepository
+import com.hs.infrastructure.jpa.persistence.ProductEventLogPersistence
+import com.hs.infrastructure.jpa.repository.ProductEventLogSpringDataJpaRepository
 import com.hs.service.ProductQueuePublisher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,7 +20,7 @@ import org.springframework.transaction.event.TransactionalEventListener
 @Component
 class ProductEventHandler(
     private val productQueuePublisher: ProductQueuePublisher,
-    private val productEventLogRepository: ProductEventLogRepository
+    private val productEventLogRepository: ProductEventLogSpringDataJpaRepository
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
@@ -99,7 +99,11 @@ class ProductEventHandler(
     * */
     suspend fun createProductEventLog(productId: Long, productCommandCode: ProductCommandCode, message: String) {
         productEventLogRepository.save(
-            ProductEventLog(productId = productId, productCommandCode = productCommandCode, message = message)
+            ProductEventLogPersistence(
+                productId = productId,
+                productCommandCode = productCommandCode,
+                message = message
+            )
         )
     }
 }

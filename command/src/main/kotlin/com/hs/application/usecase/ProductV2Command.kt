@@ -6,8 +6,13 @@ import com.hs.entity.ProductConfirmStatus
 import com.hs.entity.ProductV2
 import com.hs.message.CommandAppExceptionMessage
 import com.hs.repository.ProductV2Repository
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.reactive.TransactionSynchronization.STATUS_ROLLED_BACK
+import org.springframework.transaction.support.TransactionSynchronization
+import org.springframework.transaction.support.TransactionSynchronizationManager
 
 @Service
 @Transactional
@@ -15,7 +20,17 @@ class ProductV2Command(
     private val productRepository: ProductV2Repository
 ) {
 
+    private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
+
     fun create(createProductDto: CreateProductDto): Long? {
+        TransactionSynchronizationManager.registerSynchronization(
+            object : TransactionSynchronization {
+                override fun afterCompletion(status: Int) {
+                    if (status == STATUS_ROLLED_BACK) logger.info("Save RollBack!!!")
+                }
+            }
+        )
+
         val product: ProductV2 = productRepository.save(
             product = ProductV2(
                 name = createProductDto.name,

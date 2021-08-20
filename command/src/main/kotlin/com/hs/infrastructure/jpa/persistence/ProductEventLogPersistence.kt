@@ -14,14 +14,13 @@ import javax.persistence.Table
 
 @Entity
 @Table(
-    name = "product_event_log_2",
+    name = "product_event_log",
     indexes = [Index(name = "PRODUCT_EVENT_LOG_2_IX_PRODUCT", columnList = "productId")]
 )
 class ProductEventLogPersistence(
     productId: Long,
     productCommandCode: ProductCommandCode,
-    message: String,
-    createdDate: LocalDateTime,
+    message: String
 ) {
 
     @Id
@@ -42,7 +41,7 @@ class ProductEventLogPersistence(
         protected set
 
     @Column(nullable = false)
-    var createdDate: LocalDateTime = createdDate
+    var createdDate: LocalDateTime = LocalDateTime.now()
         protected set
 
     override fun toString(): String {

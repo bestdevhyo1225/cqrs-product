@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.transaction.reactive.TransactionSynchronization.STATUS_COMMITTED
 import org.springframework.transaction.reactive.TransactionSynchronization.STATUS_ROLLED_BACK
 import org.springframework.transaction.support.TransactionSynchronization
 import org.springframework.transaction.support.TransactionSynchronizationManager
