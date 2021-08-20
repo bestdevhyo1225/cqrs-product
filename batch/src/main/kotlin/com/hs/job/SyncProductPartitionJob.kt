@@ -139,7 +139,7 @@ class SyncProductPartitionJob(
         val reader: JpaPagingFetchItemReader<ProductPersistence> = JpaPagingFetchItemReader()
 
         reader.setEntityManagerFactory(entityManagerFactory = entityManagerFactory)
-        reader.setQueryString(queryString = "SELECT p FROM Product p WHERE p.id BETWEEN :minId AND :maxId ORDER BY p.id")
+        reader.setQueryString(queryString = "SELECT p FROM ProductPersistence p WHERE p.id BETWEEN :minId AND :maxId ORDER BY p.id")
         reader.setParameterValues(parameterValues = params)
         reader.pageSize = chunkSize
 
@@ -156,7 +156,6 @@ class SyncProductPartitionJob(
                 confirmStatus = product.confirmStatus.toString(),
                 imageUrls = product.productImages.map { productImage -> productImage.url }
             )
-
 
             var productAggregate: ProductAggregate? =
                 productAggregateRepository.findByProductIdAndType(productId = product.id!!, type = FIND_PRODUCT)

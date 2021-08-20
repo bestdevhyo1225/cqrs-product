@@ -54,7 +54,7 @@ class SyncProductJob(
         val reader: JpaPagingFetchItemReader<ProductPersistence> = JpaPagingFetchItemReader()
 
         reader.setEntityManagerFactory(entityManagerFactory = entityManagerFactory)
-        reader.setQueryString(queryString = "SELECT p FROM Product p ORDER BY p.id")
+        reader.setQueryString(queryString = "SELECT p FROM ProductPersistence p ORDER BY p.id")
         reader.pageSize = chunkSize
 
         return reader
