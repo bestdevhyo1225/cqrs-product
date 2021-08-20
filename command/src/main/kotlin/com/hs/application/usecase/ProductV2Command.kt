@@ -24,7 +24,7 @@ class ProductV2Command(
             )
         )
 
-        return product.getId()
+        return product.id
     }
 
     fun update(updateProductDto: UpdateProductDto) {

@@ -3,9 +3,9 @@ package com.hs.infrastructure.jpa.mapper
 import com.hs.entity.ProductV2
 import com.hs.infrastructure.jpa.persistence.ProductPersistence
 
-class EntityMapper {
+class ProductMapper {
     companion object {
-        fun toProductEntity(productPersistence: ProductPersistence?): ProductV2? {
+        fun toDomainEntity(productPersistence: ProductPersistence?): ProductV2? {
             productPersistence ?: return null
 
             return ProductV2(
@@ -18,6 +18,19 @@ class EntityMapper {
                 createdDate = productPersistence.createdDate,
                 updatedDate = productPersistence.updatedDate,
                 deletedDate = productPersistence.deletedDate
+            )
+        }
+
+        fun toPersistenceEntity(product: ProductV2): ProductPersistence {
+            return ProductPersistence.create(
+                name = product.name,
+                price = product.price,
+                stockQuantity = product.stockQuantity,
+                imageUrls = product.imageUrls,
+                confirmStatus = product.confirmStatus,
+                createdDate = product.createdDate,
+                updatedDate = product.updatedDate,
+                deletedDate = product.deletedDate
             )
         }
     }

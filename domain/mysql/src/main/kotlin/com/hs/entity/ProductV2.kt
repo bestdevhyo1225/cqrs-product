@@ -5,16 +5,43 @@ import com.hs.message.CommandAppExceptionMessage
 import java.time.LocalDateTime
 
 class ProductV2(
-    private var id: Long? = null,
-    private var name: String,
-    private var price: Int,
-    private var stockQuantity: Int,
-    private val imageUrls: List<String> = listOf(),
-    private var confirmStatus: ProductConfirmStatus = ProductConfirmStatus.WAIT,
-    private var createdDate: LocalDateTime = LocalDateTime.now(),
-    private var updatedDate: LocalDateTime = LocalDateTime.now(),
-    private var deletedDate: LocalDateTime? = null,
+    id: Long? = null,
+    name: String,
+    price: Int,
+    stockQuantity: Int,
+    imageUrls: List<String> = listOf(),
+    confirmStatus: ProductConfirmStatus = ProductConfirmStatus.WAIT,
+    createdDate: LocalDateTime = LocalDateTime.now(),
+    updatedDate: LocalDateTime = LocalDateTime.now(),
+    deletedDate: LocalDateTime? = null,
 ) {
+
+    var id: Long? = id
+        private set
+
+    var name: String = name
+        private set
+
+    var price: Int = price
+        private set
+
+    var stockQuantity: Int = stockQuantity
+        private set
+
+    var imageUrls: List<String> = imageUrls
+        private set
+
+    var confirmStatus: ProductConfirmStatus = confirmStatus
+        private set
+
+    var createdDate: LocalDateTime = createdDate
+        private set
+
+    var updatedDate: LocalDateTime = updatedDate
+        private set
+
+    var deletedDate: LocalDateTime? = deletedDate
+        private set
 
     override fun toString(): String {
         return "ProductV2(" +
@@ -35,6 +62,10 @@ class ProductV2(
         this.updatedDate = LocalDateTime.now()
     }
 
+    fun reflectIdAfterPersistence(id: Long?) {
+        this.id = id
+    }
+
     fun update(name: String, price: Int, stockQuantity: Int) {
         this.name = name
         this.price = price
@@ -46,33 +77,5 @@ class ProductV2(
     fun updateConfirmStatus(confirmStatus: ProductConfirmStatus) {
         this.confirmStatus = confirmStatus
         this.updatedDate = LocalDateTime.now()
-    }
-
-    fun changeId(id: Long?) {
-        this.id = id
-    }
-
-    fun getId(): Long? {
-        return id
-    }
-
-    fun getName(): String {
-        return name
-    }
-
-    fun getPrice(): Int {
-        return price
-    }
-
-    fun getStockQuantity(): Int {
-        return stockQuantity
-    }
-
-    fun getConfirmStatus(): ProductConfirmStatus {
-        return confirmStatus
-    }
-
-    fun getImageUrls(): List<String> {
-        return imageUrls
     }
 }

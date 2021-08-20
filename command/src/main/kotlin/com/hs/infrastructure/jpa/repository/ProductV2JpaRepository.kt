@@ -1,7 +1,7 @@
 package com.hs.infrastructure.jpa.repository
 
 import com.hs.entity.ProductV2
-import com.hs.infrastructure.jpa.mapper.EntityMapper
+import com.hs.infrastructure.jpa.mapper.ProductMapper
 import com.hs.infrastructure.jpa.persistence.ProductPersistence
 import com.hs.repository.ProductV2Repository
 import org.springframework.stereotype.Repository
@@ -13,34 +13,30 @@ import javax.persistence.EntityManager
 class ProductV2JpaRepository(private val entityManager: EntityManager) : ProductV2Repository {
 
     override fun save(product: ProductV2): ProductV2 {
-        val productPersistence = ProductPersistence.create(
-            name = product.getName(),
-            price = product.getPrice(),
-            stockQuantity = product.getStockQuantity(),
-            imageUrls = product.getImageUrls()
-        )
+        val productPersistence = ProductMapper.toPersistenceEntity(product = product)
 
         entityManager.persist(productPersistence)
 
-        product.changeId(id = productPersistence.id)
+        product.reflectIdAfterPersistence(id = productPersistence.id)
 
         return product
     }
 
     override fun update(product: ProductV2) {
         val productPersistence: ProductPersistence =
-            entityManager.find(ProductPersistence::class.java, product.getId()!!)
+            entityManager.find(ProductPersistence::class.java, product.id!!)
 
         productPersistence.update(
-            name = product.getName(),
-            price = product.getPrice(),
-            stockQuantity = product.getStockQuantity()
+            name = product.name,
+            price = product.price,
+            stockQuantity = product.stockQuantity
         )
     }
 
     override fun findProduct(id: Long): ProductV2? {
         val productPersistence: ProductPersistence? = entityManager.find(ProductPersistence::class.java, id)
-        return EntityMapper.toProductEntity(productPersistence)
+
+        return ProductMapper.toDomainEntity(productPersistence = productPersistence)
     }
 
     override fun findProductWithFetchJoin(id: Long): ProductV2? {
@@ -52,6 +48,6 @@ class ProductV2JpaRepository(private val entityManager: EntityManager) : Product
             .setParameter("id", id)
             .singleResult
 
-        return EntityMapper.toProductEntity(productPersistence)
+        return ProductMapper.toDomainEntity(productPersistence = productPersistence)
     }
 }

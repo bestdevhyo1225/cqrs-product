@@ -18,12 +18,12 @@ class ProductV2Query(
             ?: throw NoSuchElementException(CommandAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
 
         return FindProductDto(
-            productId = product.getId()!!,
-            name = product.getName(),
-            price = product.getPrice(),
-            stockQuantity = product.getStockQuantity(),
-            confirmStatus = product.getConfirmStatus().toString(),
-            imageUrls = product.getImageUrls()
+            productId = product.id!!,
+            name = product.name,
+            price = product.price,
+            stockQuantity = product.stockQuantity,
+            confirmStatus = product.confirmStatus.toString(),
+            imageUrls = product.imageUrls
         )
     }
 }

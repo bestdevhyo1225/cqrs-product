@@ -17,7 +17,15 @@ import javax.persistence.Table
 @Entity
 @DynamicUpdate
 @Table(name = "product_2")
-class ProductPersistence(name: String, price: Int, stockQuantity: Int) {
+class ProductPersistence(
+    name: String,
+    price: Int,
+    stockQuantity: Int,
+    confirmStatus: ProductConfirmStatus,
+    createdDate: LocalDateTime,
+    updatedDate: LocalDateTime,
+    deletedDate: LocalDateTime?
+) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,19 +45,19 @@ class ProductPersistence(name: String, price: Int, stockQuantity: Int) {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    var confirmStatus: ProductConfirmStatus = ProductConfirmStatus.WAIT
+    var confirmStatus: ProductConfirmStatus = confirmStatus
         protected set
 
     @Column(nullable = false, columnDefinition = "datetime")
-    var createdDate: LocalDateTime = LocalDateTime.now()
+    var createdDate: LocalDateTime = createdDate
         protected set
 
     @Column(nullable = false, columnDefinition = "datetime")
-    var updatedDate: LocalDateTime = LocalDateTime.now()
+    var updatedDate: LocalDateTime = updatedDate
         protected set
 
     @Column(nullable = true, columnDefinition = "datetime")
-    var deletedDate: LocalDateTime? = null
+    var deletedDate: LocalDateTime? = deletedDate
         protected set
 
     @OneToMany(mappedBy = "product", cascade = [CascadeType.ALL])
@@ -67,9 +75,21 @@ class ProductPersistence(name: String, price: Int, stockQuantity: Int) {
             name: String,
             price: Int,
             stockQuantity: Int,
-            imageUrls: List<String>
+            imageUrls: List<String>,
+            confirmStatus: ProductConfirmStatus,
+            createdDate: LocalDateTime,
+            updatedDate: LocalDateTime,
+            deletedDate: LocalDateTime?
         ): ProductPersistence {
-            val product = ProductPersistence(name = name, price = price, stockQuantity = stockQuantity)
+            val product = ProductPersistence(
+                name = name,
+                price = price,
+                stockQuantity = stockQuantity,
+                confirmStatus = confirmStatus,
+                createdDate = createdDate,
+                updatedDate = updatedDate,
+                deletedDate = deletedDate
+            )
 
             imageUrls.map { imageUrl -> ProductImagePersistence(url = imageUrl, product = product) }
                 .forEach { productImage -> product.addProductImage(productImage = productImage) }
