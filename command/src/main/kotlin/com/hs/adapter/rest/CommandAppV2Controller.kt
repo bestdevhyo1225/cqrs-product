@@ -2,6 +2,7 @@ package com.hs.adapter.rest
 
 import com.hs.adapter.rest.request.CreateProductRequest
 import com.hs.adapter.rest.request.UpdateProductConfirmRequest
+import com.hs.adapter.rest.request.UpdateProductImageRequest
 import com.hs.adapter.rest.request.UpdateProductRequest
 import com.hs.adapter.rest.request.UpdateProductStockRequest
 import com.hs.application.usecase.ProductV2Command
@@ -87,6 +88,16 @@ class CommandAppV2Controller(
         @Valid @RequestBody request: UpdateProductConfirmRequest
     ): ResponseEntity<SuccessResponse<Any>> {
         productCommand.changeConfirmStatus(id = productId, strProductConfirmStatus = request.confirmStatus)
+
+        return ResponseEntity.ok(SuccessResponse(data = object {}))
+    }
+
+    @PatchMapping(value = ["{id}/images"])
+    fun updateImages(
+        @PathVariable(value = "id") productId: Long,
+        @Valid @RequestBody request: UpdateProductImageRequest
+    ): ResponseEntity<SuccessResponse<Any>> {
+        productCommand.updateImage(id = productId, imageUrls = request.imageUrls)
 
         return ResponseEntity.ok(SuccessResponse(data = object {}))
     }

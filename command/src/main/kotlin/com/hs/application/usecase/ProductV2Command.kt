@@ -45,7 +45,7 @@ class ProductV2Command(
 
         product.decreaseStockCount(stockQuantity = completeStockQuantity)
 
-        productRepository.updateStockQuantity(id = product.id, stockQuantity = product.stockQuantity)
+        productRepository.updateStockQuantity(product = product)
     }
 
     fun changeConfirmStatus(id: Long, strProductConfirmStatus: String) {
@@ -56,15 +56,26 @@ class ProductV2Command(
 
         product.updateConfirmStatus(confirmStatus = confirmStatus)
 
-        productRepository.updateConfirmStatus(id = product.id, confirmStatus = product.confirmStatus)
+        productRepository.updateConfirmStatus(product = product)
     }
 
     fun updateImage(id: Long, imageUrls: List<String>) {
+        val product: ProductV2 = findProductWithFetchJoin(id = id)
 
+        productRepository.deleteImageByProductId(productId = product.id!!)
+        productRepository.saveAllImage(product = product, imageUrls = imageUrls)
+
+        product.updateConfirmStatus(confirmStatus = ProductConfirmStatus.WAIT)
+        productRepository.updateConfirmStatus(product = product)
     }
 
     fun findProduct(id: Long): ProductV2 {
         return productRepository.findProduct(id = id)
+            ?: throw NoSuchElementException(CommandAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
+    }
+
+    fun findProductWithFetchJoin(id: Long): ProductV2 {
+        return productRepository.findProductWithFetchJoin(id = id)
             ?: throw NoSuchElementException(CommandAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
     }
 }
