@@ -40,7 +40,11 @@ class ProductV2Command(
     }
 
     fun decreaseStockQuantity(id: Long, completeStockQuantity: Int) {
+        val product: ProductV2 = findProduct(id = id)
 
+        product.decreaseStockCount(stockQuantity = completeStockQuantity)
+
+        productRepository.updateStockQuantity(product = product)
     }
 
     fun changeConfirmStatus(id: Long, strProductConfirmStatus: String) {

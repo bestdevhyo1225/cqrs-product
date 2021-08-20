@@ -2,6 +2,7 @@ package com.hs.adapter.rest
 
 import com.hs.adapter.rest.request.CreateProductRequest
 import com.hs.adapter.rest.request.UpdateProductRequest
+import com.hs.adapter.rest.request.UpdateProductStockRequest
 import com.hs.application.usecase.ProductV2Command
 import com.hs.application.usecase.ProductV2Query
 import com.hs.dto.CreateProductDto
@@ -65,6 +66,16 @@ class CommandAppV2Controller(
                 stockQuantity = request.stockQuantity
             )
         )
+
+        return ResponseEntity.ok(SuccessResponse(data = object {}))
+    }
+
+    @PatchMapping(value = ["{id}/stock"])
+    fun decreaseStockQuantity(
+        @PathVariable(value = "id") productId: Long,
+        @Valid @RequestBody request: UpdateProductStockRequest
+    ): ResponseEntity<SuccessResponse<Any>> {
+        productCommand.decreaseStockQuantity(id = productId, completeStockQuantity = request.completeStockQuantity)
 
         return ResponseEntity.ok(SuccessResponse(data = object {}))
     }

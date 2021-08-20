@@ -33,6 +33,13 @@ class ProductV2JpaRepository(private val entityManager: EntityManager) : Product
         )
     }
 
+    override fun updateStockQuantity(product: ProductV2) {
+        val productPersistence: ProductPersistence =
+            entityManager.find(ProductPersistence::class.java, product.id!!)
+
+        productPersistence.decreaseStockCount(stockQuantity = product.stockQuantity)
+    }
+
     override fun findProduct(id: Long): ProductV2? {
         val productPersistence: ProductPersistence? = entityManager.find(ProductPersistence::class.java, id)
 

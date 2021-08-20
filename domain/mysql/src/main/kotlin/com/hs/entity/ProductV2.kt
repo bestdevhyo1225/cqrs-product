@@ -51,17 +51,6 @@ class ProductV2(
                 ")"
     }
 
-    fun decreaseStockCount(stockQuantity: Int) {
-        if (this.stockQuantity - stockQuantity <= 0) {
-            throw DomainMySqlException(
-                exceptionMessage = CommandAppExceptionMessage.HAVE_EXCEEDED_THE_QUANTITY_AVAILABLE_FOR_PURCHASE
-            )
-        }
-
-        this.stockQuantity -= stockQuantity
-        this.updatedDate = LocalDateTime.now()
-    }
-
     fun reflectIdAfterPersistence(id: Long?) {
         this.id = id
     }
@@ -71,6 +60,17 @@ class ProductV2(
         this.price = price
         this.stockQuantity = stockQuantity
         this.confirmStatus = ProductConfirmStatus.WAIT
+        this.updatedDate = LocalDateTime.now()
+    }
+
+    fun decreaseStockCount(stockQuantity: Int) {
+        if (this.stockQuantity - stockQuantity <= 0) {
+            throw DomainMySqlException(
+                exceptionMessage = CommandAppExceptionMessage.HAVE_EXCEEDED_THE_QUANTITY_AVAILABLE_FOR_PURCHASE
+            )
+        }
+
+        this.stockQuantity -= stockQuantity
         this.updatedDate = LocalDateTime.now()
     }
 

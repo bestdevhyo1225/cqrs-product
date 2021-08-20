@@ -110,4 +110,9 @@ class ProductPersistence(
         this.confirmStatus = ProductConfirmStatus.WAIT
         this.updatedDate = LocalDateTime.now()
     }
+
+    fun decreaseStockCount(stockQuantity: Int) {
+        this.stockQuantity = stockQuantity
+        this.updatedDate = LocalDateTime.now()
+    }
 }
