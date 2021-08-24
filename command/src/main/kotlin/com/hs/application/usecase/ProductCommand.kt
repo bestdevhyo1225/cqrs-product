@@ -48,17 +48,13 @@ class ProductCommand(
             )
         )
 
-        try {
-            publisher.publishEvent(
-                ProductCreateAndUpdateEvent(
-                    productId = product.id!!,
-                    productCommandCode = ProductCommandCode.INSERT,
-                    product = product
-                )
+        publishEvent(
+            event = ProductCreateAndUpdateEvent(
+                productId = product.id!!,
+                productCommandCode = ProductCommandCode.INSERT,
+                product = product
             )
-        } catch (exception: NullPointerException) {
-            throw ApplicationLayerException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
-        }
+        )
 
         return product.id
     }
@@ -74,17 +70,13 @@ class ProductCommand(
 
         productRepository.update(product = product)
 
-        try {
-            publisher.publishEvent(
-                ProductCreateAndUpdateEvent(
-                    productId = product.id!!,
-                    productCommandCode = ProductCommandCode.UPDATE,
-                    product = product
-                )
+        publishEvent(
+            event = ProductCreateAndUpdateEvent(
+                productId = product.id!!,
+                productCommandCode = ProductCommandCode.UPDATE,
+                product = product
             )
-        } catch (exception: NullPointerException) {
-            throw ApplicationLayerException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
-        }
+        )
     }
 
     fun decreaseStockQuantity(id: Long, completeStockQuantity: Int) {
@@ -94,17 +86,13 @@ class ProductCommand(
 
         productRepository.updateStockQuantity(product = product)
 
-        try {
-            publisher.publishEvent(
-                ProductDecreaseStockQuantityEvent(
-                    productId = product.id!!,
-                    productCommandCode = ProductCommandCode.DECREASE_STOCK_QUANTITY,
-                    currentStockQuantity = product.stockQuantity
-                )
+        publishEvent(
+            event = ProductDecreaseStockQuantityEvent(
+                productId = product.id!!,
+                productCommandCode = ProductCommandCode.DECREASE_STOCK_QUANTITY,
+                currentStockQuantity = product.stockQuantity
             )
-        } catch (exception: NullPointerException) {
-            throw ApplicationLayerException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
-        }
+        )
     }
 
     fun changeConfirmStatus(id: Long, strProductConfirmStatus: String) {
@@ -117,17 +105,13 @@ class ProductCommand(
 
         productRepository.updateConfirmStatus(product = product)
 
-        try {
-            publisher.publishEvent(
-                ProductChangeConfirmStatusEvent(
-                    productId = product.id!!,
-                    productCommandCode = ProductCommandCode.CHANGE_CONFIRM_STATUS,
-                    confirmStatus = product.confirmStatus
-                )
+        publishEvent(
+            event = ProductChangeConfirmStatusEvent(
+                productId = product.id!!,
+                productCommandCode = ProductCommandCode.CHANGE_CONFIRM_STATUS,
+                confirmStatus = product.confirmStatus
             )
-        } catch (exception: NullPointerException) {
-            throw ApplicationLayerException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
-        }
+        )
     }
 
     fun updateImage(id: Long, imageUrls: List<String>) {
@@ -139,17 +123,13 @@ class ProductCommand(
         product.updateConfirmStatus(confirmStatus = ProductConfirmStatus.WAIT)
         productRepository.updateConfirmStatus(product = product)
 
-        try {
-            publisher.publishEvent(
-                ProductUpdateImageEvent(
-                    productId = product.id!!,
-                    productCommandCode = ProductCommandCode.UPDATE_IMAGE,
-                    imageUrls = imageUrls
-                )
+        publishEvent(
+            event = ProductUpdateImageEvent(
+                productId = product.id!!,
+                productCommandCode = ProductCommandCode.UPDATE_IMAGE,
+                imageUrls = imageUrls
             )
-        } catch (exception: NullPointerException) {
-            throw ApplicationLayerException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
-        }
+        )
     }
 
     fun findProduct(id: Long): Product {
@@ -160,5 +140,13 @@ class ProductCommand(
     fun findProductWithFetchJoin(id: Long): Product {
         return productRepository.findProductWithFetchJoin(id = id)
             ?: throw NoSuchElementException(CommandAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
+    }
+
+    private fun publishEvent(event: Any) {
+        try {
+            publisher.publishEvent(event)
+        } catch (exception: NullPointerException) {
+            throw ApplicationLayerException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
+        }
     }
 }
