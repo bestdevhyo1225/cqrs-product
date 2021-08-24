@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController
 import javax.validation.constraints.Min
 
 @RestController
-@RequestMapping(value = ["/query/products"])
+@RequestMapping(value = ["/query"])
 @Validated
 class QueryAppController(
     private val productAggregateQuery: ProductAggregateQuery
 ) {
 
-    @GetMapping
+    @GetMapping(value = ["/products"])
     fun findProductAggregatesWithPagination(
         @RequestParam(value = "page", defaultValue = "0") page: Int,
         @RequestParam(value = "pageSize", defaultValue = "10") pageSize: Int
@@ -33,7 +33,7 @@ class QueryAppController(
         )
     }
 
-    @GetMapping(value = ["{id}"])
+    @GetMapping(value = ["/products/{id}"])
     fun findProductAggregate(
         @PathVariable(value = "id") @Min(value = 1, message = "1 이상을 입력해야 합니다.") productId: Long
     ): ResponseEntity<SuccessResponse<Any>> {
