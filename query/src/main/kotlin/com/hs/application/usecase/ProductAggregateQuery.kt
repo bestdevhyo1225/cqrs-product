@@ -19,13 +19,15 @@ class ProductAggregateQuery(
         page: Int,
         pageSize: Int
     ): FindPaginationDto<FindProductAggregateDto> {
-        val productAggregatesPagination: Page<ProductAggregate> = productAggregateRepository.findAllByTypeAndIsDisplay(
-            type = FIND_PRODUCT,
-            isDisplay = true,
-            pageable = PageRequest.of(page, pageSize)
-        )
+        val productAggregatesPagination: Pair<List<ProductAggregate>, Long> =
+            productAggregateRepository.findAllByTypeAndIsDisplay(
+                type = FIND_PRODUCT,
+                isDisplay = true,
+                page = page,
+                pageSize = pageSize
+            )
 
-        val items: List<FindProductAggregateDto> = productAggregatesPagination.content.map { productAggregate ->
+        val items: List<FindProductAggregateDto> = productAggregatesPagination.first.map { productAggregate ->
             FindProductAggregateDto(
                 productId = productAggregate.data.productId,
                 name = productAggregate.data.name,
@@ -41,7 +43,7 @@ class ProductAggregateQuery(
             items = items,
             page = page,
             pageSize = pageSize,
-            totalCount = productAggregatesPagination.totalElements
+            totalCount = productAggregatesPagination.second
         )
     }
 

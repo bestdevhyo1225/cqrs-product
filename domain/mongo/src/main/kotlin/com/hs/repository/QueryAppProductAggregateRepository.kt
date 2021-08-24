@@ -2,8 +2,6 @@ package com.hs.repository
 
 import com.hs.entity.ProductAggregate
 import com.hs.entity.ProductAggregateType
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
 
 interface QueryAppProductAggregateRepository {
     fun findByProductIdAndType(productId: Long, type: ProductAggregateType): ProductAggregate?
@@ -16,8 +14,9 @@ interface QueryAppProductAggregateRepository {
     fun findAllByTypeAndIsDisplay(
         type: ProductAggregateType,
         isDisplay: Boolean,
-        pageable: Pageable
-    ): Page<ProductAggregate>
+        page: Int,
+        pageSize: Int,
+    ): Pair<List<ProductAggregate>, Long>
 
     fun insert(productAggregate: ProductAggregate): ProductAggregate?
     fun save(productAggregate: ProductAggregate): ProductAggregate?
