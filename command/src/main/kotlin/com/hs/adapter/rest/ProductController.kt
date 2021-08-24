@@ -9,7 +9,8 @@ import com.hs.adapter.rest.request.UpdateProductConfirmRequest
 import com.hs.adapter.rest.request.UpdateProductImageRequest
 import com.hs.adapter.rest.request.UpdateProductRequest
 import com.hs.adapter.rest.request.UpdateProductStockRequest
-import com.hs.application.usecase.ProductHandler
+import com.hs.application.usecase.ProductCommand
+import com.hs.application.usecase.ProductQuery
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -25,18 +26,21 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping(value = ["/products"])
-class ProductController(private val productHandler: ProductHandler) {
+class ProductController(
+    private val productQuery: ProductQuery,
+    private val productCommand: ProductCommand
+) {
 
     @GetMapping(value = ["{id}"])
     fun find(@PathVariable(value = "id") productId: Long): ResponseEntity<SuccessResponse<FindProductDto>> {
-        val product: FindProductDto = productHandler.findProductAggregate(id = productId)
+        val product: FindProductDto = productQuery.findProduct(id = productId)
         return ResponseEntity.ok(SuccessResponse(data = product))
     }
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     fun create(@Valid @RequestBody request: CreateProductRequest): ResponseEntity<SuccessResponse<Any>> {
-        val productId: Long? = productHandler.create(
+        val productId: Long? = productCommand.create(
             createProductDto = CreateProductDto(
                 name = request.name,
                 price = request.price,
@@ -56,7 +60,7 @@ class ProductController(private val productHandler: ProductHandler) {
         @PathVariable(value = "id") productId: Long,
         @Valid @RequestBody request: UpdateProductRequest
     ): ResponseEntity<SuccessResponse<Any>> {
-        productHandler.update(
+        productCommand.update(
             updateProductDto = UpdateProductDto(
                 id = productId,
                 name = request.name,
@@ -73,7 +77,7 @@ class ProductController(private val productHandler: ProductHandler) {
         @PathVariable(value = "id") productId: Long,
         @Valid @RequestBody request: UpdateProductStockRequest
     ): ResponseEntity<SuccessResponse<Any>> {
-        productHandler.decreaseStockQuantity(id = productId, completeStockQuantity = request.completeStockQuantity)
+        productCommand.decreaseStockQuantity(id = productId, completeStockQuantity = request.completeStockQuantity)
 
         return ResponseEntity.ok(SuccessResponse(data = object {}))
     }
@@ -83,7 +87,7 @@ class ProductController(private val productHandler: ProductHandler) {
         @PathVariable(value = "id") productId: Long,
         @Valid @RequestBody request: UpdateProductConfirmRequest
     ): ResponseEntity<SuccessResponse<Any>> {
-        productHandler.changeConfirmStatus(id = productId, strProductConfirmStatus = request.confirmStatus)
+        productCommand.changeConfirmStatus(id = productId, strProductConfirmStatus = request.confirmStatus)
 
         return ResponseEntity.ok(SuccessResponse(data = object {}))
     }
@@ -93,7 +97,7 @@ class ProductController(private val productHandler: ProductHandler) {
         @PathVariable(value = "id") productId: Long,
         @Valid @RequestBody request: UpdateProductImageRequest
     ): ResponseEntity<SuccessResponse<Any>> {
-        productHandler.updateImage(id = productId, imageUrls = request.imageUrls)
+        productCommand.updateImage(id = productId, imageUrls = request.imageUrls)
 
         return ResponseEntity.ok(SuccessResponse(data = object {}))
     }

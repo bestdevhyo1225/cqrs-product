@@ -1,4 +1,4 @@
-package com.hs.application.usecase
+package com.hs.application.handler
 
 import com.hs.entity.ProductCommandCode
 import com.hs.event.ProductChangeConfirmStatusEvent

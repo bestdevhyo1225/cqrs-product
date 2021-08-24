@@ -24,7 +24,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 @Service
 @Transactional
-class ProductHandler(
+class ProductCommand(
     private val publisher: ApplicationEventPublisher,
     private val productRepository: ProductRepository
 ) {
@@ -130,20 +130,6 @@ class ProductHandler(
                 productCommandCode = ProductCommandCode.UPDATE_IMAGE,
                 imageUrls = imageUrls
             )
-        )
-    }
-
-    fun findProductAggregate(id: Long): FindProductDto {
-        val product: Product = productRepository.findProductWithFetchJoin(id = id)
-            ?: throw NoSuchElementException(CommandAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
-
-        return FindProductDto(
-            productId = product.id!!,
-            name = product.name,
-            price = product.price,
-            stockQuantity = product.stockQuantity,
-            confirmStatus = product.confirmStatus.toString(),
-            imageUrls = product.imageUrls
         )
     }
 

@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
-class ProductQueryBasedHandler(
+class ProductQuery(
     private val productQueryRepository: ProductQueryRepository
 ) {
 
