@@ -2,6 +2,7 @@ package com.hs.application.usecase
 
 import com.hs.application.exception.ApplicationLayerException
 import com.hs.dto.CreateProductDto
+import com.hs.dto.FindProductDto
 import com.hs.dto.UpdateProductDto
 import com.hs.entity.ProductCommandCode
 import com.hs.entity.ProductConfirmStatus
@@ -23,7 +24,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 @Service
 @Transactional
-class ProductCommand(
+class ProductHandler(
     private val publisher: ApplicationEventPublisher,
     private val productRepository: ProductRepository
 ) {
@@ -129,6 +130,20 @@ class ProductCommand(
                 productCommandCode = ProductCommandCode.UPDATE_IMAGE,
                 imageUrls = imageUrls
             )
+        )
+    }
+
+    fun findProductAggregate(id: Long): FindProductDto {
+        val product: Product = productRepository.findProductWithFetchJoin(id = id)
+            ?: throw NoSuchElementException(CommandAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
+
+        return FindProductDto(
+            productId = product.id!!,
+            name = product.name,
+            price = product.price,
+            stockQuantity = product.stockQuantity,
+            confirmStatus = product.confirmStatus.toString(),
+            imageUrls = product.imageUrls
         )
     }
 
