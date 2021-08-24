@@ -2,10 +2,9 @@ package com.hs.infrastructure.mongo.repository
 
 import com.hs.entity.ProductAggregate
 import com.hs.entity.ProductAggregateType
-import com.hs.infrastructure.mongo.entity.ProductAggregateDocument
+import com.hs.infrastructure.mongo.persistence.ProductAggregateDocument
 import com.hs.infrastructure.mongo.mapper.ProductAggregateMapper
 import com.hs.repository.QueryAppProductAggregateRepository
-import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.mongodb.core.MongoOperations

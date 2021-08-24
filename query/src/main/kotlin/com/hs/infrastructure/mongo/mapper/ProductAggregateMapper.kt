@@ -1,7 +1,7 @@
 package com.hs.infrastructure.mongo.mapper
 
 import com.hs.entity.ProductAggregate
-import com.hs.infrastructure.mongo.entity.ProductAggregateDocument
+import com.hs.infrastructure.mongo.persistence.ProductAggregateDocument
 import java.time.LocalDateTime
 
 class ProductAggregateMapper {

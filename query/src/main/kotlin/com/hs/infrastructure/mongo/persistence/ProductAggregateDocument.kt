@@ -1,4 +1,4 @@
-package com.hs.infrastructure.mongo.entity
+package com.hs.infrastructure.mongo.persistence
 
 import com.hs.dto.FindProductDto
 import com.hs.entity.ProductAggregateType
