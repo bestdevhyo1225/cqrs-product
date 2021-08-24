@@ -25,7 +25,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping(value = ["/products"])
-class CommandAppProductController(private val productHandler: ProductHandler) {
+class ProductController(private val productHandler: ProductHandler) {
 
     @GetMapping(value = ["{id}"])
     fun find(@PathVariable(value = "id") productId: Long): ResponseEntity<SuccessResponse<FindProductDto>> {
