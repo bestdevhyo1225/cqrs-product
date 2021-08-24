@@ -60,7 +60,7 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
             .find(query, ProductAggregateDocument::class.java)
             .map { ProductAggregateMapper.toDomainEntity(productAggregateDocument = it)!! }
 
-        val totalCount: Long = mongoOperations.count(query, ProductAggregate::class.java)
+        val totalCount: Long = mongoOperations.count(query, ProductAggregateDocument::class.java)
 
         return Pair(first = productAggregates, second = totalCount)
     }
