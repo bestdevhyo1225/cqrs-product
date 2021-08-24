@@ -67,8 +67,6 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
     }
 
     override fun insert(productAggregate: ProductAggregate): ProductAggregate? {
-        println("------ insert -------")
-
         val productAggregateDocument =
             mongoOperations.insert(ProductAggregateMapper.toDocument(productAggregate = productAggregate))
 
@@ -78,8 +76,6 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
     }
 
     override fun save(productAggregate: ProductAggregate): ProductAggregate? {
-        println("------ save -------")
-
         mongoOperations.save(ProductAggregateMapper.toDocument(productAggregate = productAggregate))
 
         return productAggregate
