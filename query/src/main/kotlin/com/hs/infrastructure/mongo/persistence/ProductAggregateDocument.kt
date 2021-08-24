@@ -39,7 +39,7 @@ class ProductAggregateDocument(
         protected set
 
     override fun toString(): String {
-        return "ProductAggregate(id=$id, productId=$productId, type=$type, isDisplay=$isDisplay, data=$data, " +
+        return "ProductAggregateDocument(id=$id, productId=$productId, type=$type, isDisplay=$isDisplay, data=$data, " +
                 "createdDatetime=$createdDatetime, updatedDatetime=$updatedDatetime)"
     }
 }
