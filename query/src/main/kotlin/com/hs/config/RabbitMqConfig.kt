@@ -35,6 +35,7 @@ class RabbitMqConfig(
 ) {
     object QueueName {
         const val PRODUCT = "product.queue"
+        const val PRODUCT_DLQ = "product.dead-letter-queue"
     }
 
     @Bean
@@ -52,7 +53,15 @@ class RabbitMqConfig(
 
     @Bean
     fun productQueue(): Queue {
-        return QueueBuilder.durable(QueueName.PRODUCT).build()
+        return QueueBuilder.durable(QueueName.PRODUCT)
+            .withArgument("x-dead-letter-exchange", "")
+            .withArgument("x-dead-letter-routing-key", QueueName.PRODUCT_DLQ)
+            .build()
+    }
+
+    @Bean
+    fun productDeadLetterQueue(): Queue {
+        return Queue(QueueName.PRODUCT_DLQ, true, false, false)
     }
 
     @Bean
