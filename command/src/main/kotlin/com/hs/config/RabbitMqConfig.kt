@@ -51,11 +51,6 @@ class RabbitMqConfig(
     }
 
     @Bean
-    fun productQueue(): Queue {
-        return QueueBuilder.durable(QueueName.PRODUCT).build()
-    }
-
-    @Bean
     @Primary
     fun objectMapper(): ObjectMapper {
         val objectMapper = ObjectMapper().findAndRegisterModules()
