@@ -1,0 +1,16 @@
+version: '3.3'
+
+services:
+  product-redis:
+    image: redis
+    container_name: product-redis
+    command: redis-server --port 6379
+    ports:
+      - '6379:6379'
+    restart: always
+    networks:
+      - product_redis_net
+
+networks:
+  product_redis_net:
+    driver: bridge

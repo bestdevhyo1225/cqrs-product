@@ -15,6 +15,9 @@ docker-compose -f docker-compose.rabbitmq.yml up -d
 # execute mongo container
 docker-compose -f docker-compose.mongo.yml up -d
 
+# execute redis container
+docker-compose -f docker-compose.redis.yml up -d
+
 sleep 20
 
 query="change master to master_host='172.16.0.10', master_port=3306, master_user='slaveuser', master_password='slavepassword', master_log_file='mysql-bin.000003', master_log_pos=154"
