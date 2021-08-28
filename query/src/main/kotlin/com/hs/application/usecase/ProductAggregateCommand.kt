@@ -18,7 +18,7 @@ class ProductAggregateCommand(
     private val productAggregateRepository: QueryAppProductAggregateRepository,
 ) {
 
-    @CacheEvict(value = ["productAggregates"], key = "#productId", cacheManager = "defaultCacheManager")
+    @CacheEvict(value = ["productAggregates"], key = "#productId", cacheManager = "redisCacheManager")
     fun createOrUpdate(productId: Long) = runBlocking {
         val asyncProductDto: Deferred<FindProductDto> =
             async(Dispatchers.IO) { restGetRequestor.getProduct(productId = productId) }

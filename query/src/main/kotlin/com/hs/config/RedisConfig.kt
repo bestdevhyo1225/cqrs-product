@@ -58,7 +58,7 @@ class RedisConfig(
     }
 
     @Bean
-    fun defaultCacheManager(): RedisCacheManager {
+    fun redisCacheManager(): RedisCacheManager {
         val defaultCacheConfiguration = RedisCacheConfiguration
             .defaultCacheConfig()
             .disableCachingNullValues()
