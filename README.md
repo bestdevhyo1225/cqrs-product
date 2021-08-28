@@ -15,6 +15,7 @@
 - Spring Batch
 - Spring Data JPA
 - Spring Data MongoDB
+- Spring Data Redis
 - Spring AMQP (RabbitMQ)
 - Kotlinx Coroutines Core
 - JUnit 5
