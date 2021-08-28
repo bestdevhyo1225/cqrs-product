@@ -6,6 +6,7 @@ import com.hs.entity.ProductAggregate
 import com.hs.entity.ProductAggregateType.FIND_PRODUCT
 import com.hs.message.QueryAppExceptionMessage
 import com.hs.repository.QueryAppProductAggregateRepository
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -47,6 +48,7 @@ class ProductAggregateQuery(
         )
     }
 
+    @Cacheable(value = ["productAggregates"], key = "#productId", cacheManager = "redisCacheManager")
     fun findProductAggregate(productId: Long): FindProductAggregateDto {
         val productAggregate: ProductAggregate = productAggregateRepository.findByProductIdAndTypeAndIsDisplay(
             productId = productId,

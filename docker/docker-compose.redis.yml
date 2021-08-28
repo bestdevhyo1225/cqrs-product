@@ -4,7 +4,7 @@ services:
   product-redis:
     image: redis
     container_name: product-redis
-    command: redis-server --port 6379
+    command: redis-server --requirepass changeme --port 6379
     ports:
       - '6379:6379'
     restart: always

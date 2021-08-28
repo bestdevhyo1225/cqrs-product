@@ -35,7 +35,14 @@ spring:
           max-attempts: 5
         acknowledge-mode: manual
 
+  redis:
+    host: localhost
+    cache:
+      port: 6379
+    password: changeme
+
 logging:
   level:
     com.rabbitmq.client: debug
     org.springframework.data.mongodb.core.MongoTemplate: debug
+    org.springframework.cache: TRACE
