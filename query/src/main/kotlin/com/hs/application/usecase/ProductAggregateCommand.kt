@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Caching
 import org.springframework.stereotype.Service
 
 @Service
@@ -18,7 +19,11 @@ class ProductAggregateCommand(
     private val productAggregateRepository: QueryAppProductAggregateRepository,
 ) {
 
-    @CacheEvict(value = ["productAggregates"], key = "#productId", cacheManager = "redisCacheManager")
+    @Caching(
+        evict = [
+            CacheEvict(value = ["productAggregates"], key = "#productId", cacheManager = "redisCacheManager")
+        ]
+    )
     fun createOrUpdate(productId: Long) = runBlocking {
         val asyncProductDto: Deferred<FindProductDto> =
             async(Dispatchers.IO) { restGetRequestor.getProduct(productId = productId) }
