@@ -2,12 +2,12 @@ package com.hs.application.usecase
 
 import com.hs.dto.FindProductAggregateDto
 import com.hs.dto.FindPaginationDto
+import com.hs.dto.FindProductAggregatePaginationDto
 import com.hs.entity.ProductAggregate
 import com.hs.entity.ProductAggregateType.FIND_PRODUCT
 import com.hs.message.QueryAppExceptionMessage
 import com.hs.repository.QueryAppProductAggregateRepository
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 
 @Service
@@ -18,7 +18,7 @@ class ProductAggregateQuery(
     fun findProductAggregatesWithPagination(
         page: Int,
         pageSize: Int
-    ): FindPaginationDto<FindProductAggregateDto> {
+    ): FindPaginationDto<FindProductAggregatePaginationDto> {
         val productAggregatesPagination: Pair<List<ProductAggregate>, Long> =
             productAggregateRepository.findAllByTypeAndIsDisplay(
                 type = FIND_PRODUCT,
@@ -27,15 +27,11 @@ class ProductAggregateQuery(
                 pageSize = pageSize
             )
 
-        val items: List<FindProductAggregateDto> = productAggregatesPagination.first.map { productAggregate ->
-            FindProductAggregateDto(
+        val items: List<FindProductAggregatePaginationDto> = productAggregatesPagination.first.map { productAggregate ->
+            FindProductAggregatePaginationDto(
                 productId = productAggregate.data.productId,
                 name = productAggregate.data.name,
-                price = productAggregate.data.price,
-                stockQuantity = productAggregate.data.stockQuantity,
-                imageUrls = productAggregate.data.imageUrls,
-                createdDatetime = productAggregate.createdDatetime,
-                updatedDatetime = productAggregate.updatedDatetime
+                price = productAggregate.data.price
             )
         }
 
@@ -47,6 +43,7 @@ class ProductAggregateQuery(
         )
     }
 
+    @Cacheable(value = ["productAggregates"], key = "#productId", cacheManager = "redisCacheManager")
     fun findProductAggregate(productId: Long): FindProductAggregateDto {
         val productAggregate: ProductAggregate = productAggregateRepository.findByProductIdAndTypeAndIsDisplay(
             productId = productId,
