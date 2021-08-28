@@ -37,7 +37,7 @@ class QueryAppController(
     @GetMapping(value = ["/products/{id}"])
     fun findProductAggregate(
         @PathVariable(value = "id") @Min(value = 1, message = "1 이상을 입력해야 합니다.") productId: Long
-    ): ResponseEntity<SuccessResponse<FindProductAggregateDto>> {
+    ): ResponseEntity<SuccessResponse<Any>> {
         return ResponseEntity.ok(SuccessResponse(data = productAggregateQuery.findProductAggregate(productId = productId)))
     }
 }
