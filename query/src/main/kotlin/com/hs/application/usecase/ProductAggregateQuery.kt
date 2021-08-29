@@ -15,10 +15,15 @@ class ProductAggregateQuery(
     private val productAggregateRepository: QueryAppProductAggregateRepository
 ) {
 
+//    @Cacheable(
+//        value = ["productAggregatesPagination"],
+//        key = "{#page, #pageSize}",
+//        cacheManager = "redisCacheManager"
+//    )
     fun findProductAggregatesWithPagination(
         page: Int,
         pageSize: Int
-    ): FindPaginationDto<FindProductAggregatePaginationDto> {
+    ): FindPaginationDto {
         val productAggregatesPagination: Pair<List<ProductAggregate>, Long> =
             productAggregateRepository.findAllByTypeAndIsDisplay(
                 type = FIND_PRODUCT,
