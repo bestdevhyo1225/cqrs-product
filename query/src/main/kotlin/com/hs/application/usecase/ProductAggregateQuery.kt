@@ -48,7 +48,7 @@ class ProductAggregateQuery(
         )
     }
 
-    @Cacheable(value = ["productAggregates"], key = "#productId", cacheManager = "redisCacheManager")
+    @Cacheable(value = ["productAggregates"], key = "#productId", cacheResolver = "productAggregateCacheResolver")
     fun findProductAggregate(productId: Long): FindProductAggregateDto {
         val productAggregate: ProductAggregate = productAggregateRepository.findByProductIdAndTypeAndIsDisplay(
             productId = productId,
