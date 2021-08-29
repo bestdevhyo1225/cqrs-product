@@ -1,6 +1,6 @@
 package com.hs.application.handler
 
-import com.hs.config.RabbitMqConfig
+import com.hs.config.rabbitmq.RabbitMqConfig
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message

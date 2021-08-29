@@ -1,4 +1,4 @@
-package com.hs.config
+package com.hs.config.redis
 
 import com.hs.dto.FindProductAggregateDto
 import com.hs.dto.FindProductDto

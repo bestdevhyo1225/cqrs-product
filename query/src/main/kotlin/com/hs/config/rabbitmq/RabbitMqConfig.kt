@@ -1,4 +1,4 @@
-package com.hs.config
+package com.hs.config.rabbitmq
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
