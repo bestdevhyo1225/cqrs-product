@@ -1,4 +1,4 @@
-package com.hs.config
+package com.hs.config.mongo
 
 import org.bson.Document
 import org.springframework.beans.factory.annotation.Value

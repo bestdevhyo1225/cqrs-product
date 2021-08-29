@@ -2,7 +2,7 @@ package com.hs.adapter.amqp
 
 import com.hs.adapter.amqp.event.ConsumeProductEvent
 import com.hs.application.usecase.ProductAggregateCommand
-import com.hs.config.RabbitMqConfig
+import com.hs.config.rabbitmq.RabbitMqConfig
 import com.rabbitmq.client.Channel
 
 import org.slf4j.Logger

@@ -17,7 +17,7 @@ class ProductAggregateQuery(
 
 //    @Cacheable(
 //        value = ["productAggregatesPagination"],
-//        key = "{#page, #pageSize}",
+//        key = "#page.toString().concat('-').concat(#pageSize)",
 //        cacheManager = "redisCacheManager"
 //    )
     fun findProductAggregatesWithPagination(
