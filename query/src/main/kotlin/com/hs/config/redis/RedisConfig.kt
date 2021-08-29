@@ -33,6 +33,10 @@ class RedisConfig(
     private val password: String,
 ) {
 
+    companion object {
+        const val PRODUCT_AGGREGATE_TTL: Long = 180L
+    }
+
     @Bean
     fun redisCacheConnectionFactory(): RedisConnectionFactory {
         val redisStandaloneConfiguration = RedisStandaloneConfiguration(host, cachePort)
@@ -66,7 +70,7 @@ class RedisConfig(
             .disableCachingNullValues()
             .serializeKeysWith(fromSerializer(StringRedisSerializer()))
             .serializeValuesWith(fromSerializer(GenericJackson2JsonRedisSerializer()))
-            .entryTtl(Duration.ofSeconds(180L))
+            .entryTtl(Duration.ofSeconds(PRODUCT_AGGREGATE_TTL))
 
         return RedisCacheManager.RedisCacheManagerBuilder
             .fromConnectionFactory(redisCacheConnectionFactory())
@@ -81,6 +85,9 @@ class RedisConfig(
 
     @Bean
     fun productAggregateCacheResolver(): CacheResolver {
-        return ProductAggregateCacheResolver(redisCacheManager = redisCacheManager())
+        return ProductAggregateCacheResolver(
+            redisCacheManager = redisCacheManager(),
+            productAggregateRedisTemplate = productAggregateRedisTemplate()
+        )
     }
 }
