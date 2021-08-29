@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 data class FindProductAggregatePaginationDto(
+
     @JsonProperty("productId")
     val productId: Long,
 
