@@ -4,6 +4,7 @@ import com.hs.dto.FindProductAggregateDto
 import com.hs.dto.FindProductDto
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.annotation.EnableCaching
+import org.springframework.cache.interceptor.KeyGenerator
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.redis.cache.RedisCacheConfiguration
@@ -70,5 +71,10 @@ class RedisConfig(
             .fromConnectionFactory(redisCacheConnectionFactory())
             .cacheDefaults(defaultCacheConfiguration)
             .build()
+    }
+
+    @Bean
+    fun productAggregateCacheKeyGenerator(): KeyGenerator {
+        return ProductAggregateCacheKeyGenerator()
     }
 }
