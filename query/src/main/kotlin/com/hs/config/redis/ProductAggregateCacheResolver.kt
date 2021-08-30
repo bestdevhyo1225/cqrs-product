@@ -17,17 +17,13 @@ class ProductAggregateCacheResolver(
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
-    companion object {
-        private const val PRODUCT_AGGREGATES_CACHE_NAME = "productAggregates"
-    }
-
     override fun resolveCaches(context: CacheOperationInvocationContext<*>): MutableCollection<out Cache> {
-        val key: String = "$PRODUCT_AGGREGATES_CACHE_NAME::" + context.args[0]
+        val key = "${RedisConfig.PRODUCT_AGGREGATE_CACHE_NAME}::${context.args[0]}"
 
         if (isExpired(key = key)) updateExpire(key = key)
 
         val caches: MutableCollection<Cache> = mutableListOf()
-        val cache: Cache = redisCacheManager.getCache(PRODUCT_AGGREGATES_CACHE_NAME) ?: return caches
+        val cache: Cache = redisCacheManager.getCache(RedisConfig.PRODUCT_AGGREGATE_CACHE_NAME) ?: return caches
 
         caches.add(cache)
 

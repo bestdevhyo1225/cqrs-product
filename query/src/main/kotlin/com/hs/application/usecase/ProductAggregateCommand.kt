@@ -21,7 +21,7 @@ class ProductAggregateCommand(
 
     @Caching(
         evict = [
-            CacheEvict(value = ["productAggregates"], key = "#productId", cacheManager = "redisCacheManager")
+            CacheEvict(value = ["productAggregate"], key = "#productId", cacheManager = "redisCacheManager")
         ]
     )
     fun createOrUpdate(productId: Long) = runBlocking {

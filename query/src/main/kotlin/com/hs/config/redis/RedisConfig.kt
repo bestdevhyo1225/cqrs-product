@@ -1,5 +1,6 @@
 package com.hs.config.redis
 
+import com.hs.dto.FindPaginationDto
 import com.hs.dto.FindProductAggregateDto
 import com.hs.dto.FindProductDto
 import org.springframework.beans.factory.annotation.Value
@@ -34,7 +35,11 @@ class RedisConfig(
 ) {
 
     companion object {
+        const val DEFAULT_TTL: Long = 60L
         const val PRODUCT_AGGREGATE_TTL: Long = 180L
+        const val PRODUCT_AGGREGATE_PAGE_TTL: Long = 120L
+        const val PRODUCT_AGGREGATE_CACHE_NAME = "productAggregate"
+        const val PRODUCT_AGGREGATE_PAGE_CACHE_NAME = "productAggregatePage"
     }
 
     @Bean
@@ -49,10 +54,29 @@ class RedisConfig(
     @Bean
     fun productAggregateRedisTemplate(): RedisTemplate<String, FindProductAggregateDto> {
         val redisTemplate = RedisTemplate<String, FindProductAggregateDto>()
+
+        redisTemplate.setConnectionFactory(redisCacheConnectionFactory())
+
         val stringRedisSerializer = StringRedisSerializer()
         val genericJackson2JsonRedisSerializer = GenericJackson2JsonRedisSerializer()
 
+        redisTemplate.keySerializer = stringRedisSerializer
+        redisTemplate.valueSerializer = genericJackson2JsonRedisSerializer
+
+        redisTemplate.hashKeySerializer = stringRedisSerializer
+        redisTemplate.hashValueSerializer = genericJackson2JsonRedisSerializer
+
+        return redisTemplate
+    }
+
+    @Bean
+    fun productAggregatePageRedisTemplate(): RedisTemplate<String, FindPaginationDto> {
+        val redisTemplate = RedisTemplate<String, FindPaginationDto>()
+
         redisTemplate.setConnectionFactory(redisCacheConnectionFactory())
+
+        val stringRedisSerializer = StringRedisSerializer()
+        val genericJackson2JsonRedisSerializer = GenericJackson2JsonRedisSerializer()
 
         redisTemplate.keySerializer = stringRedisSerializer
         redisTemplate.valueSerializer = genericJackson2JsonRedisSerializer
@@ -70,11 +94,20 @@ class RedisConfig(
             .disableCachingNullValues()
             .serializeKeysWith(fromSerializer(StringRedisSerializer()))
             .serializeValuesWith(fromSerializer(GenericJackson2JsonRedisSerializer()))
-            .entryTtl(Duration.ofSeconds(PRODUCT_AGGREGATE_TTL))
+            .entryTtl(Duration.ofSeconds(DEFAULT_TTL))
+
+        val cacheConfigurations: MutableMap<String, RedisCacheConfiguration> = HashMap()
+
+        cacheConfigurations[PRODUCT_AGGREGATE_CACHE_NAME] =
+            defaultCacheConfiguration.entryTtl(Duration.ofSeconds(PRODUCT_AGGREGATE_TTL))
+
+        cacheConfigurations[PRODUCT_AGGREGATE_PAGE_CACHE_NAME] =
+            defaultCacheConfiguration.entryTtl(Duration.ofSeconds(PRODUCT_AGGREGATE_PAGE_TTL))
 
         return RedisCacheManager.RedisCacheManagerBuilder
             .fromConnectionFactory(redisCacheConnectionFactory())
             .cacheDefaults(defaultCacheConfiguration)
+            .withInitialCacheConfigurations(cacheConfigurations)
             .build()
     }
 
@@ -88,6 +121,14 @@ class RedisConfig(
         return ProductAggregateCacheResolver(
             redisCacheManager = redisCacheManager(),
             productAggregateRedisTemplate = productAggregateRedisTemplate()
+        )
+    }
+
+    @Bean
+    fun productAggregatePageCacheResolver(): CacheResolver {
+        return ProductAggregatePageCacheResolver(
+            redisCacheManager = redisCacheManager(),
+            productAggregatePageRedisTemplate = productAggregatePageRedisTemplate()
         )
     }
 }
