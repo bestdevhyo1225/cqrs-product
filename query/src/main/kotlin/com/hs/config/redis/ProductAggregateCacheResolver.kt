@@ -27,7 +27,6 @@ class ProductAggregateCacheResolver(
         if (isExpired(key = key)) updateExpire(key = key)
 
         val caches: MutableCollection<Cache> = mutableListOf()
-
         val cache: Cache = redisCacheManager.getCache(PRODUCT_AGGREGATES_CACHE_NAME) ?: return caches
 
         caches.add(cache)
@@ -37,10 +36,7 @@ class ProductAggregateCacheResolver(
 
     private fun isExpired(key: String, expireTimeGapMs: Long = 3000): Boolean {
         val currentExpireTimeMS: Long = productAggregateRedisTemplate.getExpire(key, TimeUnit.MILLISECONDS)
-
-        if (currentExpireTimeMS < 0) return false
-
-        return currentExpireTimeMS - Math.random() * expireTimeGapMs <= 0
+        return currentExpireTimeMS >= 0 && currentExpireTimeMS - Math.random() * expireTimeGapMs <= 0
     }
 
     private fun updateExpire(key: String) {
