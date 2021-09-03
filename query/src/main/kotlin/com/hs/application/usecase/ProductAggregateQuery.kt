@@ -15,11 +15,11 @@ class ProductAggregateQuery(
     private val productAggregateRepository: QueryAppProductAggregateRepository
 ) {
 
-    @Cacheable(
-        value = ["productAggregatePage"],
-        key = "#page.toString().concat('-').concat(#pageSize)",
-        cacheManager = "redisCacheManager"
-    )
+//    @Cacheable(
+//        value = ["productAggregatePage"],
+//        key = "#page.toString().concat('-').concat(#pageSize)",
+//        cacheManager = "redisCacheManager"
+//    )
     fun findProductAggregatesWithPagination(
         page: Int,
         pageSize: Int
