@@ -9,10 +9,12 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.stereotype.Component
 
 @Component
 class ProductQueueListener(
+    private val rabbitTemplate: RabbitTemplate,
     private val productAggregateCommand: ProductAggregateCommand
 ) {
 
@@ -24,9 +26,7 @@ class ProductQueueListener(
         errorHandler = "productQueueErrorHandler"
     )
     fun consumeProductQueue(consumeProductEvent: ConsumeProductEvent, channel: Channel, message: Message) {
-        logger.info("channel : {}", channel)
         logger.info("message : {}", message)
-        logger.info("consumeProductEvent : {}", consumeProductEvent)
 
         productAggregateCommand.createOrUpdate(productId = consumeProductEvent.productId)
 
@@ -35,10 +35,21 @@ class ProductQueueListener(
 
     @RabbitListener(id = "product-dead-letter-queue", queues = [RabbitMqConfig.QueueName.PRODUCT_DLQ])
     fun consumeProductDeadLetterQueue(consumeProductEvent: ConsumeProductEvent, channel: Channel, message: Message) {
-        logger.info("channel : {}", channel)
-        logger.info("message : {}", message)
-        logger.info("consumeProductEvent : {}", consumeProductEvent)
+        val deliveryTag: Long = message.messageProperties.deliveryTag
+        val xDeathHeader: Map<String, *> = message.messageProperties.xDeathHeader.first()
+        val xDeathCount = xDeathHeader["count"] as Long
+        val queue = xDeathHeader["queue"] as String
 
-        channel.basicAck(message.messageProperties.deliveryTag, false)
+        if (xDeathCount >= RabbitMqConfig.Retry.MAX_ATTEMPT) {
+            logger.error("Message exceed retry max attempt (message : {})", message)
+
+            channel.basicReject(deliveryTag, false)
+        } else {
+            logger.warn("Send from ProductDeadLetterQueue to ProductQueue (xDeathCount: {})", xDeathCount)
+
+            rabbitTemplate.send(queue, message)
+
+            channel.basicAck(deliveryTag, false)
+        }
     }
 }

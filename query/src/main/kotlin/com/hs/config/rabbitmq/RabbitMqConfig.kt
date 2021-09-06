@@ -38,6 +38,10 @@ class RabbitMqConfig(
         const val PRODUCT_DLQ = "product.dead-letter-queue"
     }
 
+    object Retry {
+        const val MAX_ATTEMPT: Long = 5
+    }
+
     @Bean
     fun connectionFactory(): ConnectionFactory {
         val factory = CachingConnectionFactory()

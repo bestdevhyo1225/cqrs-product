@@ -28,11 +28,11 @@ spring:
       enabled: false
     listener:
       simple:
-        retry:
-          enabled: true
-          initial-interval: 3s
-          max-interval: 10s
-          max-attempts: 5
+#        retry:
+#          enabled: true
+#          initial-interval: 3s
+#          max-interval: 10s
+#          max-attempts: 5
         acknowledge-mode: manual
         prefetch: 1
 
