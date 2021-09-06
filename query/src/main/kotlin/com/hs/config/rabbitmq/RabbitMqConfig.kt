@@ -53,15 +53,18 @@ class RabbitMqConfig(
 
     @Bean
     fun productQueue(): Queue {
-        return QueueBuilder.durable(QueueName.PRODUCT)
-            .withArgument("x-dead-letter-exchange", "")
-            .withArgument("x-dead-letter-routing-key", QueueName.PRODUCT_DLQ)
+        return QueueBuilder
+            .durable(QueueName.PRODUCT)
+            .deadLetterExchange("")
+            .deadLetterRoutingKey(QueueName.PRODUCT_DLQ)
             .build()
     }
 
     @Bean
     fun productDeadLetterQueue(): Queue {
-        return Queue(QueueName.PRODUCT_DLQ, true, false, false)
+        return QueueBuilder
+            .durable(QueueName.PRODUCT_DLQ)
+            .build()
     }
 
     @Bean
