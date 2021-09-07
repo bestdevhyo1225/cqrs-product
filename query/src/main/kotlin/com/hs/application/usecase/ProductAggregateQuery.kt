@@ -15,7 +15,7 @@ class ProductAggregateQuery(
     private val productAggregateRepository: QueryAppProductAggregateRepository
 ) {
 
-//    @Cacheable(
+    //    @Cacheable(
 //        value = ["productAggregatePage"],
 //        key = "#page.toString().concat('-').concat(#pageSize)",
 //        cacheManager = "redisCacheManager"
@@ -48,7 +48,7 @@ class ProductAggregateQuery(
         )
     }
 
-    @Cacheable(value = ["productAggregate"], key = "#productId", cacheResolver = "productAggregateCacheResolver")
+    @Cacheable(value = ["productAggregate"], key = "#productId", cacheResolver = "ProductAggregateCacheableResolver")
     fun findProductAggregate(productId: Long): FindProductAggregateDto {
         val productAggregate: ProductAggregate = productAggregateRepository.findByProductIdAndTypeAndIsDisplay(
             productId = productId,

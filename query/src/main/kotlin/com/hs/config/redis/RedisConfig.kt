@@ -2,7 +2,6 @@ package com.hs.config.redis
 
 import com.hs.dto.FindPaginationDto
 import com.hs.dto.FindProductAggregateDto
-import com.hs.dto.FindProductDto
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.cache.interceptor.CacheResolver
@@ -16,7 +15,6 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair.fromSerializer
 import org.springframework.data.redis.serializer.StringRedisSerializer
 import java.time.Duration
@@ -117,8 +115,8 @@ class RedisConfig(
     }
 
     @Bean
-    fun productAggregateCacheResolver(): CacheResolver {
-        return ProductAggregateCacheResolver(
+    fun ProductAggregateCacheableResolver(): CacheResolver {
+        return ProductAggregateCacheableResolver(
             redisCacheManager = redisCacheManager(),
             productAggregateRedisTemplate = productAggregateRedisTemplate()
         )

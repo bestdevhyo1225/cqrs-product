@@ -10,7 +10,7 @@ import org.springframework.data.redis.cache.RedisCacheManager
 import org.springframework.data.redis.core.RedisTemplate
 import java.util.concurrent.TimeUnit
 
-class ProductAggregateCacheResolver(
+class ProductAggregateCacheableResolver(
     private val redisCacheManager: RedisCacheManager,
     private val productAggregateRedisTemplate: RedisTemplate<String, FindProductAggregateDto>
 ) : CacheResolver {
