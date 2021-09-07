@@ -2,6 +2,8 @@ package com.hs.config.redis
 
 import com.hs.dto.FindPaginationDto
 import com.hs.dto.FindProductAggregateDto
+import com.hs.infrastructure.redis.ProductAggregateCacheKeyGenerator
+import com.hs.infrastructure.redis.ProductAggregatePageCacheResolver
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.cache.interceptor.CacheResolver
@@ -115,8 +117,8 @@ class RedisConfig(
     }
 
     @Bean
-    fun ProductAggregateCacheableResolver(): CacheResolver {
-        return ProductAggregateCacheableResolver(
+    fun productAggregateCacheableResolver(): CacheResolver {
+        return com.hs.infrastructure.redis.ProductAggregateCacheableResolver(
             redisCacheManager = redisCacheManager(),
             productAggregateRedisTemplate = productAggregateRedisTemplate()
         )

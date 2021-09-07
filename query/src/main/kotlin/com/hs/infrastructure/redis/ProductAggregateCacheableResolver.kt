@@ -1,5 +1,6 @@
-package com.hs.config.redis
+package com.hs.infrastructure.redis
 
+import com.hs.config.redis.RedisConfig
 import com.hs.dto.FindProductAggregateDto
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
