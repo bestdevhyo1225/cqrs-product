@@ -1,4 +1,4 @@
-package com.hs.infrastructure.redis
+package com.hs.infrastructure.redis.resolver
 
 import com.hs.config.redis.RedisConfig
 import com.hs.dto.FindPaginationDto
@@ -15,7 +15,7 @@ import org.springframework.data.redis.core.RedisCallback
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.core.ScanOptions
 
-class ProductAggregatePageCacheResolver(
+class ProductAggregatePageCacheEvictResolver(
     private val redisCacheManager: RedisCacheManager,
     private val productAggregatePageRedisTemplate: RedisTemplate<String, FindPaginationDto>
 ) : CacheResolver {

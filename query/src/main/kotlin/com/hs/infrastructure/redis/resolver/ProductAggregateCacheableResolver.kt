@@ -1,4 +1,4 @@
-package com.hs.infrastructure.redis
+package com.hs.infrastructure.redis.resolver
 
 import com.hs.config.redis.RedisConfig
 import com.hs.dto.FindProductAggregateDto

@@ -25,7 +25,7 @@ class ProductAggregateCommand(
 //            CacheEvict(
 //                value = ["productAggregatePage"],
 //                key = "#productId",
-//                cacheResolver = "productAggregatePageCacheResolver"
+//                cacheResolver = "productAggregatePageCacheEvictResolver"
 //            )
         ]
     )
