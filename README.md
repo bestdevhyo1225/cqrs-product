@@ -26,7 +26,7 @@
 
 ## CQRS 패턴
 
-![image](https://user-images.githubusercontent.com/23515771/128012900-d897a8de-ce09-4c19-a6bd-9207044500a3.png)
+![image](https://user-images.githubusercontent.com/23515771/132528318-08a914bf-89f2-4589-8d2e-8fb9a739cb81.png)
 
 ## 헥사고날 아키텍쳐
 
