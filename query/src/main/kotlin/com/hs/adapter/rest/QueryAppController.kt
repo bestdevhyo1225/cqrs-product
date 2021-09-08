@@ -1,6 +1,7 @@
 package com.hs.adapter.rest
 
 import com.hs.application.usecase.ProductAggregateQuery
+import com.hs.config.redis.RedisConfig
 import com.hs.dto.FindProductAggregateDto
 import com.hs.response.SuccessResponse
 import org.springframework.http.ResponseEntity
@@ -38,6 +39,15 @@ class QueryAppController(
     fun findProductAggregate(
         @PathVariable(value = "id") @Min(value = 1, message = "1 이상을 입력해야 합니다.") productId: Long
     ): ResponseEntity<SuccessResponse<Any>> {
-        return ResponseEntity.ok(SuccessResponse(data = productAggregateQuery.findProductAggregate(productId = productId)))
+        val copyPrefixKey = "copy-${(Math.random() * RedisConfig.PRODUCT_AGGREGATE_COPY_COUNT).toInt()}"
+
+        return ResponseEntity.ok(
+            SuccessResponse(
+                data = productAggregateQuery.findProductAggregate(
+                    copyPrefixKey = copyPrefixKey,
+                    productId = productId
+                )
+            )
+        )
     }
 }

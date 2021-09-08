@@ -41,6 +41,7 @@ class RedisConfig(
         const val PRODUCT_AGGREGATE_PAGE_TTL: Long = 120L
         const val PRODUCT_AGGREGATE_CACHE_NAME = "productAggregate"
         const val PRODUCT_AGGREGATE_PAGE_CACHE_NAME = "productAggregatePage"
+        const val PRODUCT_AGGREGATE_COPY_COUNT: Int = 5
     }
 
     @Bean
