@@ -19,7 +19,7 @@ class ProductAggregateCacheableResolver(
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
     override fun resolveCaches(context: CacheOperationInvocationContext<*>): MutableCollection<out Cache> {
-        val key = "${RedisConfig.PRODUCT_AGGREGATE_CACHE_NAME}::${context.args[0]}"
+        val key = "${RedisConfig.PRODUCT_AGGREGATE_CACHE_NAME}::${context.args[0]}::${context.args[1]}"
 
         if (isExpired(key = key)) updateExpire(key = key)
 
