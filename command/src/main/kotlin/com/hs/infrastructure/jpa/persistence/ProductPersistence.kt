@@ -1,6 +1,6 @@
 package com.hs.infrastructure.jpa.persistence
 
-import com.hs.entity.ProductConfirmStatus
+import com.hs.entity.Product
 import org.hibernate.annotations.DynamicUpdate
 import java.time.LocalDateTime
 import javax.persistence.CascadeType
@@ -21,7 +21,7 @@ class ProductPersistence private constructor(
     name: String,
     price: Int,
     stockQuantity: Int,
-    confirmStatus: ProductConfirmStatus,
+    confirmStatus: Product.ConfirmStatus,
     createdDate: LocalDateTime,
     updatedDate: LocalDateTime,
     deletedDate: LocalDateTime?
@@ -45,7 +45,7 @@ class ProductPersistence private constructor(
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    var confirmStatus: ProductConfirmStatus = confirmStatus
+    var confirmStatus: Product.ConfirmStatus = confirmStatus
         protected set
 
     @Column(nullable = false, columnDefinition = "datetime")
@@ -76,7 +76,7 @@ class ProductPersistence private constructor(
             price: Int,
             stockQuantity: Int,
             imageUrls: List<String>,
-            confirmStatus: ProductConfirmStatus,
+            confirmStatus: Product.ConfirmStatus,
             createdDate: LocalDateTime,
             updatedDate: LocalDateTime,
             deletedDate: LocalDateTime?
@@ -107,7 +107,7 @@ class ProductPersistence private constructor(
         this.name = name
         this.price = price
         this.stockQuantity = stockQuantity
-        this.confirmStatus = ProductConfirmStatus.WAIT
+        this.confirmStatus = Product.ConfirmStatus.WAIT
         this.updatedDate = LocalDateTime.now()
     }
 
@@ -116,7 +116,7 @@ class ProductPersistence private constructor(
         this.updatedDate = LocalDateTime.now()
     }
 
-    fun updateConfirmStatus(confirmStatus: ProductConfirmStatus) {
+    fun updateConfirmStatus(confirmStatus: Product.ConfirmStatus) {
         this.confirmStatus = confirmStatus
         this.updatedDate = LocalDateTime.now()
     }

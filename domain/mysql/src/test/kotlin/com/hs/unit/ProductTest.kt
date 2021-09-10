@@ -1,7 +1,6 @@
 package com.hs.unit
 
 import com.hs.entity.Product
-import com.hs.entity.ProductConfirmStatus
 import com.hs.exception.DomainMySqlException
 import com.hs.message.CommandAppExceptionMessage
 import org.assertj.core.api.Assertions.assertThat
@@ -54,7 +53,7 @@ class ProductTest {
         assertThat(product.name).isEqualTo(fixtureName)
         assertThat(product.price).isEqualTo(fixturePrice)
         assertThat(product.stockQuantity).isEqualTo(fixtureStockQuantity)
-        assertThat(product.confirmStatus).isEqualTo(ProductConfirmStatus.WAIT)
+        assertThat(product.confirmStatus).isEqualTo(Product.ConfirmStatus.WAIT)
         assertThat(product.updatedDate).isNotEqualTo(fixtureUpdateDate)
     }
 
@@ -105,7 +104,7 @@ class ProductTest {
 
     @ParameterizedTest
     @CsvSource(value = ["APPROVE", "REJECT", "WAIT"])
-    fun `상품의 상태를 변경한다`(confirmStatus: ProductConfirmStatus) {
+    fun `상품의 상태를 변경한다`(confirmStatus: Product.ConfirmStatus) {
         // given
         val product = Product.create(
             name = "상품 이름",
@@ -129,7 +128,7 @@ class ProductTest {
         val price = 100_000
         val stockQuantity = 30
         val imageUrls: List<String> = listOf("testUrl")
-        val confirmStatus = ProductConfirmStatus.REJECT
+        val confirmStatus = Product.ConfirmStatus.REJECT
         val createdDate = LocalDateTime.now()
         val updatedDate = LocalDateTime.now()
         val deletedDate: LocalDateTime? = null
@@ -157,5 +156,38 @@ class ProductTest {
         assertThat(product.createdDate).isEqualTo(createdDate)
         assertThat(product.updatedDate).isEqualTo(updatedDate)
         assertThat(product.deletedDate).isEqualTo(deletedDate)
+    }
+
+    @ParameterizedTest
+    @CsvSource(
+        value = ["APPROVE, APPROVE", "REJECT, REJECT", "WAIT, WAIT"]
+    )
+    fun `String 타입의 상품 상태 값을 Enum 클래스로 변환한다`(
+        requestConfirmStatus: String, expectConfirmStatus: Product.ConfirmStatus
+    ) {
+        // when
+        val productConfirmStatus: Product.ConfirmStatus =
+            Product.convertFromStringToConfirmStatus(value = requestConfirmStatus)
+
+        // then
+        assertThat(productConfirmStatus).isEqualTo(expectConfirmStatus)
+    }
+
+    @Test
+    fun `유효하지 않은 String 타입의 상품 상태 값이면, 예외를 반환한다`() {
+        // given
+        val confirmStatus = "EXCEPTION_TEST"
+
+        // when
+        val exception = Assertions.assertThrows(DomainMySqlException::class.java) {
+            Product.convertFromStringToConfirmStatus(value = confirmStatus)
+        }
+
+        // then
+        assertThat(exception.message)
+            .isEqualTo(CommandAppExceptionMessage.NOT_EXIST_PRODUCT_CONFIRM_STATUS.localizedMessage)
+
+        assertThat(exception.localizedMessage)
+            .isEqualTo(CommandAppExceptionMessage.NOT_EXIST_PRODUCT_CONFIRM_STATUS.localizedMessage)
     }
 }

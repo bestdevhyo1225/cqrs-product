@@ -2,10 +2,8 @@ package com.hs.application.usecase
 
 import com.hs.application.exception.ApplicationLayerException
 import com.hs.dto.CreateProductDto
-import com.hs.dto.FindProductDto
 import com.hs.dto.UpdateProductDto
 import com.hs.entity.ProductCommandCode
-import com.hs.entity.ProductConfirmStatus
 import com.hs.entity.Product
 import com.hs.event.ProductChangeConfirmStatusEvent
 import com.hs.event.ProductCreateAndUpdateEvent
@@ -97,8 +95,8 @@ class ProductCommand(
     }
 
     fun changeConfirmStatus(id: Long, strProductConfirmStatus: String) {
-        val confirmStatus: ProductConfirmStatus =
-            ProductConfirmStatus.convertFromStringToProductConfirmStatus(value = strProductConfirmStatus)
+        val confirmStatus: Product.ConfirmStatus =
+            Product.convertFromStringToConfirmStatus(value = strProductConfirmStatus)
 
         val product: Product = findProduct(id = id)
 
@@ -121,7 +119,7 @@ class ProductCommand(
         productRepository.deleteImageByProductId(productId = product.id!!)
         productRepository.saveAllImage(product = product, imageUrls = imageUrls)
 
-        product.updateConfirmStatus(confirmStatus = ProductConfirmStatus.WAIT)
+        product.updateConfirmStatus(confirmStatus = Product.ConfirmStatus.WAIT)
         productRepository.updateConfirmStatus(product = product)
 
         publishEvent(

@@ -20,7 +20,7 @@ class ProductPersistence private constructor(
     name: String,
     price: Int,
     stockQuantity: Int,
-    confirmStatus: ProductConfirmStatus,
+    confirmStatus: Product.ConfirmStatus,
     createdDate: LocalDateTime,
     updatedDate: LocalDateTime,
     deletedDate: LocalDateTime?
@@ -44,7 +44,7 @@ class ProductPersistence private constructor(
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    var confirmStatus: ProductConfirmStatus = confirmStatus
+    var confirmStatus: Product.ConfirmStatus = confirmStatus
         protected set
 
     @Column(nullable = false, columnDefinition = "datetime")
@@ -74,7 +74,7 @@ class ProductPersistence private constructor(
             name: String,
             price: Int,
             stockQuantity: Int,
-            confirmStatus: ProductConfirmStatus,
+            confirmStatus: Product.ConfirmStatus,
             createdDate: LocalDateTime,
             updatedDate: LocalDateTime,
             deletedDate: LocalDateTime?

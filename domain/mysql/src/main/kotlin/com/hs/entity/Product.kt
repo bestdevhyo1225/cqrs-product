@@ -10,11 +10,13 @@ class Product private constructor(
     price: Int,
     stockQuantity: Int,
     imageUrls: List<String> = listOf(),
-    confirmStatus: ProductConfirmStatus = ProductConfirmStatus.WAIT,
+    confirmStatus: ConfirmStatus = ConfirmStatus.WAIT,
     createdDate: LocalDateTime = LocalDateTime.now(),
     updatedDate: LocalDateTime = LocalDateTime.now(),
     deletedDate: LocalDateTime? = null,
 ) {
+
+    enum class ConfirmStatus { WAIT, REJECT, APPROVE }
 
     var id: Long? = id
         private set
@@ -31,7 +33,7 @@ class Product private constructor(
     var imageUrls: List<String> = imageUrls
         private set
 
-    var confirmStatus: ProductConfirmStatus = confirmStatus
+    var confirmStatus: ConfirmStatus = confirmStatus
         private set
 
     var createdDate: LocalDateTime = createdDate
@@ -62,7 +64,7 @@ class Product private constructor(
             price: Int,
             stockQuantity: Int,
             imageUrls: List<String> = listOf(),
-            confirmStatus: ProductConfirmStatus,
+            confirmStatus: ConfirmStatus,
             createdDate: LocalDateTime,
             updatedDate: LocalDateTime,
             deletedDate: LocalDateTime?
@@ -79,6 +81,14 @@ class Product private constructor(
                 deletedDate = deletedDate
             )
         }
+
+        fun convertFromStringToConfirmStatus(value: String): ConfirmStatus {
+            try {
+                return ConfirmStatus.valueOf(value = value)
+            } catch (exception: Exception) {
+                throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.NOT_EXIST_PRODUCT_CONFIRM_STATUS)
+            }
+        }
     }
 
     fun reflectIdAfterPersistence(id: Long?) {
@@ -89,7 +99,7 @@ class Product private constructor(
         this.name = name
         this.price = price
         this.stockQuantity = stockQuantity
-        this.confirmStatus = ProductConfirmStatus.WAIT
+        this.confirmStatus = ConfirmStatus.WAIT
         this.updatedDate = LocalDateTime.now()
     }
 
@@ -104,7 +114,7 @@ class Product private constructor(
         this.updatedDate = LocalDateTime.now()
     }
 
-    fun updateConfirmStatus(confirmStatus: ProductConfirmStatus) {
+    fun updateConfirmStatus(confirmStatus: ConfirmStatus) {
         this.confirmStatus = confirmStatus
         this.updatedDate = LocalDateTime.now()
     }
