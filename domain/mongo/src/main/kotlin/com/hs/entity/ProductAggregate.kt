@@ -1,6 +1,5 @@
 package com.hs.entity
 
-import com.hs.dto.FindProductDto
 import com.hs.exception.DomainMongoException
 import com.hs.message.QueryAppExceptionMessage
 import com.hs.util.DatetimeFormatterUtils
@@ -10,7 +9,7 @@ class ProductAggregate private constructor(
     id: String? = null,
     productId: Long,
     isDisplay: Boolean,
-    data: FindProductDto,
+    productInfo: ProductInfo,
     createdDatetime: LocalDateTime = LocalDateTime.now(),
     updatedDatetime: LocalDateTime = LocalDateTime.now()
 ) {
@@ -24,7 +23,7 @@ class ProductAggregate private constructor(
     var isDisplay: Boolean = isDisplay
         private set
 
-    var data: FindProductDto = data
+    var productInfo: ProductInfo = productInfo
         private set
 
     var createdDatetime: LocalDateTime = createdDatetime
@@ -34,16 +33,16 @@ class ProductAggregate private constructor(
         private set
 
     override fun toString(): String {
-        return "ProductAggregate(id=$id, productId=$productId, isDisplay=$isDisplay, data=$data, " +
+        return "ProductAggregate(id=$id, productId=$productId, isDisplay=$isDisplay, productInfo=$productInfo, " +
                 "createdDatetime=$createdDatetime, updatedDatetime=$updatedDatetime)"
     }
 
     companion object {
-        fun create(productDto: FindProductDto): ProductAggregate {
+        fun create(productInfo: ProductInfo, confirmStatus: String): ProductAggregate {
             return ProductAggregate(
-                productId = productDto.productId,
-                isDisplay = productDto.confirmStatus == "APPROVE",
-                data = productDto
+                productId = productInfo.id,
+                isDisplay = confirmStatus == "APPROVE",
+                productInfo = productInfo
             )
         }
 
@@ -51,7 +50,7 @@ class ProductAggregate private constructor(
             id: String,
             productId: Long,
             isDisplay: Boolean,
-            data: FindProductDto,
+            productInfo: ProductInfo,
             createdDatetime: String,
             updatedDatetime: String
         ): ProductAggregate {
@@ -59,16 +58,16 @@ class ProductAggregate private constructor(
                 id = id,
                 productId = productId,
                 isDisplay = isDisplay,
-                data = data,
+                productInfo = productInfo,
                 createdDatetime = LocalDateTime.parse(createdDatetime, DatetimeFormatterUtils.DATETIME_FORMATTER),
                 updatedDatetime = LocalDateTime.parse(updatedDatetime, DatetimeFormatterUtils.DATETIME_FORMATTER)
             )
         }
     }
 
-    fun changeProductAggregateData(data: FindProductDto) {
-        this.data = data
-        this.isDisplay = data.confirmStatus == "APPROVE"
+    fun changeProductAggregateData(productInfo: ProductInfo, confirmStatus: String) {
+        this.productInfo = productInfo
+        this.isDisplay = confirmStatus == "APPROVE"
         this.updatedDatetime = LocalDateTime.now()
     }
 

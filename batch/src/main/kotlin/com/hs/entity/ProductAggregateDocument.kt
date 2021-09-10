@@ -1,18 +1,16 @@
 package com.hs.entity
 
-import com.hs.dto.FindProductDto
 import com.hs.util.DatetimeFormatterUtils
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 @Document(collection = "product_aggregates")
 class ProductAggregateDocument private constructor(
     id: String? = null,
     productId: Long,
     isDisplay: Boolean,
-    data: FindProductDto,
+    productInfo: ProductInfo,
     createdDatetime: String,
     updatedDatetime: String,
 ) {
@@ -27,7 +25,7 @@ class ProductAggregateDocument private constructor(
     var isDisplay: Boolean = isDisplay
         protected set
 
-    var data: FindProductDto = data
+    var productInfo: ProductInfo = productInfo
         protected set
 
     var createdDatetime: String = createdDatetime
@@ -37,8 +35,8 @@ class ProductAggregateDocument private constructor(
         protected set
 
     override fun toString(): String {
-        return "ProductAggregateDocument(id=$id, productId=$productId, isDisplay=$isDisplay, data=$data, " +
-                "createdDatetime=$createdDatetime, updatedDatetime=$updatedDatetime)"
+        return "ProductAggregateDocument(id=$id, productId=$productId, isDisplay=$isDisplay, " +
+                "productInfo=$productInfo, createdDatetime=$createdDatetime, updatedDatetime=$updatedDatetime)"
     }
 
     companion object {
@@ -46,7 +44,7 @@ class ProductAggregateDocument private constructor(
             id: String? = null,
             productId: Long,
             isDisplay: Boolean,
-            data: FindProductDto,
+            productInfo: ProductInfo,
             createdDatetime: LocalDateTime,
             updatedDatetime: LocalDateTime
         ): ProductAggregateDocument {
@@ -54,7 +52,7 @@ class ProductAggregateDocument private constructor(
                 id = id,
                 productId = productId,
                 isDisplay = isDisplay,
-                data = data,
+                productInfo = productInfo,
                 createdDatetime = createdDatetime.format(DatetimeFormatterUtils.DATETIME_FORMATTER),
                 updatedDatetime = updatedDatetime.format(DatetimeFormatterUtils.DATETIME_FORMATTER)
             )

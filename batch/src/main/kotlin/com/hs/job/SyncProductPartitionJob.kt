@@ -7,7 +7,8 @@ import com.hs.job.partitioner.ProductIdRangePartitioner
 import com.hs.job.reader.JpaPagingFetchItemReader
 import com.hs.repository.BatchAppProductAggregateRepository
 import com.hs.repository.BatchAppProductQueryRepository
-import com.hs.vo.UpsertProductAggregateVo
+import com.hs.dto.UpsertProductAggregateDto
+import com.hs.entity.ProductInfo
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.batch.core.Job
@@ -118,7 +119,7 @@ class SyncProductPartitionJob(
     @Bean(name = [JOB_NAME + "_Step"])
     fun step(): Step {
         return stepBuilderFactory.get("syncProductPartitionStep")
-            .chunk<ProductPersistence, UpsertProductAggregateVo>(chunkSize)
+            .chunk<ProductPersistence, UpsertProductAggregateDto>(chunkSize)
             .reader(reader(null, null))
             .processor(processor())
             .writer(writer())
@@ -145,14 +146,13 @@ class SyncProductPartitionJob(
         return reader
     }
 
-    private fun processor(): ItemProcessor<ProductPersistence, UpsertProductAggregateVo> {
-        return ItemProcessor<ProductPersistence, UpsertProductAggregateVo> { product ->
-            val productDto = FindProductDto(
-                productId = product.id!!,
+    private fun processor(): ItemProcessor<ProductPersistence, UpsertProductAggregateDto> {
+        return ItemProcessor<ProductPersistence, UpsertProductAggregateDto> { product ->
+            val productInfo = ProductInfo.create(
+                id = product.id!!,
                 name = product.name,
                 price = product.price,
                 stockQuantity = product.stockQuantity,
-                confirmStatus = product.confirmStatus.toString(),
                 imageUrls = product.createImageUrls()
             )
 
@@ -162,16 +162,20 @@ class SyncProductPartitionJob(
             val isNew: Boolean = productAggregate == null
 
             when (productAggregate) {
-                null -> productAggregate = ProductAggregate.create(productDto = productDto)
-                else -> productAggregate.changeProductAggregateData(data = productDto)
+                null -> productAggregate =
+                    ProductAggregate.create(productInfo = productInfo, confirmStatus = product.confirmStatus.toString())
+                else -> productAggregate.changeProductAggregateData(
+                    productInfo = productInfo,
+                    confirmStatus = product.confirmStatus.toString()
+                )
             }
 
-            UpsertProductAggregateVo(productAggregate = productAggregate, isNew = isNew)
+            UpsertProductAggregateDto(productAggregate = productAggregate, isNew = isNew)
         }
     }
 
     @Bean(name = [JOB_NAME + "_Writer"])
-    fun writer(): ItemWriter<UpsertProductAggregateVo> {
+    fun writer(): ItemWriter<UpsertProductAggregateDto> {
         return ItemWriter { upsertProductAggregateVos ->
             val insertProductAggregates: MutableList<ProductAggregate> = mutableListOf()
             val saveProductAggregates: MutableList<ProductAggregate> = mutableListOf()

@@ -2,6 +2,7 @@ package com.hs.job
 
 import com.hs.dto.FindProductDto
 import com.hs.entity.ProductAggregate
+import com.hs.entity.ProductInfo
 import com.hs.entity.ProductPersistence
 import com.hs.job.reader.JpaPagingFetchItemReader
 import com.hs.repository.BatchAppProductAggregateRepository
@@ -62,12 +63,11 @@ class SyncProductJob(
     @Bean(name = [JOB_NAME + "_Processor"])
     fun processor(): ItemProcessor<ProductPersistence, ProductAggregate> {
         return ItemProcessor<ProductPersistence, ProductAggregate> { product ->
-            val productDto = FindProductDto(
-                productId = product.id!!,
+            val productInfo = ProductInfo.create(
+                id = product.id!!,
                 name = product.name,
                 price = product.price,
                 stockQuantity = product.stockQuantity,
-                confirmStatus = product.confirmStatus.toString(),
                 imageUrls = product.createImageUrls()
             )
 
@@ -75,8 +75,12 @@ class SyncProductJob(
                 productAggregateRepository.findByProductId(productId = product.id!!)
 
             when (productAggregate) {
-                null -> productAggregate = ProductAggregate.create(productDto = productDto)
-                else -> productAggregate.changeProductAggregateData(data = productDto)
+                null -> productAggregate =
+                    ProductAggregate.create(productInfo = productInfo, confirmStatus = product.confirmStatus.toString())
+                else -> productAggregate.changeProductAggregateData(
+                    productInfo = productInfo,
+                    confirmStatus = product.confirmStatus.toString()
+                )
             }
 
             productAggregate

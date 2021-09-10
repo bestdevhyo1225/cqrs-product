@@ -2,6 +2,7 @@ package com.hs.application.usecase
 
 import com.hs.dto.FindProductDto
 import com.hs.entity.ProductAggregate
+import com.hs.entity.ProductInfo
 import com.hs.repository.QueryAppProductAggregateRepository
 import com.hs.service.RestGetRequestor
 import kotlinx.coroutines.Deferred
@@ -36,12 +37,28 @@ class ProductAggregateCommand(
             async(Dispatchers.IO) { findProductAggregate(productId = productId) }
 
         val productDto: FindProductDto = asyncProductDto.await()
+        val productInfo = ProductInfo.create(
+            id = productDto.productId,
+            name = productDto.name,
+            price = productDto.price,
+            stockQuantity = productDto.stockQuantity,
+            imageUrls = productDto.imageUrls
+        )
+
         when (val productAggregate: ProductAggregate? = asyncProductAggregate.await()) {
             null -> {
-                productAggregateRepository.insert(productAggregate = ProductAggregate.create(productDto = productDto))
+                productAggregateRepository.insert(
+                    productAggregate = ProductAggregate.create(
+                        productInfo = productInfo,
+                        confirmStatus = productDto.confirmStatus
+                    )
+                )
             }
             else -> {
-                productAggregate.changeProductAggregateData(data = productDto)
+                productAggregate.changeProductAggregateData(
+                    productInfo = productInfo,
+                    confirmStatus = productDto.confirmStatus
+                )
                 productAggregateRepository.save(productAggregate = productAggregate)
             }
         }

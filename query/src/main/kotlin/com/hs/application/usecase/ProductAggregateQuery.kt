@@ -28,9 +28,9 @@ class ProductAggregateQuery(
 
         val items: List<FindProductAggregatePaginationDto> = productAggregatesPagination.first.map { productAggregate ->
             FindProductAggregatePaginationDto(
-                productId = productAggregate.data.productId,
-                name = productAggregate.data.name,
-                price = productAggregate.data.price
+                productId = productAggregate.productInfo.id,
+                name = productAggregate.productInfo.name,
+                price = productAggregate.productInfo.price
             )
         }
 
@@ -54,11 +54,11 @@ class ProductAggregateQuery(
         ) ?: throw NoSuchElementException(QueryAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
 
         return FindProductAggregateDto(
-            productId = productAggregate.data.productId,
-            name = productAggregate.data.name,
-            price = productAggregate.data.price,
-            stockQuantity = productAggregate.data.stockQuantity,
-            imageUrls = productAggregate.data.imageUrls,
+            productId = productAggregate.productInfo.id,
+            name = productAggregate.productInfo.name,
+            price = productAggregate.productInfo.price,
+            stockQuantity = productAggregate.productInfo.stockQuantity,
+            imageUrls = productAggregate.productInfo.imageUrls,
             createdDatetime = productAggregate.convertToStringCreatedDatetime(),
             updatedDatetime = productAggregate.convertToStringUpdatedDatetime()
         )
