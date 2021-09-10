@@ -66,8 +66,8 @@ class ProductAggregateQuery(
             price = productAggregate.data.price,
             stockQuantity = productAggregate.data.stockQuantity,
             imageUrls = productAggregate.data.imageUrls,
-            createdDatetime = productAggregate.createdDatetime,
-            updatedDatetime = productAggregate.updatedDatetime
+            createdDatetime = productAggregate.convertToStringCreatedDatetime(),
+            updatedDatetime = productAggregate.convertToStringUpdatedDatetime()
         )
     }
 }

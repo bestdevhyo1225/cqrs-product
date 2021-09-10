@@ -3,7 +3,6 @@ package com.hs.infrastructure.mongo.repository
 import com.hs.entity.ProductAggregate
 import com.hs.entity.ProductAggregateType
 import com.hs.infrastructure.mongo.persistence.ProductAggregateDocument
-import com.hs.infrastructure.mongo.mapper.ProductAggregateMapper
 import com.hs.repository.QueryAppProductAggregateRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -22,9 +21,18 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
             .where("productId").isEqualTo(productId)
             .and("type").isEqualTo(type)
 
-        val productAggregateDocument = mongoOperations.findOne(Query(criteria), ProductAggregateDocument::class.java)
+        val productAggregateDocument =
+            mongoOperations.findOne(Query(criteria), ProductAggregateDocument::class.java) ?: return null
 
-        return ProductAggregateMapper.toDomainEntity(productAggregateDocument = productAggregateDocument)
+        return ProductAggregate.toDomainEntity(
+            id = productAggregateDocument.id,
+            productId = productAggregateDocument.productId,
+            type = productAggregateDocument.type,
+            isDisplay = productAggregateDocument.isDisplay,
+            data = productAggregateDocument.data,
+            createdDatetime = productAggregateDocument.createdDatetime,
+            updatedDatetime = productAggregateDocument.updatedDatetime
+        )
     }
 
     override fun findByProductIdAndTypeAndIsDisplay(
@@ -37,9 +45,18 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
             .and("type").isEqualTo(type)
             .and("isDisplay").isEqualTo(isDisplay)
 
-        val productAggregateDocument = mongoOperations.findOne(Query(criteria), ProductAggregateDocument::class.java)
+        val productAggregateDocument =
+            mongoOperations.findOne(Query(criteria), ProductAggregateDocument::class.java) ?: return null
 
-        return ProductAggregateMapper.toDomainEntity(productAggregateDocument = productAggregateDocument)
+        return ProductAggregate.toDomainEntity(
+            id = productAggregateDocument.id,
+            productId = productAggregateDocument.productId,
+            type = productAggregateDocument.type,
+            isDisplay = productAggregateDocument.isDisplay,
+            data = productAggregateDocument.data,
+            createdDatetime = productAggregateDocument.createdDatetime,
+            updatedDatetime = productAggregateDocument.updatedDatetime
+        )
     }
 
     override fun findAllByTypeAndIsDisplay(
@@ -58,7 +75,17 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
 
         val productAggregates: List<ProductAggregate> = mongoOperations
             .find(query, ProductAggregateDocument::class.java)
-            .map { ProductAggregateMapper.toDomainEntity(productAggregateDocument = it)!! }
+            .map {
+                ProductAggregate.toDomainEntity(
+                    id = it.id,
+                    productId = it.productId,
+                    type = it.type,
+                    isDisplay = it.isDisplay,
+                    data = it.data,
+                    createdDatetime = it.createdDatetime,
+                    updatedDatetime = it.updatedDatetime
+                )
+            }
 
         val totalCount: Long = mongoOperations.count(query, ProductAggregateDocument::class.java)
 
@@ -66,8 +93,17 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
     }
 
     override fun insert(productAggregate: ProductAggregate): ProductAggregate? {
-        val productAggregateDocument =
-            mongoOperations.insert(ProductAggregateMapper.toDocument(productAggregate = productAggregate))
+        val productAggregateDocument = mongoOperations.insert(
+            ProductAggregateDocument.toPersistenceEntity(
+                id = productAggregate.id,
+                productId = productAggregate.productId,
+                type = productAggregate.type,
+                isDisplay = productAggregate.isDisplay,
+                data = productAggregate.data,
+                createdDatetime = productAggregate.createdDatetime,
+                updatedDatetime = productAggregate.updatedDatetime
+            )
+        )
 
         productAggregate.reflectIdAfterPersistence(id = productAggregateDocument.id)
 
@@ -75,7 +111,17 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
     }
 
     override fun save(productAggregate: ProductAggregate): ProductAggregate? {
-        mongoOperations.save(ProductAggregateMapper.toDocument(productAggregate = productAggregate))
+        mongoOperations.save(
+            ProductAggregateDocument.toPersistenceEntity(
+                id = productAggregate.id,
+                productId = productAggregate.productId,
+                type = productAggregate.type,
+                isDisplay = productAggregate.isDisplay,
+                data = productAggregate.data,
+                createdDatetime = productAggregate.createdDatetime,
+                updatedDatetime = productAggregate.updatedDatetime
+            )
+        )
 
         return productAggregate
     }
