@@ -17,6 +17,12 @@ class ProductDatetimeTest {
         fun localDatetimeParams(): List<Arguments> {
             return listOf(
                 Arguments.arguments(listOf(LocalDateTime.now(), LocalDateTime.now())),
+                Arguments.arguments(
+                    listOf(
+                        LocalDateTime.now(),
+                        LocalDateTime.of(2021, 9, 17, 12, 33, 55)
+                    )
+                ),
             )
         }
 
@@ -75,5 +81,25 @@ class ProductDatetimeTest {
         assertThat(productDatetime).isInstanceOf(ProductDatetime::class.java)
         assertThat(productDatetime.getCreatedDatetime()).isInstanceOf(LocalDateTime::class.java)
         assertThat(productDatetime.getUpdatedDatetime()).isInstanceOf(LocalDateTime::class.java)
+    }
+
+    @ParameterizedTest
+    @MethodSource(value = ["stringParams"])
+    fun `LocalDatetime 타입의 값을 String 타입으로 변환하여, 반환한다`(stringDatetimes: List<String>) {
+        // given
+        val createdDatetime: String = stringDatetimes[0]
+        val updatedDatetime: String = stringDatetimes[1]
+
+        // when
+        val productDatetime = ProductDatetime.createByStringParams(
+            createdDatetime = createdDatetime,
+            updatedDatetime = updatedDatetime
+        )
+
+        // then
+        assertThat(productDatetime.getStringCreatedDatetime()).isInstanceOf(String::class.java)
+        assertThat(productDatetime.getStringUpdatedDatetime()).isInstanceOf(String::class.java)
+        assertThat(productDatetime.getStringCreatedDatetime()).isEqualTo(createdDatetime)
+        assertThat(productDatetime.getStringUpdatedDatetime()).isEqualTo(updatedDatetime)
     }
 }
