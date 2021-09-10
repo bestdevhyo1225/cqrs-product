@@ -21,7 +21,7 @@ class ProductAggregateCommand(
 
     @Caching(
         evict = [
-            CacheEvict(value = ["productAggregate"], key = "#productId", cacheManager = "redisCacheManager"),
+            CacheEvict(key = "#productId", cacheResolver = "productAggregateCacheEvictResolver"),
 //            CacheEvict(
 //                value = ["productAggregatePage"],
 //                key = "#productId",
