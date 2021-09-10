@@ -58,7 +58,7 @@ class Product private constructor(
             return Product(id = id, name = name, price = price, stockQuantity = stockQuantity, imageUrls = imageUrls)
         }
 
-        fun toDomainEntity(
+        fun convertFromPersistenceEntity(
             id: Long? = null,
             name: String,
             price: Int,

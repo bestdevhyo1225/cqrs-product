@@ -134,7 +134,7 @@ class ProductTest {
         val deletedDate: LocalDateTime? = null
 
         // when
-        val product = Product.toDomainEntity(
+        val product = Product.convertFromPersistenceEntity(
             id = id,
             name = name,
             price = price,

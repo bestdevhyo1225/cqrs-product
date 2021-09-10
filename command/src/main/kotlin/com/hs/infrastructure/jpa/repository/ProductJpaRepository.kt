@@ -73,7 +73,7 @@ class ProductJpaRepository(private val entityManager: EntityManager) : ProductRe
 
         productPersistence ?: return null
 
-        return Product.toDomainEntity(
+        return Product.convertFromPersistenceEntity(
             id = productPersistence.id,
             name = productPersistence.name,
             price = productPersistence.price,
@@ -96,7 +96,7 @@ class ProductJpaRepository(private val entityManager: EntityManager) : ProductRe
 
         productPersistence ?: return null
 
-        return Product.toDomainEntity(
+        return Product.convertFromPersistenceEntity(
             id = productPersistence.id,
             name = productPersistence.name,
             price = productPersistence.price,
