@@ -96,7 +96,7 @@ class ProductCommand(
 
     fun changeConfirmStatus(id: Long, strProductConfirmStatus: String) {
         val confirmStatus: Product.ConfirmStatus =
-            Product.convertFromStringTypeToEnumType(value = strProductConfirmStatus)
+            Product.convertFromStringToEnumValue(value = strProductConfirmStatus)
 
         val product: Product = findProduct(id = id)
 
