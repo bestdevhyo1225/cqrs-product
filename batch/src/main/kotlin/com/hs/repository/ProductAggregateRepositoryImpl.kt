@@ -2,21 +2,19 @@ package com.hs.repository
 
 import com.hs.entity.ProductAggregate
 import com.hs.entity.ProductAggregateDocument
-import com.hs.entity.ProductAggregateType
 import org.springframework.data.mongodb.core.BulkOperations
 import org.springframework.data.mongodb.core.MongoOperations
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.data.mongodb.core.query.isEqualTo
 import org.springframework.stereotype.Repository
-import java.time.LocalDateTime
 
 @Repository
 class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperations) :
     BatchAppProductAggregateRepository {
 
-    override fun findByProductIdAndType(productId: Long, type: ProductAggregateType): ProductAggregate? {
-        val query = Query(Criteria.where("productId").isEqualTo(productId).and("type").isEqualTo(type))
+    override fun findByProductId(productId: Long): ProductAggregate? {
+        val query = Query(Criteria.where("productId").isEqualTo(productId))
 
         val productAggregateDocument: ProductAggregateDocument? =
             mongoOperations.findOne(query, ProductAggregateDocument::class.java)
@@ -26,7 +24,6 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
         return ProductAggregate.mapOf(
             id = productAggregateDocument.id!!,
             productId = productAggregateDocument.productId,
-            type = productAggregateDocument.type,
             isDisplay = productAggregateDocument.isDisplay,
             data = productAggregateDocument.data,
             createdDatetime = productAggregateDocument.createdDatetime,
@@ -41,7 +38,6 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
         val productAggregateDocuments: List<ProductAggregateDocument> = productAggregates.map {
             ProductAggregateDocument.create(
                 productId = it.productId,
-                type = it.type,
                 isDisplay = it.isDisplay,
                 data = it.data,
                 createdDatetime = it.createdDatetime,
@@ -59,7 +55,6 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
                 ProductAggregateDocument.create(
                     id = it.id,
                     productId = it.productId,
-                    type = it.type,
                     isDisplay = it.isDisplay,
                     data = it.data,
                     createdDatetime = it.createdDatetime,

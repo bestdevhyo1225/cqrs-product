@@ -2,7 +2,6 @@ package com.hs.job
 
 import com.hs.dto.FindProductDto
 import com.hs.entity.ProductAggregate
-import com.hs.entity.ProductAggregateType.FIND_PRODUCT
 import com.hs.entity.ProductPersistence
 import com.hs.job.partitioner.ProductIdRangePartitioner
 import com.hs.job.reader.JpaPagingFetchItemReader
@@ -158,12 +157,12 @@ class SyncProductPartitionJob(
             )
 
             var productAggregate: ProductAggregate? =
-                productAggregateRepository.findByProductIdAndType(productId = product.id!!, type = FIND_PRODUCT)
+                productAggregateRepository.findByProductId(productId = product.id!!)
 
             val isNew: Boolean = productAggregate == null
 
             when (productAggregate) {
-                null -> productAggregate = ProductAggregate.create(productDto = productDto, type = FIND_PRODUCT)
+                null -> productAggregate = ProductAggregate.create(productDto = productDto)
                 else -> productAggregate.changeProductAggregateData(data = productDto)
             }
 

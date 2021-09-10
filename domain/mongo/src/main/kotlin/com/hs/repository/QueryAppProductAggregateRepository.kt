@@ -1,23 +1,11 @@
 package com.hs.repository
 
 import com.hs.entity.ProductAggregate
-import com.hs.entity.ProductAggregateType
 
 interface QueryAppProductAggregateRepository {
-    fun findByProductIdAndType(productId: Long, type: ProductAggregateType): ProductAggregate?
-    fun findByProductIdAndTypeAndIsDisplay(
-        productId: Long,
-        type: ProductAggregateType,
-        isDisplay: Boolean
-    ): ProductAggregate?
-
-    fun findAllByTypeAndIsDisplay(
-        type: ProductAggregateType,
-        isDisplay: Boolean,
-        page: Int,
-        pageSize: Int,
-    ): Pair<List<ProductAggregate>, Long>
-
+    fun findByProductId(productId: Long): ProductAggregate?
+    fun findByProductIdAndIsDisplay(productId: Long, isDisplay: Boolean): ProductAggregate?
+    fun findAllByIsDisplay(isDisplay: Boolean, page: Int, pageSize: Int): Pair<List<ProductAggregate>, Long>
     fun insert(productAggregate: ProductAggregate): ProductAggregate?
     fun save(productAggregate: ProductAggregate): ProductAggregate?
 }

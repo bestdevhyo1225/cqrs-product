@@ -11,7 +11,6 @@ import java.time.format.DateTimeFormatter
 class ProductAggregateDocument private constructor(
     id: String? = null,
     productId: Long,
-    type: ProductAggregateType,
     isDisplay: Boolean,
     data: FindProductDto,
     createdDatetime: String,
@@ -23,9 +22,6 @@ class ProductAggregateDocument private constructor(
         protected set
 
     var productId: Long = productId
-        protected set
-
-    var type: ProductAggregateType = type
         protected set
 
     var isDisplay: Boolean = isDisplay
@@ -41,7 +37,7 @@ class ProductAggregateDocument private constructor(
         protected set
 
     override fun toString(): String {
-        return "ProductAggregateDocument(id=$id, productId=$productId, type=$type, isDisplay=$isDisplay, data=$data, " +
+        return "ProductAggregateDocument(id=$id, productId=$productId, isDisplay=$isDisplay, data=$data, " +
                 "createdDatetime=$createdDatetime, updatedDatetime=$updatedDatetime)"
     }
 
@@ -49,7 +45,6 @@ class ProductAggregateDocument private constructor(
         fun create(
             id: String? = null,
             productId: Long,
-            type: ProductAggregateType,
             isDisplay: Boolean,
             data: FindProductDto,
             createdDatetime: LocalDateTime,
@@ -58,7 +53,6 @@ class ProductAggregateDocument private constructor(
             return ProductAggregateDocument(
                 id = id,
                 productId = productId,
-                type = type,
                 isDisplay = isDisplay,
                 data = data,
                 createdDatetime = createdDatetime.format(DatetimeFormatterUtils.DATETIME_FORMATTER),

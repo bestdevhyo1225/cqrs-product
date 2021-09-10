@@ -1,7 +1,6 @@
 package com.hs.infrastructure.mongo.repository
 
 import com.hs.entity.ProductAggregate
-import com.hs.entity.ProductAggregateType
 import com.hs.infrastructure.mongo.persistence.ProductAggregateDocument
 import com.hs.repository.QueryAppProductAggregateRepository
 import org.springframework.data.domain.PageRequest
@@ -16,10 +15,8 @@ import org.springframework.stereotype.Repository
 class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperations) :
     QueryAppProductAggregateRepository {
 
-    override fun findByProductIdAndType(productId: Long, type: ProductAggregateType): ProductAggregate? {
-        val criteria = Criteria
-            .where("productId").isEqualTo(productId)
-            .and("type").isEqualTo(type)
+    override fun findByProductId(productId: Long): ProductAggregate? {
+        val criteria = Criteria.where("productId").isEqualTo(productId)
 
         val productAggregateDocument =
             mongoOperations.findOne(Query(criteria), ProductAggregateDocument::class.java) ?: return null
@@ -27,7 +24,6 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
         return ProductAggregate.mapOf(
             id = productAggregateDocument.id!!,
             productId = productAggregateDocument.productId,
-            type = productAggregateDocument.type,
             isDisplay = productAggregateDocument.isDisplay,
             data = productAggregateDocument.data,
             createdDatetime = productAggregateDocument.createdDatetime,
@@ -35,14 +31,9 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
         )
     }
 
-    override fun findByProductIdAndTypeAndIsDisplay(
-        productId: Long,
-        type: ProductAggregateType,
-        isDisplay: Boolean
-    ): ProductAggregate? {
+    override fun findByProductIdAndIsDisplay(productId: Long, isDisplay: Boolean): ProductAggregate? {
         val criteria = Criteria
             .where("productId").isEqualTo(productId)
-            .and("type").isEqualTo(type)
             .and("isDisplay").isEqualTo(isDisplay)
 
         val productAggregateDocument =
@@ -51,7 +42,6 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
         return ProductAggregate.mapOf(
             id = productAggregateDocument.id!!,
             productId = productAggregateDocument.productId,
-            type = productAggregateDocument.type,
             isDisplay = productAggregateDocument.isDisplay,
             data = productAggregateDocument.data,
             createdDatetime = productAggregateDocument.createdDatetime,
@@ -59,15 +49,12 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
         )
     }
 
-    override fun findAllByTypeAndIsDisplay(
-        type: ProductAggregateType,
+    override fun findAllByIsDisplay(
         isDisplay: Boolean,
         page: Int,
-        pageSize: Int,
+        pageSize: Int
     ): Pair<List<ProductAggregate>, Long> {
-        val criteria = Criteria
-            .where("type").isEqualTo(type)
-            .and("isDisplay").isEqualTo(isDisplay)
+        val criteria = Criteria.where("isDisplay").isEqualTo(isDisplay)
 
         val query = Query(criteria)
             .with(Sort.by(Sort.Direction.DESC, "productId", "createdDatetime"))
@@ -79,7 +66,6 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
                 ProductAggregate.mapOf(
                     id = it.id!!,
                     productId = it.productId,
-                    type = it.type,
                     isDisplay = it.isDisplay,
                     data = it.data,
                     createdDatetime = it.createdDatetime,
@@ -97,7 +83,6 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
             ProductAggregateDocument.create(
                 id = productAggregate.id,
                 productId = productAggregate.productId,
-                type = productAggregate.type,
                 isDisplay = productAggregate.isDisplay,
                 data = productAggregate.data,
                 createdDatetime = productAggregate.createdDatetime,
@@ -115,7 +100,6 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
             ProductAggregateDocument.create(
                 id = productAggregate.id,
                 productId = productAggregate.productId,
-                type = productAggregate.type,
                 isDisplay = productAggregate.isDisplay,
                 data = productAggregate.data,
                 createdDatetime = productAggregate.createdDatetime,

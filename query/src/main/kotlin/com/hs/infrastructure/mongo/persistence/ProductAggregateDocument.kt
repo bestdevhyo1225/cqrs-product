@@ -1,18 +1,15 @@
 package com.hs.infrastructure.mongo.persistence
 
 import com.hs.dto.FindProductDto
-import com.hs.entity.ProductAggregateType
 import com.hs.util.DatetimeFormatterUtils
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 @Document(collection = "product_aggregates")
 class ProductAggregateDocument private constructor(
     id: String? = null,
     productId: Long,
-    type: ProductAggregateType,
     isDisplay: Boolean,
     data: FindProductDto,
     createdDatetime: String,
@@ -24,9 +21,6 @@ class ProductAggregateDocument private constructor(
         protected set
 
     var productId: Long = productId
-        protected set
-
-    var type: ProductAggregateType = type
         protected set
 
     var isDisplay: Boolean = isDisplay
@@ -42,7 +36,7 @@ class ProductAggregateDocument private constructor(
         protected set
 
     override fun toString(): String {
-        return "ProductAggregateDocument(id=$id, productId=$productId, type=$type, isDisplay=$isDisplay, data=$data, " +
+        return "ProductAggregateDocument(id=$id, productId=$productId, isDisplay=$isDisplay, data=$data, " +
                 "createdDatetime=$createdDatetime, updatedDatetime=$updatedDatetime)"
     }
 
@@ -50,7 +44,6 @@ class ProductAggregateDocument private constructor(
         fun create(
             id: String? = null,
             productId: Long,
-            type: ProductAggregateType,
             isDisplay: Boolean,
             data: FindProductDto,
             createdDatetime: LocalDateTime,
@@ -59,7 +52,6 @@ class ProductAggregateDocument private constructor(
             return ProductAggregateDocument(
                 id = id,
                 productId = productId,
-                type = type,
                 isDisplay = isDisplay,
                 data = data,
                 createdDatetime = createdDatetime.format(DatetimeFormatterUtils.DATETIME_FORMATTER),

@@ -4,7 +4,6 @@ import com.hs.dto.FindProductAggregateDto
 import com.hs.dto.FindPaginationDto
 import com.hs.dto.FindProductAggregatePaginationDto
 import com.hs.entity.ProductAggregate
-import com.hs.entity.ProductAggregateType.FIND_PRODUCT
 import com.hs.message.QueryAppExceptionMessage
 import com.hs.repository.QueryAppProductAggregateRepository
 import org.springframework.cache.annotation.Cacheable
@@ -25,12 +24,7 @@ class ProductAggregateQuery(
         pageSize: Int
     ): FindPaginationDto {
         val productAggregatesPagination: Pair<List<ProductAggregate>, Long> =
-            productAggregateRepository.findAllByTypeAndIsDisplay(
-                type = FIND_PRODUCT,
-                isDisplay = true,
-                page = page,
-                pageSize = pageSize
-            )
+            productAggregateRepository.findAllByIsDisplay(isDisplay = true, page = page, pageSize = pageSize)
 
         val items: List<FindProductAggregatePaginationDto> = productAggregatesPagination.first.map { productAggregate ->
             FindProductAggregatePaginationDto(
@@ -54,9 +48,8 @@ class ProductAggregateQuery(
         cacheResolver = "productAggregateCacheableResolver"
     )
     fun findProductAggregate(copyPrefixKey: String, productId: Long): FindProductAggregateDto {
-        val productAggregate: ProductAggregate = productAggregateRepository.findByProductIdAndTypeAndIsDisplay(
+        val productAggregate: ProductAggregate = productAggregateRepository.findByProductIdAndIsDisplay(
             productId = productId,
-            type = FIND_PRODUCT,
             isDisplay = true
         ) ?: throw NoSuchElementException(QueryAppExceptionMessage.NOT_FOUND_PRODUCT.localizedMessage)
 

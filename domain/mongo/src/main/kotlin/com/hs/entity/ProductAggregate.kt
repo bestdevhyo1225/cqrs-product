@@ -7,7 +7,6 @@ import java.time.LocalDateTime
 class ProductAggregate private constructor(
     id: String? = null,
     productId: Long,
-    type: ProductAggregateType,
     isDisplay: Boolean,
     data: FindProductDto,
     createdDatetime: LocalDateTime = LocalDateTime.now(),
@@ -18,9 +17,6 @@ class ProductAggregate private constructor(
         private set
 
     var productId: Long = productId
-        private set
-
-    var type: ProductAggregateType = type
         private set
 
     var isDisplay: Boolean = isDisplay
@@ -36,15 +32,14 @@ class ProductAggregate private constructor(
         private set
 
     override fun toString(): String {
-        return "ProductAggregate(id=$id, productId=$productId, type=$type, isDisplay=$isDisplay, data=$data, " +
+        return "ProductAggregate(id=$id, productId=$productId, isDisplay=$isDisplay, data=$data, " +
                 "createdDatetime=$createdDatetime, updatedDatetime=$updatedDatetime)"
     }
 
     companion object {
-        fun create(productDto: FindProductDto, type: ProductAggregateType): ProductAggregate {
+        fun create(productDto: FindProductDto): ProductAggregate {
             return ProductAggregate(
                 productId = productDto.productId,
-                type = type,
                 isDisplay = productDto.confirmStatus == "APPROVE",
                 data = productDto
             )
@@ -53,7 +48,6 @@ class ProductAggregate private constructor(
         fun mapOf(
             id: String,
             productId: Long,
-            type: ProductAggregateType,
             isDisplay: Boolean,
             data: FindProductDto,
             createdDatetime: String,
@@ -62,7 +56,6 @@ class ProductAggregate private constructor(
             return ProductAggregate(
                 id = id,
                 productId = productId,
-                type = type,
                 isDisplay = isDisplay,
                 data = data,
                 createdDatetime = LocalDateTime.parse(createdDatetime, DatetimeFormatterUtils.DATETIME_FORMATTER),
