@@ -2,7 +2,7 @@ package com.hs.unit
 
 import com.hs.entity.Product
 import com.hs.exception.DomainMySqlException
-import com.hs.message.CommandAppExceptionMessage
+import com.hs.exception.DomainMysqlExceptionMessage
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
@@ -96,10 +96,10 @@ class ProductTest {
 
         // then
         assertThat(exception.message)
-            .isEqualTo(CommandAppExceptionMessage.HAVE_EXCEEDED_THE_QUANTITY_AVAILABLE_FOR_PURCHASE.localizedMessage)
+            .isEqualTo(DomainMysqlExceptionMessage.HAVE_EXCEEDED_THE_QUANTITY_AVAILABLE_FOR_PURCHASE.localizedMessage)
 
         assertThat(exception.localizedMessage)
-            .isEqualTo(CommandAppExceptionMessage.HAVE_EXCEEDED_THE_QUANTITY_AVAILABLE_FOR_PURCHASE.localizedMessage)
+            .isEqualTo(DomainMysqlExceptionMessage.HAVE_EXCEEDED_THE_QUANTITY_AVAILABLE_FOR_PURCHASE.localizedMessage)
     }
 
     @ParameterizedTest
@@ -185,9 +185,9 @@ class ProductTest {
 
         // then
         assertThat(exception.message)
-            .isEqualTo(CommandAppExceptionMessage.NOT_EXIST_PRODUCT_CONFIRM_STATUS.localizedMessage)
+            .isEqualTo(DomainMysqlExceptionMessage.NOT_EXIST_PRODUCT_CONFIRM_STATUS.localizedMessage)
 
         assertThat(exception.localizedMessage)
-            .isEqualTo(CommandAppExceptionMessage.NOT_EXIST_PRODUCT_CONFIRM_STATUS.localizedMessage)
+            .isEqualTo(DomainMysqlExceptionMessage.NOT_EXIST_PRODUCT_CONFIRM_STATUS.localizedMessage)
     }
 }

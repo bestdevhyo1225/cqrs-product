@@ -1,4 +1,4 @@
-package com.hs.service
+package com.hs.infrastructure.rabbitmq
 
 interface ProductQueuePublisher {
     fun publish(productId: Long)

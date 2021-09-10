@@ -1,10 +1,10 @@
 package com.hs.application.usecase
 
+import com.hs.application.exception.QueryAppExceptionMessage
 import com.hs.dto.FindProductAggregateDto
 import com.hs.dto.FindPaginationDto
 import com.hs.dto.FindProductAggregatePaginationDto
 import com.hs.entity.ProductAggregate
-import com.hs.message.QueryAppExceptionMessage
 import com.hs.repository.QueryAppProductAggregateRepository
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service

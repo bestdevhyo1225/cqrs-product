@@ -1,7 +1,7 @@
 package com.hs.entity
 
 import com.hs.exception.DomainMySqlException
-import com.hs.message.CommandAppExceptionMessage
+import com.hs.exception.DomainMysqlExceptionMessage
 import java.time.LocalDateTime
 
 class Product private constructor(
@@ -90,14 +90,14 @@ class Product private constructor(
             try {
                 return ConfirmStatus.valueOf(value = value)
             } catch (exception: Exception) {
-                throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.NOT_EXIST_PRODUCT_CONFIRM_STATUS)
+                throw DomainMySqlException(DomainMysqlExceptionMessage.NOT_EXIST_PRODUCT_CONFIRM_STATUS)
             }
         }
     }
 
     fun reflectIdAfterPersistence(id: Long?) {
         if (id == null) {
-            throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
+            throw DomainMySqlException(DomainMysqlExceptionMessage.PRODUCT_ID_IS_NULL)
         }
 
         this.id = id
@@ -113,9 +113,7 @@ class Product private constructor(
 
     fun decreaseStockCount(stockQuantity: Int) {
         if (this.stockQuantity - stockQuantity <= 0) {
-            throw DomainMySqlException(
-                exceptionMessage = CommandAppExceptionMessage.HAVE_EXCEEDED_THE_QUANTITY_AVAILABLE_FOR_PURCHASE
-            )
+            throw DomainMySqlException(DomainMysqlExceptionMessage.HAVE_EXCEEDED_THE_QUANTITY_AVAILABLE_FOR_PURCHASE)
         }
 
         this.stockQuantity -= stockQuantity

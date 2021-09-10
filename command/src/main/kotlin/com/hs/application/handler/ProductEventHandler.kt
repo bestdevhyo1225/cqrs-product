@@ -7,7 +7,7 @@ import com.hs.application.handler.event.ProductDecreaseStockQuantityEvent
 import com.hs.application.handler.event.ProductUpdateImageEvent
 import com.hs.infrastructure.jpa.persistence.ProductEventLogPersistence
 import com.hs.infrastructure.jpa.repository.ProductEventLogSpringDataJpaRepository
-import com.hs.service.ProductQueuePublisher
+import com.hs.infrastructure.rabbitmq.ProductQueuePublisher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking

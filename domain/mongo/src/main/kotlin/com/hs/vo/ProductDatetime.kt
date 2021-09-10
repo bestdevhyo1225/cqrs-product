@@ -1,7 +1,8 @@
 package com.hs.vo
 
-import com.hs.util.DatetimeFormatterUtils
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatter.ofPattern
 
 class ProductDatetime private constructor(
     private var createdDatetime: LocalDateTime,
@@ -13,6 +14,9 @@ class ProductDatetime private constructor(
     }
 
     companion object {
+        @JvmStatic
+        private val DATETIME_FORMATTER: DateTimeFormatter = ofPattern("yyyy-MM-dd HH:mm:ss")
+
         @JvmStatic
         fun createWithZeroNanoOfSecond(
             createdDatetime: LocalDateTime = LocalDateTime.now(),
@@ -37,11 +41,11 @@ class ProductDatetime private constructor(
 
         @JvmStatic
         private fun toLocalDatetime(datetime: String) =
-            LocalDateTime.parse(datetime, DatetimeFormatterUtils.DATETIME_FORMATTER)
+            LocalDateTime.parse(datetime, DATETIME_FORMATTER)
     }
 
-    fun getStringCreatedDatetime(): String = createdDatetime.format(DatetimeFormatterUtils.DATETIME_FORMATTER)
-    fun getStringUpdatedDatetime(): String = updatedDatetime.format(DatetimeFormatterUtils.DATETIME_FORMATTER)
+    fun getStringCreatedDatetime(): String = createdDatetime.format(DATETIME_FORMATTER)
+    fun getStringUpdatedDatetime(): String = updatedDatetime.format(DATETIME_FORMATTER)
 
     fun getCreatedDatetime(): LocalDateTime = createdDatetime
     fun getUpdatedDatetime(): LocalDateTime = updatedDatetime

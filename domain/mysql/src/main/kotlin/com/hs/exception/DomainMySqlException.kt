@@ -1,6 +1,4 @@
 package com.hs.exception
 
-import com.hs.message.CommandAppExceptionMessage
-
-class DomainMySqlException(exceptionMessage: CommandAppExceptionMessage) :
+class DomainMySqlException(exceptionMessage: DomainMysqlExceptionMessage) :
     RuntimeException(exceptionMessage.localizedMessage)

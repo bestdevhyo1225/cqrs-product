@@ -83,15 +83,3 @@ project(":query") {
         implementation(project(":domain:mongo"))
     }
 }
-
-project(":domain:mysql") {
-    dependencies {
-        implementation(project(":common"))
-    }
-}
-
-project(":domain:mongo") {
-    dependencies {
-        implementation(project(":common"))
-    }
-}

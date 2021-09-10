@@ -1,7 +1,7 @@
 package com.hs.infrastructure.rest.resttemplate
 
-import com.hs.service.RestGetRequestor
 import com.hs.dto.FindProductDto
+import com.hs.infrastructure.rest.RestGetRequestor
 import com.hs.response.SuccessResponse
 import com.hs.util.ParameterizedTypeReferenceUtils
 import org.slf4j.Logger

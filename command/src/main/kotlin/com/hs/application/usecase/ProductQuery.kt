@@ -1,8 +1,8 @@
 package com.hs.application.usecase
 
+import com.hs.application.exception.CommandAppExceptionMessage
 import com.hs.dto.FindProductDto
 import com.hs.entity.Product
-import com.hs.message.CommandAppExceptionMessage
 import com.hs.repository.ProductQueryRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
