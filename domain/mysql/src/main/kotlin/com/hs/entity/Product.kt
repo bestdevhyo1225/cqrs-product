@@ -82,7 +82,7 @@ class Product private constructor(
             )
         }
 
-        fun convertFromStringToConfirmStatus(value: String): ConfirmStatus {
+        fun convertFromStringTypeToEnumType(value: String): ConfirmStatus {
             try {
                 return ConfirmStatus.valueOf(value = value)
             } catch (exception: Exception) {

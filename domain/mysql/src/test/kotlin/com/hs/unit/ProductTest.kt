@@ -167,7 +167,7 @@ class ProductTest {
     ) {
         // when
         val productConfirmStatus: Product.ConfirmStatus =
-            Product.convertFromStringToConfirmStatus(value = requestConfirmStatus)
+            Product.convertFromStringTypeToEnumType(value = requestConfirmStatus)
 
         // then
         assertThat(productConfirmStatus).isEqualTo(expectConfirmStatus)
@@ -180,7 +180,7 @@ class ProductTest {
 
         // when
         val exception = Assertions.assertThrows(DomainMySqlException::class.java) {
-            Product.convertFromStringToConfirmStatus(value = confirmStatus)
+            Product.convertFromStringTypeToEnumType(value = confirmStatus)
         }
 
         // then
