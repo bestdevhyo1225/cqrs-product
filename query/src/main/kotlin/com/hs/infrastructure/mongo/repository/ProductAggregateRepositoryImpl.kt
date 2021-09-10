@@ -87,7 +87,7 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
                 )
             }
 
-        val totalCount: Long = mongoOperations.count(query, ProductAggregateDocument::class.java)
+        val totalCount: Long = mongoOperations.count(Query(criteria), ProductAggregateDocument::class.java)
 
         return Pair(first = productAggregates, second = totalCount)
     }
