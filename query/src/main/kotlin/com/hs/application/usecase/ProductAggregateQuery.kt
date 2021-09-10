@@ -59,8 +59,8 @@ class ProductAggregateQuery(
             price = productAggregate.getProductPrice(),
             stockQuantity = productAggregate.getProductStockQuantity(),
             imageUrls = productAggregate.getProductImageUrls(),
-            createdDatetime = productAggregate.convertToStringCreatedDatetime(),
-            updatedDatetime = productAggregate.convertToStringUpdatedDatetime()
+            createdDatetime = productAggregate.getStringCreatedDatetime(),
+            updatedDatetime = productAggregate.getStringUpdatedDatetime()
         )
     }
 }

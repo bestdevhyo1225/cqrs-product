@@ -64,12 +64,6 @@ class ProductAggregate private constructor(
         }
     }
 
-    fun changeProductAggregateData(productInfo: ProductInfo, confirmStatus: String) {
-        this.productInfo = productInfo
-        this.isDisplay = confirmStatus == "APPROVE"
-        this.productDatetime.chanageUpdatedDatetime()
-    }
-
     fun reflectIdAfterPersistence(id: String?) {
         if (id == null || id.isBlank()) {
             throw DomainMongoException(exceptionMessage = QueryAppExceptionMessage.PRODUCT_ID_IS_NULL_OR_BLANK)
@@ -78,11 +72,17 @@ class ProductAggregate private constructor(
         this.id = id
     }
 
+    fun changeProductAggregateData(productInfo: ProductInfo, confirmStatus: String) {
+        this.productInfo = productInfo
+        this.isDisplay = confirmStatus == "APPROVE"
+        this.productDatetime.chanageUpdatedDatetime()
+    }
+
     fun getProductName(): String = productInfo.getName()
     fun getProductPrice(): Int = productInfo.getPrice()
     fun getProductStockQuantity(): Int = productInfo.getStockQuantity()
     fun getProductImageUrls(): List<String> = productInfo.getImageUrls()
 
-    fun convertToStringCreatedDatetime(): String = productDatetime.toCreatedStringDatetime()
-    fun convertToStringUpdatedDatetime(): String = productDatetime.toUpdatedStringDatetime()
+    fun getStringCreatedDatetime(): String = productDatetime.getCreatedStringDatetime()
+    fun getStringUpdatedDatetime(): String = productDatetime.getUpdatedStringDatetime()
 }
