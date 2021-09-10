@@ -1,6 +1,5 @@
 package com.hs.job
 
-import com.hs.dto.FindProductDto
 import com.hs.entity.ProductAggregate
 import com.hs.entity.ProductInfo
 import com.hs.entity.ProductPersistence

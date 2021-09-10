@@ -40,8 +40,8 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
                 productId = it.productId,
                 isDisplay = it.isDisplay,
                 productInfo = it.productInfo,
-                createdDatetime = it.createdDatetime,
-                updatedDatetime = it.updatedDatetime
+                createdDatetime = it.convertToStringCreatedDatetime(),
+                updatedDatetime = it.convertToStringUpdatedDatetime()
             )
         }
 
@@ -57,8 +57,8 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
                     productId = it.productId,
                     isDisplay = it.isDisplay,
                     productInfo = it.productInfo,
-                    createdDatetime = it.createdDatetime,
-                    updatedDatetime = it.updatedDatetime
+                    createdDatetime = it.convertToStringCreatedDatetime(),
+                    updatedDatetime = it.convertToStringUpdatedDatetime()
                 )
             )
         }

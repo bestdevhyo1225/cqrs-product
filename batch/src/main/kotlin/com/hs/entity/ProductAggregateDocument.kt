@@ -1,9 +1,7 @@
 package com.hs.entity
 
-import com.hs.util.DatetimeFormatterUtils
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
-import java.time.LocalDateTime
 
 @Document(collection = "product_aggregates")
 class ProductAggregateDocument private constructor(
@@ -45,16 +43,16 @@ class ProductAggregateDocument private constructor(
             productId: Long,
             isDisplay: Boolean,
             productInfo: ProductInfo,
-            createdDatetime: LocalDateTime,
-            updatedDatetime: LocalDateTime
+            createdDatetime: String,
+            updatedDatetime: String
         ): ProductAggregateDocument {
             return ProductAggregateDocument(
                 id = id,
                 productId = productId,
                 isDisplay = isDisplay,
                 productInfo = productInfo,
-                createdDatetime = createdDatetime.format(DatetimeFormatterUtils.DATETIME_FORMATTER),
-                updatedDatetime = updatedDatetime.format(DatetimeFormatterUtils.DATETIME_FORMATTER)
+                createdDatetime = createdDatetime,
+                updatedDatetime = updatedDatetime
             )
         }
     }
