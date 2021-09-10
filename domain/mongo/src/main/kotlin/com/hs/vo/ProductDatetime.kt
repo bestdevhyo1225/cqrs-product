@@ -4,15 +4,9 @@ import com.hs.util.DatetimeFormatterUtils
 import java.time.LocalDateTime
 
 class ProductDatetime private constructor(
-    createdDatetime: LocalDateTime = LocalDateTime.now(),
-    updatedDatetime: LocalDateTime = LocalDateTime.now(),
+    private val createdDatetime: LocalDateTime = LocalDateTime.now(),
+    private var updatedDatetime: LocalDateTime = LocalDateTime.now(),
 ) {
-
-    var createdDatetime: LocalDateTime = createdDatetime
-        private set
-
-    var updatedDatetime: LocalDateTime = updatedDatetime
-        private set
 
     override fun toString(): String {
         return "ProductDatetime(createdDatetime=$createdDatetime, updatedDatetime=$updatedDatetime)"
