@@ -94,7 +94,7 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
 
     override fun insert(productAggregate: ProductAggregate): ProductAggregate? {
         val productAggregateDocument = mongoOperations.insert(
-            ProductAggregateDocument.toPersistenceEntity(
+            ProductAggregateDocument.create(
                 id = productAggregate.id,
                 productId = productAggregate.productId,
                 type = productAggregate.type,
@@ -112,7 +112,7 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
 
     override fun save(productAggregate: ProductAggregate): ProductAggregate? {
         mongoOperations.save(
-            ProductAggregateDocument.toPersistenceEntity(
+            ProductAggregateDocument.create(
                 id = productAggregate.id,
                 productId = productAggregate.productId,
                 type = productAggregate.type,

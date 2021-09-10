@@ -39,7 +39,7 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
             mongoOperations.bulkOps(BulkOperations.BulkMode.UNORDERED, "product_aggregates")
 
         val productAggregateDocuments: List<ProductAggregateDocument> = productAggregates.map {
-            ProductAggregateDocument.toPersistenceEntity(
+            ProductAggregateDocument.create(
                 productId = it.productId,
                 type = it.type,
                 isDisplay = it.isDisplay,
@@ -56,7 +56,7 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
     override fun saveAll(productAggregates: List<ProductAggregate>) {
         productAggregates.forEach {
             mongoOperations.save(
-                ProductAggregateDocument.toPersistenceEntity(
+                ProductAggregateDocument.create(
                     id = it.id,
                     productId = it.productId,
                     type = it.type,

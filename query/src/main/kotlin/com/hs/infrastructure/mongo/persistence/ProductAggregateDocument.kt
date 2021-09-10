@@ -47,7 +47,7 @@ class ProductAggregateDocument private constructor(
     }
 
     companion object {
-        fun toPersistenceEntity(
+        fun create(
             id: String? = null,
             productId: Long,
             type: ProductAggregateType,
