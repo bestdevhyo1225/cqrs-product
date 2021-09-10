@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Document(collection = "product_aggregates")
-class ProductAggregateDocument(
+class ProductAggregateDocument private constructor(
     id: String? = null,
     productId: Long,
     type: ProductAggregateType,
@@ -44,7 +44,6 @@ class ProductAggregateDocument(
         return "ProductAggregateDocument(id=$id, productId=$productId, type=$type, isDisplay=$isDisplay, data=$data, " +
                 "createdDatetime=$createdDatetime, updatedDatetime=$updatedDatetime)"
     }
-
 
     companion object {
         fun toPersistenceEntity(

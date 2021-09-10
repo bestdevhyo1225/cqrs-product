@@ -16,7 +16,7 @@ import javax.persistence.Table
 @Entity
 @DynamicUpdate
 @Table(name = "product")
-class ProductPersistence(
+class ProductPersistence private constructor(
     name: String,
     price: Int,
     stockQuantity: Int,
@@ -67,5 +67,27 @@ class ProductPersistence(
                 "id=$id, name=$name, price=$price, stockQuantity=$stockQuantity, confirmStatus=$confirmStatus, " +
                 "createdDate=$createdDate, updatedDate=$updatedDate, deletedDate=$deletedDate" +
                 ")"
+    }
+
+    companion object {
+        fun create(
+            name: String,
+            price: Int,
+            stockQuantity: Int,
+            confirmStatus: ProductConfirmStatus,
+            createdDate: LocalDateTime,
+            updatedDate: LocalDateTime,
+            deletedDate: LocalDateTime?
+        ): ProductPersistence {
+            return ProductPersistence(
+                name = name,
+                price = price,
+                stockQuantity = stockQuantity,
+                confirmStatus = confirmStatus,
+                createdDate = createdDate,
+                updatedDate = updatedDate,
+                deletedDate = deletedDate
+            )
+        }
     }
 }
