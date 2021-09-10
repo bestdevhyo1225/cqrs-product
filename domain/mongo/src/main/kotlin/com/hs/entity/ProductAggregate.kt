@@ -34,15 +34,17 @@ class ProductAggregate private constructor(
     }
 
     companion object {
+        @JvmStatic
         fun create(productId: Long, confirmStatus: String, productInfo: ProductInfo): ProductAggregate {
             return ProductAggregate(
                 productId = productId,
                 isDisplay = confirmStatus == "APPROVE",
                 productInfo = productInfo,
-                productDatetime = ProductDatetime.create()
+                productDatetime = ProductDatetime.createWithZeroNanoOfSecond()
             )
         }
 
+        @JvmStatic
         fun mapOf(
             id: String,
             productId: Long,
@@ -56,7 +58,7 @@ class ProductAggregate private constructor(
                 productId = productId,
                 isDisplay = isDisplay,
                 productInfo = productInfo,
-                productDatetime = ProductDatetime.mapOf(
+                productDatetime = ProductDatetime.createByStringParams(
                     createdDatetime = createdDatetime,
                     updatedDatetime = updatedDatetime
                 )
@@ -75,7 +77,8 @@ class ProductAggregate private constructor(
     fun changeProductAggregateData(productInfo: ProductInfo, confirmStatus: String) {
         this.productInfo = productInfo
         this.isDisplay = confirmStatus == "APPROVE"
-        this.productDatetime.chanageUpdatedDatetime()
+        this.productDatetime =
+            ProductDatetime.createWithZeroNanoOfSecond(createdDatetime = this.productDatetime.getCreatedDatetime())
     }
 
     fun getProductName(): String = productInfo.getName()
@@ -83,6 +86,6 @@ class ProductAggregate private constructor(
     fun getProductStockQuantity(): Int = productInfo.getStockQuantity()
     fun getProductImageUrls(): List<String> = productInfo.getImageUrls()
 
-    fun getStringCreatedDatetime(): String = productDatetime.getCreatedStringDatetime()
-    fun getStringUpdatedDatetime(): String = productDatetime.getUpdatedStringDatetime()
+    fun getStringCreatedDatetime(): String = productDatetime.getStringCreatedDatetime()
+    fun getStringUpdatedDatetime(): String = productDatetime.getStringUpdatedDatetime()
 }

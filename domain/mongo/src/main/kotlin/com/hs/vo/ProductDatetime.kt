@@ -4,8 +4,8 @@ import com.hs.util.DatetimeFormatterUtils
 import java.time.LocalDateTime
 
 class ProductDatetime private constructor(
-    private val createdDatetime: LocalDateTime = LocalDateTime.now(),
-    private var updatedDatetime: LocalDateTime = LocalDateTime.now(),
+    private var createdDatetime: LocalDateTime,
+    private var updatedDatetime: LocalDateTime,
 ) {
 
     override fun toString(): String {
@@ -13,25 +13,36 @@ class ProductDatetime private constructor(
     }
 
     companion object {
-        fun create(
+        @JvmStatic
+        fun createWithZeroNanoOfSecond(
             createdDatetime: LocalDateTime = LocalDateTime.now(),
             updatedDatetime: LocalDateTime = LocalDateTime.now()
         ): ProductDatetime {
-            return ProductDatetime(createdDatetime = createdDatetime, updatedDatetime = updatedDatetime)
-        }
-
-        fun mapOf(createdDatetime: String, updatedDatetime: String): ProductDatetime {
             return ProductDatetime(
-                createdDatetime = LocalDateTime.parse(createdDatetime, DatetimeFormatterUtils.DATETIME_FORMATTER),
-                updatedDatetime = LocalDateTime.parse(updatedDatetime, DatetimeFormatterUtils.DATETIME_FORMATTER)
+                createdDatetime = createdDatetime.withNano(0),
+                updatedDatetime = updatedDatetime.withNano(0)
             )
         }
+
+        @JvmStatic
+        fun createByStringParams(
+            createdDatetime: String,
+            updatedDatetime: String
+        ): ProductDatetime {
+            return ProductDatetime(
+                createdDatetime = toLocalDatetime(datetime = createdDatetime),
+                updatedDatetime = toLocalDatetime(datetime = updatedDatetime)
+            )
+        }
+
+        @JvmStatic
+        private fun toLocalDatetime(datetime: String) =
+            LocalDateTime.parse(datetime, DatetimeFormatterUtils.DATETIME_FORMATTER)
     }
 
-    fun chanageUpdatedDatetime() {
-        this.updatedDatetime = LocalDateTime.now()
-    }
+    fun getStringCreatedDatetime(): String = createdDatetime.format(DatetimeFormatterUtils.DATETIME_FORMATTER)
+    fun getStringUpdatedDatetime(): String = updatedDatetime.format(DatetimeFormatterUtils.DATETIME_FORMATTER)
 
-    fun getCreatedStringDatetime(): String = createdDatetime.format(DatetimeFormatterUtils.DATETIME_FORMATTER)
-    fun getUpdatedStringDatetime(): String = updatedDatetime.format(DatetimeFormatterUtils.DATETIME_FORMATTER)
+    fun getCreatedDatetime(): LocalDateTime = createdDatetime
+    fun getUpdatedDatetime(): LocalDateTime = updatedDatetime
 }

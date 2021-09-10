@@ -69,28 +69,6 @@ class ProductPersistence private constructor(
                 ")"
     }
 
-    companion object {
-        fun create(
-            name: String,
-            price: Int,
-            stockQuantity: Int,
-            confirmStatus: Product.ConfirmStatus,
-            createdDate: LocalDateTime,
-            updatedDate: LocalDateTime,
-            deletedDate: LocalDateTime?
-        ): ProductPersistence {
-            return ProductPersistence(
-                name = name,
-                price = price,
-                stockQuantity = stockQuantity,
-                confirmStatus = confirmStatus,
-                createdDate = createdDate,
-                updatedDate = updatedDate,
-                deletedDate = deletedDate
-            )
-        }
-    }
-
     fun createImageUrls(): List<String> {
         return productImages.map { it.url }
     }

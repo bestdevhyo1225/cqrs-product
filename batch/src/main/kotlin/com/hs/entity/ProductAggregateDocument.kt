@@ -39,6 +39,7 @@ class ProductAggregateDocument private constructor(
     }
 
     companion object {
+        @JvmStatic
         fun create(
             id: String? = null,
             productId: Long,

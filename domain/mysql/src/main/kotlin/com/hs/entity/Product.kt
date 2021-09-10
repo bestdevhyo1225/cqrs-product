@@ -55,10 +55,12 @@ class Product private constructor(
     }
 
     companion object {
+        @JvmStatic
         fun create(id: Long? = null, name: String, price: Int, stockQuantity: Int, imageUrls: List<String>): Product {
             return Product(id = id, name = name, price = price, stockQuantity = stockQuantity, imageUrls = imageUrls)
         }
 
+        @JvmStatic
         fun mapOf(
             id: Long,
             name: String,
@@ -83,6 +85,7 @@ class Product private constructor(
             )
         }
 
+        @JvmStatic
         fun convertFromStringToEnumValue(value: String): ConfirmStatus {
             try {
                 return ConfirmStatus.valueOf(value = value)

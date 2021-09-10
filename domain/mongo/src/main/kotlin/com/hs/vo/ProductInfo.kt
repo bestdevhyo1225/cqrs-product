@@ -12,6 +12,7 @@ class ProductInfo private constructor(
     }
 
     companion object {
+        @JvmStatic
         fun create(name: String, price: Int, stockQuantity: Int, imageUrls: List<String>): ProductInfo {
             return ProductInfo(
                 name = name,

@@ -32,14 +32,4 @@ class ProductImagePersistence private constructor(url: String, product: ProductP
     override fun toString(): String {
         return "ProductImagePersistence(id=$id, url=$url)"
     }
-
-    companion object {
-        fun create(url: String, product: ProductPersistence): ProductImagePersistence {
-            return ProductImagePersistence(url = url, product = product)
-        }
-    }
-
-    fun changeProduct(product: ProductPersistence) {
-        this.product = product
-    }
 }
