@@ -34,7 +34,7 @@ class ProductJpaRepository(private val entityManager: EntityManager) : ProductRe
     override fun saveAllImage(product: Product, imageUrls: List<String>) {
         imageUrls.forEach { imageUrl ->
             val productPersistence: ProductPersistence? = getReferenceOne(id = product.id!!)
-            val productImagePersistence = ProductImagePersistence(url = imageUrl, product = productPersistence!!)
+            val productImagePersistence = ProductImagePersistence.create(url = imageUrl, product = productPersistence!!)
 
             entityManager.persist(productImagePersistence)
         }

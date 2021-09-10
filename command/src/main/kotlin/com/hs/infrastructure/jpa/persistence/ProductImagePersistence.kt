@@ -14,7 +14,7 @@ import javax.persistence.Table
 @Entity
 @DynamicUpdate
 @Table(name = "product_image")
-class ProductImagePersistence(url: String, product: ProductPersistence) {
+class ProductImagePersistence private constructor(url: String, product: ProductPersistence) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +31,12 @@ class ProductImagePersistence(url: String, product: ProductPersistence) {
 
     override fun toString(): String {
         return "ProductImagePersistence(id=$id, url=$url)"
+    }
+
+    companion object {
+        fun create(url: String, product: ProductPersistence): ProductImagePersistence {
+            return ProductImagePersistence(url = url, product = product)
+        }
     }
 
     fun changeProduct(product: ProductPersistence) {

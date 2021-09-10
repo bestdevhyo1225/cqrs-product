@@ -91,7 +91,7 @@ class ProductPersistence private constructor(
                 deletedDate = deletedDate
             )
 
-            imageUrls.map { imageUrl -> ProductImagePersistence(url = imageUrl, product = product) }
+            imageUrls.map { imageUrl -> ProductImagePersistence.create(url = imageUrl, product = product) }
                 .forEach { productImage -> product.addProductImage(productImage = productImage) }
 
             return product
