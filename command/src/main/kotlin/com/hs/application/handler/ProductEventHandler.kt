@@ -1,10 +1,10 @@
 package com.hs.application.handler
 
 import com.hs.entity.Product
-import com.hs.event.ProductChangeConfirmStatusEvent
-import com.hs.event.ProductCreateAndUpdateEvent
-import com.hs.event.ProductDecreaseStockQuantityEvent
-import com.hs.event.ProductUpdateImageEvent
+import com.hs.application.handler.event.ProductChangeConfirmStatusEvent
+import com.hs.application.handler.event.ProductCreateAndUpdateEvent
+import com.hs.application.handler.event.ProductDecreaseStockQuantityEvent
+import com.hs.application.handler.event.ProductUpdateImageEvent
 import com.hs.infrastructure.jpa.persistence.ProductEventLogPersistence
 import com.hs.infrastructure.jpa.repository.ProductEventLogSpringDataJpaRepository
 import com.hs.service.ProductQueuePublisher

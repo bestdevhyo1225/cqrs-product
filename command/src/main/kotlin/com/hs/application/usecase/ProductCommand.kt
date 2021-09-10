@@ -4,10 +4,10 @@ import com.hs.application.exception.ApplicationLayerException
 import com.hs.dto.CreateProductDto
 import com.hs.dto.UpdateProductDto
 import com.hs.entity.Product
-import com.hs.event.ProductChangeConfirmStatusEvent
-import com.hs.event.ProductCreateAndUpdateEvent
-import com.hs.event.ProductDecreaseStockQuantityEvent
-import com.hs.event.ProductUpdateImageEvent
+import com.hs.application.handler.event.ProductChangeConfirmStatusEvent
+import com.hs.application.handler.event.ProductCreateAndUpdateEvent
+import com.hs.application.handler.event.ProductDecreaseStockQuantityEvent
+import com.hs.application.handler.event.ProductUpdateImageEvent
 import com.hs.message.CommandAppExceptionMessage
 import com.hs.repository.ProductRepository
 import org.slf4j.Logger

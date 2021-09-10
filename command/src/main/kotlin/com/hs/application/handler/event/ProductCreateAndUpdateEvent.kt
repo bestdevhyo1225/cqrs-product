@@ -1,4 +1,4 @@
-package com.hs.event
+package com.hs.application.handler.event
 
 import com.hs.entity.Product
 
