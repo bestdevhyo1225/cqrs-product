@@ -2,6 +2,7 @@ package com.hs.infrastructure.mongo.persistence
 
 import com.hs.dto.FindProductDto
 import com.hs.entity.ProductAggregateType
+import com.hs.util.DatetimeFormatterUtils
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
@@ -46,8 +47,6 @@ class ProductAggregateDocument private constructor(
     }
 
     companion object {
-        private val DATETIME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-
         fun toPersistenceEntity(
             id: String? = null,
             productId: Long,
@@ -63,8 +62,8 @@ class ProductAggregateDocument private constructor(
                 type = type,
                 isDisplay = isDisplay,
                 data = data,
-                createdDatetime = createdDatetime.format(DATETIME_FORMATTER),
-                updatedDatetime = updatedDatetime.format(DATETIME_FORMATTER)
+                createdDatetime = createdDatetime.format(DatetimeFormatterUtils.yyyyMMdd_HHmmss),
+                updatedDatetime = updatedDatetime.format(DatetimeFormatterUtils.yyyyMMdd_HHmmss)
             )
         }
     }

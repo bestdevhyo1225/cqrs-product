@@ -1,8 +1,8 @@
 package com.hs.entity
 
 import com.hs.dto.FindProductDto
+import com.hs.util.DatetimeFormatterUtils
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class ProductAggregate private constructor(
     id: String? = null,
@@ -41,8 +41,6 @@ class ProductAggregate private constructor(
     }
 
     companion object {
-        private val DATETIME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-
         fun create(productDto: FindProductDto, type: ProductAggregateType): ProductAggregate {
             return ProductAggregate(
                 productId = productDto.productId,
@@ -67,8 +65,8 @@ class ProductAggregate private constructor(
                 type = type,
                 isDisplay = isDisplay,
                 data = data,
-                createdDatetime = LocalDateTime.parse(createdDatetime, DATETIME_FORMATTER),
-                updatedDatetime = LocalDateTime.parse(updatedDatetime, DATETIME_FORMATTER)
+                createdDatetime = LocalDateTime.parse(createdDatetime, DatetimeFormatterUtils.yyyyMMdd_HHmmss),
+                updatedDatetime = LocalDateTime.parse(updatedDatetime, DatetimeFormatterUtils.yyyyMMdd_HHmmss)
             )
         }
     }
@@ -84,10 +82,10 @@ class ProductAggregate private constructor(
     }
 
     fun convertToStringCreatedDatetime(): String {
-        return createdDatetime.format(DATETIME_FORMATTER)
+        return createdDatetime.format(DatetimeFormatterUtils.yyyyMMdd_HHmmss)
     }
 
     fun convertToStringUpdatedDatetime(): String {
-        return updatedDatetime.format(DATETIME_FORMATTER)
+        return updatedDatetime.format(DatetimeFormatterUtils.yyyyMMdd_HHmmss)
     }
 }
