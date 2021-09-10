@@ -99,7 +99,7 @@ class ProductEventHandler(
     * */
     suspend fun createProductEventLog(productId: Long, productCommandCode: ProductCommandCode, message: String) {
         productEventLogRepository.save(
-            ProductEventLogPersistence(
+            ProductEventLogPersistence.create(
                 productId = productId,
                 productCommandCode = productCommandCode,
                 message = message

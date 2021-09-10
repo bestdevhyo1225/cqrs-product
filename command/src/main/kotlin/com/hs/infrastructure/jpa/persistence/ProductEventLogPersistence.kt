@@ -17,7 +17,7 @@ import javax.persistence.Table
     name = "product_event_log",
     indexes = [Index(name = "PRODUCT_EVENT_LOG_2_IX_PRODUCT", columnList = "productId")]
 )
-class ProductEventLogPersistence(
+class ProductEventLogPersistence private constructor(
     productId: Long,
     productCommandCode: ProductCommandCode,
     message: String
@@ -47,5 +47,19 @@ class ProductEventLogPersistence(
     override fun toString(): String {
         return "ProductEventLogPersistence(id=$id, productId=$productId, productCommandCode=$productCommandCode, " +
                 "message=$message, createdDate=$createdDate)"
+    }
+
+    companion object {
+        fun create(
+            productId: Long,
+            productCommandCode: ProductCommandCode,
+            message: String
+        ): ProductEventLogPersistence {
+            return ProductEventLogPersistence(
+                productId = productId,
+                productCommandCode = productCommandCode,
+                message = message,
+            )
+        }
     }
 }
