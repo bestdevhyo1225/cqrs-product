@@ -50,8 +50,8 @@ class ProductAggregate private constructor(
             )
         }
 
-        fun toDomainEntity(
-            id: String? = null,
+        fun mapOf(
+            id: String,
             productId: Long,
             type: ProductAggregateType,
             isDisplay: Boolean,

@@ -23,8 +23,8 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
 
         productAggregateDocument ?: return null
 
-        return ProductAggregate.toDomainEntity(
-            id = productAggregateDocument.id,
+        return ProductAggregate.mapOf(
+            id = productAggregateDocument.id!!,
             productId = productAggregateDocument.productId,
             type = productAggregateDocument.type,
             isDisplay = productAggregateDocument.isDisplay,

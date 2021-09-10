@@ -24,8 +24,8 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
         val productAggregateDocument =
             mongoOperations.findOne(Query(criteria), ProductAggregateDocument::class.java) ?: return null
 
-        return ProductAggregate.toDomainEntity(
-            id = productAggregateDocument.id,
+        return ProductAggregate.mapOf(
+            id = productAggregateDocument.id!!,
             productId = productAggregateDocument.productId,
             type = productAggregateDocument.type,
             isDisplay = productAggregateDocument.isDisplay,
@@ -48,8 +48,8 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
         val productAggregateDocument =
             mongoOperations.findOne(Query(criteria), ProductAggregateDocument::class.java) ?: return null
 
-        return ProductAggregate.toDomainEntity(
-            id = productAggregateDocument.id,
+        return ProductAggregate.mapOf(
+            id = productAggregateDocument.id!!,
             productId = productAggregateDocument.productId,
             type = productAggregateDocument.type,
             isDisplay = productAggregateDocument.isDisplay,
@@ -76,8 +76,8 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
         val productAggregates: List<ProductAggregate> = mongoOperations
             .find(query, ProductAggregateDocument::class.java)
             .map {
-                ProductAggregate.toDomainEntity(
-                    id = it.id,
+                ProductAggregate.mapOf(
+                    id = it.id!!,
                     productId = it.productId,
                     type = it.type,
                     isDisplay = it.isDisplay,
