@@ -62,8 +62,8 @@ class ProductAggregateDocument(
                 type = type,
                 isDisplay = isDisplay,
                 data = data,
-                createdDatetime = createdDatetime.format(DatetimeFormatterUtils.yyyyMMdd_HHmmss),
-                updatedDatetime = updatedDatetime.format(DatetimeFormatterUtils.yyyyMMdd_HHmmss)
+                createdDatetime = createdDatetime.format(DatetimeFormatterUtils.DATETIME_FORMATTER),
+                updatedDatetime = updatedDatetime.format(DatetimeFormatterUtils.DATETIME_FORMATTER)
             )
         }
     }

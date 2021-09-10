@@ -65,8 +65,8 @@ class ProductAggregate private constructor(
                 type = type,
                 isDisplay = isDisplay,
                 data = data,
-                createdDatetime = LocalDateTime.parse(createdDatetime, DatetimeFormatterUtils.yyyyMMdd_HHmmss),
-                updatedDatetime = LocalDateTime.parse(updatedDatetime, DatetimeFormatterUtils.yyyyMMdd_HHmmss)
+                createdDatetime = LocalDateTime.parse(createdDatetime, DatetimeFormatterUtils.DATETIME_FORMATTER),
+                updatedDatetime = LocalDateTime.parse(updatedDatetime, DatetimeFormatterUtils.DATETIME_FORMATTER)
             )
         }
     }
@@ -82,10 +82,10 @@ class ProductAggregate private constructor(
     }
 
     fun convertToStringCreatedDatetime(): String {
-        return createdDatetime.format(DatetimeFormatterUtils.yyyyMMdd_HHmmss)
+        return createdDatetime.format(DatetimeFormatterUtils.DATETIME_FORMATTER)
     }
 
     fun convertToStringUpdatedDatetime(): String {
-        return updatedDatetime.format(DatetimeFormatterUtils.yyyyMMdd_HHmmss)
+        return updatedDatetime.format(DatetimeFormatterUtils.DATETIME_FORMATTER)
     }
 }
