@@ -41,7 +41,7 @@ class ProductCommand(
         )
 
         val product: Product = productRepository.save(
-            product = Product(
+            product = Product.create(
                 name = createProductDto.name,
                 price = createProductDto.price,
                 stockQuantity = createProductDto.stockQuantity,

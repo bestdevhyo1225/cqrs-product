@@ -1,7 +1,6 @@
 package com.hs.infrastructure.jpa.repository
 
 import com.hs.entity.Product
-import com.hs.infrastructure.jpa.mapper.ProductMapper
 import com.hs.infrastructure.jpa.persistence.ProductImagePersistence
 import com.hs.infrastructure.jpa.persistence.ProductPersistence
 import com.hs.repository.ProductRepository
@@ -14,7 +13,16 @@ import javax.persistence.EntityManager
 class ProductJpaRepository(private val entityManager: EntityManager) : ProductRepository {
 
     override fun save(product: Product): Product {
-        val productPersistence = ProductMapper.toPersistenceEntity(product = product)
+        val productPersistence = ProductPersistence.toPersistenceEntity(
+            name = product.name,
+            price = product.price,
+            stockQuantity = product.stockQuantity,
+            imageUrls = product.imageUrls,
+            confirmStatus = product.confirmStatus,
+            createdDate = product.createdDate,
+            updatedDate = product.updatedDate,
+            deletedDate = product.deletedDate
+        )
 
         entityManager.persist(productPersistence)
 
@@ -63,7 +71,18 @@ class ProductJpaRepository(private val entityManager: EntityManager) : ProductRe
     override fun findProduct(id: Long): Product? {
         val productPersistence: ProductPersistence? = findOne(id = id)
 
-        return ProductMapper.toDomainEntity(productPersistence = productPersistence)
+        productPersistence ?: return null
+
+        return Product.toDomainEntity(
+            id = productPersistence.id,
+            name = productPersistence.name,
+            price = productPersistence.price,
+            stockQuantity = productPersistence.stockQuantity,
+            confirmStatus = productPersistence.confirmStatus,
+            createdDate = productPersistence.createdDate,
+            updatedDate = productPersistence.updatedDate,
+            deletedDate = productPersistence.deletedDate
+        )
     }
 
     override fun findProductWithFetchJoin(id: Long): Product? {
@@ -75,7 +94,19 @@ class ProductJpaRepository(private val entityManager: EntityManager) : ProductRe
             .setParameter("id", id)
             .singleResult
 
-        return ProductMapper.toDomainEntity(productPersistence = productPersistence, usedFetchJoin = true)
+        productPersistence ?: return null
+
+        return Product.toDomainEntity(
+            id = productPersistence.id,
+            name = productPersistence.name,
+            price = productPersistence.price,
+            stockQuantity = productPersistence.stockQuantity,
+            imageUrls = productPersistence.productImages.map { it.url },
+            confirmStatus = productPersistence.confirmStatus,
+            createdDate = productPersistence.createdDate,
+            updatedDate = productPersistence.updatedDate,
+            deletedDate = productPersistence.deletedDate
+        )
     }
 
     private fun findOne(id: Long): ProductPersistence? {

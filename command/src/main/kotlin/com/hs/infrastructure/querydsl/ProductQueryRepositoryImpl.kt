@@ -22,7 +22,7 @@ class ProductQueryRepositoryImpl(private val queryFactory: JPAQueryFactory) : Pr
 
         productPersistence ?: return null
 
-        return Product(
+        return Product.toDomainEntity(
             id = productPersistence.id,
             name = productPersistence.name,
             price = productPersistence.price,

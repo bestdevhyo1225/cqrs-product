@@ -17,7 +17,7 @@ import javax.persistence.Table
 @Entity
 @DynamicUpdate
 @Table(name = "product")
-class ProductPersistence(
+class ProductPersistence private constructor(
     name: String,
     price: Int,
     stockQuantity: Int,
@@ -71,7 +71,7 @@ class ProductPersistence(
     }
 
     companion object {
-        fun create(
+        fun toPersistenceEntity(
             name: String,
             price: Int,
             stockQuantity: Int,
