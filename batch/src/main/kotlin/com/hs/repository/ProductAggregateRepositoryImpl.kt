@@ -23,20 +23,14 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
 
         productAggregateDocument ?: return null
 
-        val createdDatetime =
-            LocalDateTime.parse(productAggregateDocument.createdDatetime, ProductAggregate.DATETIME_FORMATTER)
-
-        val updatedDatetime =
-            LocalDateTime.parse(productAggregateDocument.updatedDatetime, ProductAggregate.DATETIME_FORMATTER)
-
-        return ProductAggregate(
+        return ProductAggregate.toDomainEntity(
             id = productAggregateDocument.id,
             productId = productAggregateDocument.productId,
             type = productAggregateDocument.type,
             isDisplay = productAggregateDocument.isDisplay,
             data = productAggregateDocument.data,
-            createdDatetime = createdDatetime,
-            updatedDatetime = updatedDatetime
+            createdDatetime = productAggregateDocument.createdDatetime,
+            updatedDatetime = productAggregateDocument.updatedDatetime
         )
     }
 
@@ -45,7 +39,7 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
             mongoOperations.bulkOps(BulkOperations.BulkMode.UNORDERED, "product_aggregates")
 
         val productAggregateDocuments: List<ProductAggregateDocument> = productAggregates.map {
-            ProductAggregateDocument(
+            ProductAggregateDocument.toPersistenceEntity(
                 productId = it.productId,
                 type = it.type,
                 isDisplay = it.isDisplay,
@@ -62,7 +56,7 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
     override fun saveAll(productAggregates: List<ProductAggregate>) {
         productAggregates.forEach {
             mongoOperations.save(
-                ProductAggregateDocument(
+                ProductAggregateDocument.toPersistenceEntity(
                     id = it.id,
                     productId = it.productId,
                     type = it.type,
