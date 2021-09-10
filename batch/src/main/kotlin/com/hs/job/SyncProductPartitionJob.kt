@@ -153,7 +153,7 @@ class SyncProductPartitionJob(
                 price = product.price,
                 stockQuantity = product.stockQuantity,
                 confirmStatus = product.confirmStatus.toString(),
-                imageUrls = product.productImages.map { productImage -> productImage.url }
+                imageUrls = product.createImageUrls()
             )
 
             var productAggregate: ProductAggregate? =

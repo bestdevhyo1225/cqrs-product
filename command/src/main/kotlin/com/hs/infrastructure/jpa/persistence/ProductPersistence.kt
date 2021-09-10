@@ -120,4 +120,8 @@ class ProductPersistence private constructor(
         this.confirmStatus = confirmStatus
         this.updatedDate = LocalDateTime.now()
     }
+
+    fun createImageUrls(): List<String> {
+        return productImages.map { it.url }
+    }
 }

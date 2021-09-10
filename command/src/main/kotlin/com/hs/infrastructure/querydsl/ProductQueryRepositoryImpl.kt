@@ -27,7 +27,7 @@ class ProductQueryRepositoryImpl(private val queryFactory: JPAQueryFactory) : Pr
             name = productPersistence.name,
             price = productPersistence.price,
             stockQuantity = productPersistence.stockQuantity,
-            imageUrls = productPersistence.productImages.map { it.url },
+            imageUrls = productPersistence.createImageUrls(),
             confirmStatus = productPersistence.confirmStatus,
             createdDate = productPersistence.createdDate,
             updatedDate = productPersistence.updatedDate,

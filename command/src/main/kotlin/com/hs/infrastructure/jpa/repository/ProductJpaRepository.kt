@@ -102,7 +102,7 @@ class ProductJpaRepository(private val entityManager: EntityManager) : ProductRe
             name = productPersistence.name,
             price = productPersistence.price,
             stockQuantity = productPersistence.stockQuantity,
-            imageUrls = productPersistence.productImages.map { it.url },
+            imageUrls = productPersistence.createImageUrls(),
             confirmStatus = productPersistence.confirmStatus,
             createdDate = productPersistence.createdDate,
             updatedDate = productPersistence.updatedDate,

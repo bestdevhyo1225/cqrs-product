@@ -90,4 +90,8 @@ class ProductPersistence private constructor(
             )
         }
     }
+
+    fun createImageUrls(): List<String> {
+        return productImages.map { it.url }
+    }
 }
