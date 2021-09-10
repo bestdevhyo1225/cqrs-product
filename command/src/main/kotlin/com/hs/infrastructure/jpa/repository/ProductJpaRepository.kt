@@ -13,7 +13,7 @@ import javax.persistence.EntityManager
 class ProductJpaRepository(private val entityManager: EntityManager) : ProductRepository {
 
     override fun save(product: Product): Product {
-        val productPersistence = ProductPersistence.toPersistenceEntity(
+        val productPersistence = ProductPersistence.convertFromDomainEntity(
             name = product.name,
             price = product.price,
             stockQuantity = product.stockQuantity,

@@ -71,7 +71,7 @@ class ProductPersistence private constructor(
     }
 
     companion object {
-        fun toPersistenceEntity(
+        fun convertFromDomainEntity(
             name: String,
             price: Int,
             stockQuantity: Int,
