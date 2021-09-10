@@ -17,6 +17,7 @@ class Product private constructor(
 ) {
 
     enum class ConfirmStatus { WAIT, REJECT, APPROVE }
+    enum class EventStatus { INSERT, UPDATE, UPDATE_IMAGE, CHANGE_CONFIRM_STATUS, DECREASE_STOCK_QUANTITY, DELETE }
 
     var id: Long? = id
         private set

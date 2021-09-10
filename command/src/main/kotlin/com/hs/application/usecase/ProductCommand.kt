@@ -3,7 +3,6 @@ package com.hs.application.usecase
 import com.hs.application.exception.ApplicationLayerException
 import com.hs.dto.CreateProductDto
 import com.hs.dto.UpdateProductDto
-import com.hs.entity.ProductCommandCode
 import com.hs.entity.Product
 import com.hs.event.ProductChangeConfirmStatusEvent
 import com.hs.event.ProductCreateAndUpdateEvent
@@ -50,7 +49,7 @@ class ProductCommand(
         publishEvent(
             event = ProductCreateAndUpdateEvent(
                 productId = product.id!!,
-                productCommandCode = ProductCommandCode.INSERT,
+                status = Product.EventStatus.INSERT,
                 product = product
             )
         )
@@ -72,7 +71,7 @@ class ProductCommand(
         publishEvent(
             event = ProductCreateAndUpdateEvent(
                 productId = product.id!!,
-                productCommandCode = ProductCommandCode.UPDATE,
+                status = Product.EventStatus.UPDATE,
                 product = product
             )
         )
@@ -88,7 +87,7 @@ class ProductCommand(
         publishEvent(
             event = ProductDecreaseStockQuantityEvent(
                 productId = product.id!!,
-                productCommandCode = ProductCommandCode.DECREASE_STOCK_QUANTITY,
+                status = Product.EventStatus.DECREASE_STOCK_QUANTITY,
                 currentStockQuantity = product.stockQuantity
             )
         )
@@ -107,7 +106,7 @@ class ProductCommand(
         publishEvent(
             event = ProductChangeConfirmStatusEvent(
                 productId = product.id!!,
-                productCommandCode = ProductCommandCode.CHANGE_CONFIRM_STATUS,
+                status = Product.EventStatus.CHANGE_CONFIRM_STATUS,
                 confirmStatus = product.confirmStatus
             )
         )
@@ -125,7 +124,7 @@ class ProductCommand(
         publishEvent(
             event = ProductUpdateImageEvent(
                 productId = product.id!!,
-                productCommandCode = ProductCommandCode.UPDATE_IMAGE,
+                status = Product.EventStatus.UPDATE_IMAGE,
                 imageUrls = imageUrls
             )
         )

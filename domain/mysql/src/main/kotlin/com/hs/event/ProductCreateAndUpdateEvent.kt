@@ -1,11 +1,10 @@
 package com.hs.event
 
-import com.hs.entity.ProductCommandCode
 import com.hs.entity.Product
 
 data class ProductCreateAndUpdateEvent(
     val productId: Long,
-    val productCommandCode: ProductCommandCode,
+    val status: Product.EventStatus,
     val product: Product
 ) {
     override fun toString(): String =

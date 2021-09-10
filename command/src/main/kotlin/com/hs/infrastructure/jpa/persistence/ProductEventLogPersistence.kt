@@ -1,6 +1,6 @@
 package com.hs.infrastructure.jpa.persistence
 
-import com.hs.entity.ProductCommandCode
+import com.hs.entity.Product
 import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -19,7 +19,7 @@ import javax.persistence.Table
 )
 class ProductEventLogPersistence private constructor(
     productId: Long,
-    productCommandCode: ProductCommandCode,
+    eventStatus: Product.EventStatus,
     message: String
 ) {
 
@@ -33,7 +33,7 @@ class ProductEventLogPersistence private constructor(
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
-    var productCommandCode: ProductCommandCode = productCommandCode
+    var eventStatus: Product.EventStatus = eventStatus
         protected set
 
     @Column(nullable = false, length = 2500)
@@ -45,19 +45,19 @@ class ProductEventLogPersistence private constructor(
         protected set
 
     override fun toString(): String {
-        return "ProductEventLogPersistence(id=$id, productId=$productId, productCommandCode=$productCommandCode, " +
+        return "ProductEventLogPersistence(id=$id, productId=$productId, eventStatus=$eventStatus, " +
                 "message=$message, createdDate=$createdDate)"
     }
 
     companion object {
         fun create(
             productId: Long,
-            productCommandCode: ProductCommandCode,
+            eventStatus: Product.EventStatus,
             message: String
         ): ProductEventLogPersistence {
             return ProductEventLogPersistence(
                 productId = productId,
-                productCommandCode = productCommandCode,
+                eventStatus = eventStatus,
                 message = message,
             )
         }

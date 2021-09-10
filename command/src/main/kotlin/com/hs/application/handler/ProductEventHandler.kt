@@ -1,6 +1,6 @@
 package com.hs.application.handler
 
-import com.hs.entity.ProductCommandCode
+import com.hs.entity.Product
 import com.hs.event.ProductChangeConfirmStatusEvent
 import com.hs.event.ProductCreateAndUpdateEvent
 import com.hs.event.ProductDecreaseStockQuantityEvent
@@ -34,7 +34,7 @@ class ProductEventHandler(
 
             createProductEventLog(
                 productId = event.productId,
-                productCommandCode = event.productCommandCode,
+                eventStatus= event.status,
                 message = event.toString()
             )
         }
@@ -49,7 +49,7 @@ class ProductEventHandler(
 
             createProductEventLog(
                 productId = event.productId,
-                productCommandCode = event.productCommandCode,
+                eventStatus = event.status,
                 message = event.toString()
             )
         }
@@ -64,7 +64,7 @@ class ProductEventHandler(
 
             createProductEventLog(
                 productId = event.productId,
-                productCommandCode = event.productCommandCode,
+                eventStatus = event.status,
                 message = event.toString()
             )
         }
@@ -79,7 +79,7 @@ class ProductEventHandler(
 
             createProductEventLog(
                 productId = event.productId,
-                productCommandCode = event.productCommandCode,
+                eventStatus = event.status,
                 message = event.toString()
             )
         }
@@ -97,11 +97,11 @@ class ProductEventHandler(
     * suspend 키워드가 있으면, 코루틴 컨텍스트 환경에서만 실행할 수 있다는 의미이다. 만약, 해당 키워드를 붙이지 않으면,
     * 어디에서나 실행할 수 있는 일반 메소드이다.
     * */
-    suspend fun createProductEventLog(productId: Long, productCommandCode: ProductCommandCode, message: String) {
+    suspend fun createProductEventLog(productId: Long, eventStatus: Product.EventStatus, message: String) {
         productEventLogRepository.save(
             ProductEventLogPersistence.create(
                 productId = productId,
-                productCommandCode = productCommandCode,
+                eventStatus = eventStatus,
                 message = message
             )
         )
