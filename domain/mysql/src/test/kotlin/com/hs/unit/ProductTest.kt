@@ -18,7 +18,7 @@ class ProductTest {
     @Test
     fun `상품의 Id는 영속화된 상품 객체의 Id로 매핑된다`() {
         // given
-        val product = Product(
+        val product = Product.create(
             name = "상품 이름",
             price = 10_000,
             stockQuantity = 20,
@@ -36,7 +36,7 @@ class ProductTest {
     @Test
     fun `상품을 수정하면, 상태는 WAIT로 변경되고, 수정날짜가 갱신된다`() {
         // given
-        val product = Product(
+        val product = Product.create(
             name = "상품 이름",
             price = 10_000,
             stockQuantity = 20,
@@ -61,7 +61,7 @@ class ProductTest {
     @Test
     fun `차감 요청한 재고 수량보다 상품의 재고 수량이 크면, 상품의 재고 수량이 차감되고, 수정날짜가 갱신된다`() {
         // given
-        val product = Product(
+        val product = Product.create(
             name = "상품 이름",
             price = 10_000,
             stockQuantity = 10,
@@ -82,7 +82,7 @@ class ProductTest {
     @Test
     fun `차감 요청한 재고 수량보다 상품의 재고 수량이 작으면, 예외를 발생시킨다`() {
         // given
-        val product = Product(
+        val product = Product.create(
             name = "상품 이름",
             price = 10_000,
             stockQuantity = 10,
@@ -107,7 +107,7 @@ class ProductTest {
     @CsvSource(value = ["APPROVE", "REJECT", "WAIT"])
     fun `상품의 상태를 변경한다`(confirmStatus: ProductConfirmStatus) {
         // given
-        val product = Product(
+        val product = Product.create(
             name = "상품 이름",
             price = 10_000,
             stockQuantity = 10,
@@ -119,5 +119,43 @@ class ProductTest {
 
         // then
         assertThat(product.confirmStatus).isEqualTo(confirmStatus)
+    }
+
+    @Test
+    fun `외부로부터 들어온 데이터를 상품의 모든 필드에 매핑하고, 그 결과를 반환한다`() {
+        // given
+        val id: Long = 1
+        val name = "상품 이름"
+        val price = 100_000
+        val stockQuantity = 30
+        val imageUrls: List<String> = listOf("testUrl")
+        val confirmStatus = ProductConfirmStatus.REJECT
+        val createdDate = LocalDateTime.now()
+        val updatedDate = LocalDateTime.now()
+        val deletedDate: LocalDateTime? = null
+
+        // when
+        val product = Product.toDomainEntity(
+            id = id,
+            name = name,
+            price = price,
+            stockQuantity = stockQuantity,
+            imageUrls = imageUrls,
+            confirmStatus = confirmStatus,
+            createdDate = createdDate,
+            updatedDate = updatedDate,
+            deletedDate = deletedDate
+        )
+
+        // then
+        assertThat(product.id).isEqualTo(id)
+        assertThat(product.name).isEqualTo(name)
+        assertThat(product.price).isEqualTo(price)
+        assertThat(product.imageUrls).hasSize(1)
+        assertThat(product.imageUrls.first()).isEqualTo(imageUrls.first())
+        assertThat(product.confirmStatus).isEqualTo(confirmStatus)
+        assertThat(product.createdDate).isEqualTo(createdDate)
+        assertThat(product.updatedDate).isEqualTo(updatedDate)
+        assertThat(product.deletedDate).isEqualTo(deletedDate)
     }
 }

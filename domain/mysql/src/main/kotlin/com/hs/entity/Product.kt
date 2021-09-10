@@ -4,7 +4,7 @@ import com.hs.exception.DomainMySqlException
 import com.hs.message.CommandAppExceptionMessage
 import java.time.LocalDateTime
 
-class Product(
+class Product private constructor(
     id: Long? = null,
     name: String,
     price: Int,
@@ -49,6 +49,36 @@ class Product(
                 "confirmStatus=$confirmStatus, createdDate=$createdDate, updatedDate=$updatedDate, " +
                 "deletedDate=$deletedDate" +
                 ")"
+    }
+
+    companion object {
+        fun create(id: Long? = null, name: String, price: Int, stockQuantity: Int, imageUrls: List<String>): Product {
+            return Product(id = id, name = name, price = price, stockQuantity = stockQuantity, imageUrls = imageUrls)
+        }
+
+        fun toDomainEntity(
+            id: Long? = null,
+            name: String,
+            price: Int,
+            stockQuantity: Int,
+            imageUrls: List<String> = listOf(),
+            confirmStatus: ProductConfirmStatus,
+            createdDate: LocalDateTime,
+            updatedDate: LocalDateTime,
+            deletedDate: LocalDateTime?
+        ): Product {
+            return Product(
+                id = id,
+                name = name,
+                price = price,
+                stockQuantity = stockQuantity,
+                imageUrls = imageUrls,
+                confirmStatus = confirmStatus,
+                createdDate = createdDate,
+                updatedDate = updatedDate,
+                deletedDate = deletedDate
+            )
+        }
     }
 
     fun reflectIdAfterPersistence(id: Long?) {
