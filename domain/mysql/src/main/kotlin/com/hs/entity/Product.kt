@@ -58,12 +58,12 @@ class Product private constructor(
             return Product(id = id, name = name, price = price, stockQuantity = stockQuantity, imageUrls = imageUrls)
         }
 
-        fun convertFromPersistenceEntity(
-            id: Long? = null,
+        fun mapOf(
+            id: Long,
             name: String,
             price: Int,
             stockQuantity: Int,
-            imageUrls: List<String> = listOf(),
+            imageUrls: List<String>,
             confirmStatus: ConfirmStatus,
             createdDate: LocalDateTime,
             updatedDate: LocalDateTime,

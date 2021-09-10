@@ -134,7 +134,7 @@ class ProductTest {
         val deletedDate: LocalDateTime? = null
 
         // when
-        val product = Product.convertFromPersistenceEntity(
+        val product = Product.mapOf(
             id = id,
             name = name,
             price = price,

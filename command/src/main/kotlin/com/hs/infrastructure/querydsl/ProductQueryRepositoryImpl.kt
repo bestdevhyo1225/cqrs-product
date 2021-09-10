@@ -22,8 +22,8 @@ class ProductQueryRepositoryImpl(private val queryFactory: JPAQueryFactory) : Pr
 
         productPersistence ?: return null
 
-        return Product.convertFromPersistenceEntity(
-            id = productPersistence.id,
+        return Product.mapOf(
+            id = productPersistence.id!!,
             name = productPersistence.name,
             price = productPersistence.price,
             stockQuantity = productPersistence.stockQuantity,
