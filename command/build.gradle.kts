@@ -4,7 +4,6 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     kotlin("plugin.allopen")
-    kotlin("plugin.noarg")
     kotlin("plugin.jpa")
     kotlin("kapt")
 }
@@ -13,10 +12,6 @@ allOpen {
     annotation("javax.persistence.Entity")
     annotation("javax.persistence.MappedSuperclass")
     annotation("javax.persistence.Embeddable")
-}
-
-noArg {
-    annotation("javax.persistence.Entity")
 }
 
 dependencies {
