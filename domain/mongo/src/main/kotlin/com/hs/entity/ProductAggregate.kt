@@ -1,6 +1,8 @@
 package com.hs.entity
 
 import com.hs.dto.FindProductDto
+import com.hs.exception.DomainMongoException
+import com.hs.message.QueryAppExceptionMessage
 import com.hs.util.DatetimeFormatterUtils
 import java.time.LocalDateTime
 
@@ -71,6 +73,10 @@ class ProductAggregate private constructor(
     }
 
     fun reflectIdAfterPersistence(id: String?) {
+        if (id == null || id.isBlank()) {
+            throw DomainMongoException(exceptionMessage = QueryAppExceptionMessage.PRODUCT_ID_IS_NULL_OR_BLANK)
+        }
+
         this.id = id
     }
 

@@ -93,6 +93,10 @@ class Product private constructor(
     }
 
     fun reflectIdAfterPersistence(id: Long?) {
+        if (id == null) {
+            throw DomainMySqlException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
+        }
+
         this.id = id
     }
 

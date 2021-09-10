@@ -144,7 +144,7 @@ class ProductCommand(
         try {
             publisher.publishEvent(event)
         } catch (exception: NullPointerException) {
-            throw ApplicationLayerException(exceptionMessage = CommandAppExceptionMessage.PRODUCT_ID_IS_NULL)
+            throw ApplicationLayerException(exceptionMessage = CommandAppExceptionMessage.UNABLE_TO_PUBLISH_EVENT)
         }
     }
 }
