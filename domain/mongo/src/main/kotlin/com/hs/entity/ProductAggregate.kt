@@ -3,6 +3,7 @@ package com.hs.entity
 import com.hs.exception.DomainMongoException
 import com.hs.message.QueryAppExceptionMessage
 import com.hs.vo.ProductDatetime
+import com.hs.vo.ProductInfo
 
 class ProductAggregate private constructor(
     id: String? = null,
@@ -33,12 +34,9 @@ class ProductAggregate private constructor(
     }
 
     companion object {
-        fun create(
-            confirmStatus: String,
-            productInfo: ProductInfo
-        ): ProductAggregate {
+        fun create(productId: Long, confirmStatus: String, productInfo: ProductInfo): ProductAggregate {
             return ProductAggregate(
-                productId = productInfo.id,
+                productId = productId,
                 isDisplay = confirmStatus == "APPROVE",
                 productInfo = productInfo,
                 productDatetime = ProductDatetime.create()
@@ -80,11 +78,11 @@ class ProductAggregate private constructor(
         this.id = id
     }
 
-    fun convertToStringCreatedDatetime(): String {
-        return productDatetime.toCreatedStringDatetime()
-    }
+    fun getProductName(): String = productInfo.getName()
+    fun getProductPrice(): Int = productInfo.getPrice()
+    fun getProductStockQuantity(): Int = productInfo.getStockQuantity()
+    fun getProductImageUrls(): List<String> = productInfo.getImageUrls()
 
-    fun convertToStringUpdatedDatetime(): String {
-        return productDatetime.toUpdatedStringDatetime()
-    }
+    fun convertToStringCreatedDatetime(): String = productDatetime.toCreatedStringDatetime()
+    fun convertToStringUpdatedDatetime(): String = productDatetime.toUpdatedStringDatetime()
 }

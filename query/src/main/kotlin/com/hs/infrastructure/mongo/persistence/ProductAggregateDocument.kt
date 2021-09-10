@@ -1,6 +1,6 @@
 package com.hs.infrastructure.mongo.persistence
 
-import com.hs.entity.ProductInfo
+import com.hs.vo.ProductInfo
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 

@@ -32,11 +32,6 @@ class ProductDatetime private constructor(
         this.updatedDatetime = LocalDateTime.now()
     }
 
-    fun toCreatedStringDatetime(): String {
-        return createdDatetime.format(DatetimeFormatterUtils.DATETIME_FORMATTER)
-    }
-
-    fun toUpdatedStringDatetime(): String {
-        return updatedDatetime.format(DatetimeFormatterUtils.DATETIME_FORMATTER)
-    }
+    fun toCreatedStringDatetime(): String = createdDatetime.format(DatetimeFormatterUtils.DATETIME_FORMATTER)
+    fun toUpdatedStringDatetime(): String = updatedDatetime.format(DatetimeFormatterUtils.DATETIME_FORMATTER)
 }

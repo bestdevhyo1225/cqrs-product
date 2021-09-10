@@ -1,6 +1,5 @@
 package com.hs.job
 
-import com.hs.dto.FindProductDto
 import com.hs.entity.ProductAggregate
 import com.hs.entity.ProductPersistence
 import com.hs.job.partitioner.ProductIdRangePartitioner
@@ -8,7 +7,7 @@ import com.hs.job.reader.JpaPagingFetchItemReader
 import com.hs.repository.BatchAppProductAggregateRepository
 import com.hs.repository.BatchAppProductQueryRepository
 import com.hs.dto.UpsertProductAggregateDto
-import com.hs.entity.ProductInfo
+import com.hs.vo.ProductInfo
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.batch.core.Job
@@ -149,7 +148,6 @@ class SyncProductPartitionJob(
     private fun processor(): ItemProcessor<ProductPersistence, UpsertProductAggregateDto> {
         return ItemProcessor<ProductPersistence, UpsertProductAggregateDto> { product ->
             val productInfo = ProductInfo.create(
-                id = product.id!!,
                 name = product.name,
                 price = product.price,
                 stockQuantity = product.stockQuantity,
@@ -162,8 +160,11 @@ class SyncProductPartitionJob(
             val isNew: Boolean = productAggregate == null
 
             when (productAggregate) {
-                null -> productAggregate =
-                    ProductAggregate.create(productInfo = productInfo, confirmStatus = product.confirmStatus.toString())
+                null -> productAggregate = ProductAggregate.create(
+                    productId = product.id!!,
+                    confirmStatus = product.confirmStatus.toString(),
+                    productInfo = productInfo
+                )
                 else -> productAggregate.changeProductAggregateData(
                     productInfo = productInfo,
                     confirmStatus = product.confirmStatus.toString()

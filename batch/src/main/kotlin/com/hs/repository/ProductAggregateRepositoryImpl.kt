@@ -16,10 +16,8 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
     override fun findByProductId(productId: Long): ProductAggregate? {
         val query = Query(Criteria.where("productId").isEqualTo(productId))
 
-        val productAggregateDocument: ProductAggregateDocument? =
-            mongoOperations.findOne(query, ProductAggregateDocument::class.java)
-
-        productAggregateDocument ?: return null
+        val productAggregateDocument: ProductAggregateDocument =
+            mongoOperations.findOne(query, ProductAggregateDocument::class.java) ?: return null
 
         return ProductAggregate.mapOf(
             id = productAggregateDocument.id!!,
