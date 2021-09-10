@@ -19,6 +19,13 @@ class ProductDatetimeTest {
                 Arguments.arguments(listOf(LocalDateTime.now(), LocalDateTime.now())),
             )
         }
+
+        @JvmStatic
+        fun stringParams(): List<Arguments> {
+            return listOf(
+                Arguments.arguments(listOf("2021-01-01 12:30:55", "2021-01-02 09:25:37")),
+            )
+        }
     }
 
     @ParameterizedTest
@@ -35,6 +42,9 @@ class ProductDatetimeTest {
         )
 
         // then
+        assertThat(productDatetime).isInstanceOf(ProductDatetime::class.java)
+        assertThat(productDatetime.getCreatedDatetime()).isInstanceOf(LocalDateTime::class.java)
+        assertThat(productDatetime.getUpdatedDatetime()).isInstanceOf(LocalDateTime::class.java)
         assertThat(productDatetime.getCreatedDatetime()).isEqualTo(createdDatetime)
         assertThat(productDatetime.getUpdatedDatetime()).isEqualTo(updatedDatetime)
     }
@@ -46,5 +56,24 @@ class ProductDatetimeTest {
 
         // then
         assertThat(productDatetime.getCreatedDatetime()).isEqualTo(productDatetime.getUpdatedDatetime())
+    }
+
+    @ParameterizedTest
+    @MethodSource(value = ["stringParams"])
+    fun `String 타입을 인자로 넣으면, ProductDatetime 인스턴스가 생성된다`(stringDatetimes: List<String>) {
+        // given
+        val createdDatetime: String = stringDatetimes[0]
+        val updatedDatetime: String = stringDatetimes[1]
+
+        // when
+        val productDatetime = ProductDatetime.createByStringParams(
+            createdDatetime = createdDatetime,
+            updatedDatetime = updatedDatetime
+        )
+
+        // then
+        assertThat(productDatetime).isInstanceOf(ProductDatetime::class.java)
+        assertThat(productDatetime.getCreatedDatetime()).isInstanceOf(LocalDateTime::class.java)
+        assertThat(productDatetime.getUpdatedDatetime()).isInstanceOf(LocalDateTime::class.java)
     }
 }
