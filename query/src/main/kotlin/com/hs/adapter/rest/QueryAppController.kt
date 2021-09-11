@@ -1,8 +1,7 @@
 package com.hs.adapter.rest
 
 import com.hs.application.usecase.ProductAggregateQuery
-import com.hs.config.redis.RedisConfig
-import com.hs.dto.FindProductAggregateDto
+import com.hs.config.RedisConfig
 import com.hs.response.SuccessResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated

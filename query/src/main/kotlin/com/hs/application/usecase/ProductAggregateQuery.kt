@@ -14,7 +14,7 @@ class ProductAggregateQuery(
     private val productAggregateRepository: QueryAppProductAggregateRepository
 ) {
 
-    //    @Cacheable(
+//    @Cacheable(
 //        value = ["productAggregatePage"],
 //        key = "#page.toString().concat('-').concat(#pageSize)",
 //        cacheManager = "redisCacheManager"

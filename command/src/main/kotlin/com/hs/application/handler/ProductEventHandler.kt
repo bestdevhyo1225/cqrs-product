@@ -5,9 +5,8 @@ import com.hs.application.handler.event.ProductChangeConfirmStatusEvent
 import com.hs.application.handler.event.ProductCreateAndUpdateEvent
 import com.hs.application.handler.event.ProductDecreaseStockQuantityEvent
 import com.hs.application.handler.event.ProductUpdateImageEvent
-import com.hs.infrastructure.jpa.persistence.ProductEventLogPersistence
-import com.hs.infrastructure.jpa.repository.ProductEventLogSpringDataJpaRepository
 import com.hs.infrastructure.rabbitmq.ProductQueuePublisher
+import com.hs.repository.ProductEventLogRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -20,7 +19,7 @@ import org.springframework.transaction.event.TransactionalEventListener
 @Component
 class ProductEventHandler(
     private val productQueuePublisher: ProductQueuePublisher,
-    private val productEventLogRepository: ProductEventLogSpringDataJpaRepository
+    private val productEventLogRepository: ProductEventLogRepository
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
@@ -98,12 +97,6 @@ class ProductEventHandler(
     * 어디에서나 실행할 수 있는 일반 메소드이다.
     * */
     suspend fun createProductEventLog(productId: Long, eventStatus: Product.EventStatus, message: String) {
-        productEventLogRepository.save(
-            ProductEventLogPersistence.create(
-                productId = productId,
-                eventStatus = eventStatus,
-                message = message
-            )
-        )
+        productEventLogRepository.save(productId = productId, eventStatus = eventStatus, message = message)
     }
 }

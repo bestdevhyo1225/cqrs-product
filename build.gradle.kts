@@ -69,17 +69,3 @@ project(":batch") {
         implementation(project(":domain:mongo"))
     }
 }
-
-project(":command") {
-    dependencies {
-        implementation(project(":common"))
-        implementation(project(":domain:mysql"))
-    }
-}
-
-project(":query") {
-    dependencies {
-        implementation(project(":common"))
-        implementation(project(":domain:mongo"))
-    }
-}

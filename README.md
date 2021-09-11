@@ -7,6 +7,11 @@
 - Common
 - Domain
 - Query
+- Infrastructure
+  - RDBMS
+  - NoSQL
+  - RabbitMQ
+  - RestClient
 
 ## Library & Framework
 
