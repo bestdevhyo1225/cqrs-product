@@ -1,4 +1,4 @@
-package com.hs.config.restapi
+package com.hs.config
 
 import com.hs.RestGetRequestor
 import com.hs.resttemplate.RestTemplateGetRequestor
