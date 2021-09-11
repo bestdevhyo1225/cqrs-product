@@ -1,6 +1,6 @@
-package com.hs.infrastructure.redis.resolver
+package com.hs.resolver
 
-import com.hs.config.redis.RedisConfig
+import com.hs.config.RedisConfig
 import com.hs.dto.FindProductAggregateDto
 import org.springframework.cache.Cache
 import org.springframework.cache.interceptor.CacheOperationInvocationContext

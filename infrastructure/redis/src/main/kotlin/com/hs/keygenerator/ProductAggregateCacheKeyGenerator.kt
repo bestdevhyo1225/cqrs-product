@@ -1,4 +1,4 @@
-package com.hs.infrastructure.redis.keygenerator
+package com.hs.keygenerator
 
 import org.springframework.cache.interceptor.KeyGenerator
 import java.lang.reflect.Method

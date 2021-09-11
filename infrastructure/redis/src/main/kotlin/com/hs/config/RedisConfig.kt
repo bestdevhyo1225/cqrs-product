@@ -1,11 +1,11 @@
-package com.hs.config.redis
+package com.hs.config
 
 import com.hs.dto.FindPaginationDto
 import com.hs.dto.FindProductAggregateDto
-import com.hs.infrastructure.redis.keygenerator.ProductAggregateCacheKeyGenerator
-import com.hs.infrastructure.redis.resolver.ProductAggregateCacheEvictResolver
-import com.hs.infrastructure.redis.resolver.ProductAggregatePageCacheEvictResolver
-import com.hs.infrastructure.redis.resolver.ProductAggregateCacheableResolver
+import com.hs.keygenerator.ProductAggregateCacheKeyGenerator
+import com.hs.resolver.ProductAggregateCacheEvictResolver
+import com.hs.resolver.ProductAggregatePageCacheEvictResolver
+import com.hs.resolver.ProductAggregateCacheableResolver
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.cache.interceptor.CacheResolver
