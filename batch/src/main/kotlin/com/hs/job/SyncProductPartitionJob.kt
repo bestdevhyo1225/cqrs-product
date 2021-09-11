@@ -1,11 +1,11 @@
 package com.hs.job
 
-import com.hs.jpa.entity.ProductAggregate
-import com.hs.jpa.entity.ProductPersistence
+import com.hs.entity.ProductAggregate
+import com.hs.entity.ProductPersistence
 import com.hs.job.partitioner.ProductIdRangePartitioner
 import com.hs.job.reader.JpaPagingFetchItemReader
-import com.hs.jpa.repository.BatchAppProductAggregateRepository
-import com.hs.jpa.repository.BatchAppProductQueryRepository
+import com.hs.repository.BatchAppProductAggregateRepository
+import com.hs.repository.BatchAppProductQueryRepository
 import com.hs.dto.UpsertProductAggregateDto
 import com.hs.vo.ProductInfo
 import org.slf4j.Logger

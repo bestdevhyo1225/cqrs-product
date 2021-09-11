@@ -1,7 +1,7 @@
 package com.hs.unit
 
 import com.hs.job.partitioner.ProductIdRangePartitioner
-import com.hs.jpa.repository.BatchAppProductQueryRepository
+import com.hs.repository.BatchAppProductQueryRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith

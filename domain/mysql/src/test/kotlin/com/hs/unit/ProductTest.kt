@@ -1,6 +1,6 @@
 package com.hs.unit
 
-import com.hs.jpa.entity.Product
+import com.hs.entity.Product
 import com.hs.exception.DomainMySqlException
 import com.hs.exception.DomainMysqlExceptionMessage
 import org.assertj.core.api.Assertions.assertThat

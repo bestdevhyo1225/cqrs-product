@@ -2,9 +2,9 @@ package com.hs.application.usecase
 
 import com.hs.RestGetRequestor
 import com.hs.dto.FindProductDto
-import com.hs.jpa.entity.ProductAggregate
+import com.hs.entity.ProductAggregate
 import com.hs.vo.ProductInfo
-import com.hs.jpa.repository.QueryAppProductAggregateRepository
+import com.hs.repository.QueryAppProductAggregateRepository
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async

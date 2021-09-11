@@ -1,5 +1,6 @@
 package com.hs.jpa.entity
 
+import com.hs.entity.Product
 import org.hibernate.annotations.DynamicUpdate
 import java.time.LocalDateTime
 import javax.persistence.CascadeType

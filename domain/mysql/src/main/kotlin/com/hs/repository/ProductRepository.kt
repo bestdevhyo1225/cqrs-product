@@ -1,6 +1,6 @@
-package com.hs.jpa.repository
+package com.hs.repository
 
-import com.hs.jpa.entity.Product
+import com.hs.entity.Product
 
 interface ProductRepository {
     fun save(product: Product): Product

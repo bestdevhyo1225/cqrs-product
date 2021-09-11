@@ -1,6 +1,7 @@
-package com.hs.jpa.repository
+package com.hs.repository
 
 import com.hs.jpa.entity.QProductPersistence.*
+import com.hs.repository.BatchAppProductQueryRepository
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository

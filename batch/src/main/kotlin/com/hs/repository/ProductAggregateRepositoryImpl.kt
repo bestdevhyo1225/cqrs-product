@@ -1,7 +1,7 @@
-package com.hs.jpa.repository
+package com.hs.repository
 
-import com.hs.jpa.entity.ProductAggregate
-import com.hs.jpa.entity.ProductAggregateDocument
+import com.hs.entity.ProductAggregate
+import com.hs.entity.ProductAggregateDocument
 import org.springframework.data.mongodb.core.BulkOperations
 import org.springframework.data.mongodb.core.MongoOperations
 import org.springframework.data.mongodb.core.query.Criteria

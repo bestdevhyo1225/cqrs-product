@@ -1,4 +1,4 @@
-package com.hs.jpa.entity
+package com.hs.entity
 
 import org.hibernate.annotations.DynamicUpdate
 import javax.persistence.Column

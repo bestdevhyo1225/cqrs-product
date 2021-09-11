@@ -1,6 +1,6 @@
-package com.hs.jpa.repository
+package com.hs.repository
 
-import com.hs.jpa.entity.ProductAggregate
+import com.hs.entity.ProductAggregate
 
 interface BatchAppProductAggregateRepository {
     fun findByProductId(productId: Long): ProductAggregate?

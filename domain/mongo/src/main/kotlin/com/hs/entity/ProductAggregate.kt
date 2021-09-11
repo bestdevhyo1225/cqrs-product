@@ -1,4 +1,4 @@
-package com.hs.jpa.entity
+package com.hs.entity
 
 import com.hs.exception.DomainMongoException
 import com.hs.exception.DomainMongoExceptionMessage

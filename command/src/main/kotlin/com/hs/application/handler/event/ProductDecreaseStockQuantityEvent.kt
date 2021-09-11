@@ -1,6 +1,6 @@
 package com.hs.application.handler.event
 
-import com.hs.jpa.entity.Product
+import com.hs.entity.Product
 
 data class ProductDecreaseStockQuantityEvent(
     val productId: Long,

@@ -4,12 +4,12 @@ import com.hs.application.exception.ApplicationLayerException
 import com.hs.application.exception.CommandAppExceptionMessage
 import com.hs.dto.CreateProductDto
 import com.hs.dto.UpdateProductDto
-import com.hs.jpa.entity.Product
+import com.hs.entity.Product
 import com.hs.application.handler.event.ProductChangeConfirmStatusEvent
 import com.hs.application.handler.event.ProductCreateAndUpdateEvent
 import com.hs.application.handler.event.ProductDecreaseStockQuantityEvent
 import com.hs.application.handler.event.ProductUpdateImageEvent
-import com.hs.jpa.repository.ProductRepository
+import com.hs.repository.ProductRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationEventPublisher

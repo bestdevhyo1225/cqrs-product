@@ -1,12 +1,12 @@
 package com.hs.application.handler
 
-import com.hs.jpa.entity.Product
+import com.hs.entity.Product
 import com.hs.application.handler.event.ProductChangeConfirmStatusEvent
 import com.hs.application.handler.event.ProductCreateAndUpdateEvent
 import com.hs.application.handler.event.ProductDecreaseStockQuantityEvent
 import com.hs.application.handler.event.ProductUpdateImageEvent
 import com.hs.publisher.ProductQueuePublisher
-import com.hs.jpa.repository.ProductEventLogRepository
+import com.hs.repository.ProductEventLogRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking

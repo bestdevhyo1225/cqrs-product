@@ -1,7 +1,8 @@
 package com.hs.jpa.repository
 
-import com.hs.jpa.entity.Product
+import com.hs.entity.Product
 import com.hs.jpa.entity.ProductEventLogPersistence
+import com.hs.repository.ProductEventLogRepository
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import javax.persistence.EntityManager

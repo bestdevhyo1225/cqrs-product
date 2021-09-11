@@ -1,4 +1,4 @@
-package com.hs.jpa.repository
+package com.hs.repository
 
 import java.time.LocalDateTime
 

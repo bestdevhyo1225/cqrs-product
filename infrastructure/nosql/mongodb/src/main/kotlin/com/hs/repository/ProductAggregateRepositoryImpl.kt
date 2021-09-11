@@ -1,7 +1,7 @@
-package com.hs.jpa.repository
+package com.hs.repository
 
 import com.hs.doucment.ProductAggregateDocument
-import com.hs.jpa.entity.ProductAggregate
+import com.hs.entity.ProductAggregate
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.mongodb.core.MongoOperations
