@@ -1,6 +1,5 @@
-package com.hs.infrastructure.jpa.persistence
+package com.hs.entity
 
-import com.hs.entity.Product
 import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.Entity

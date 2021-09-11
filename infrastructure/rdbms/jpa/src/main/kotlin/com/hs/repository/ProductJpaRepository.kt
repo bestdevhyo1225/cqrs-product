@@ -1,9 +1,8 @@
-package com.hs.infrastructure.jpa.repository
+package com.hs.repository
 
 import com.hs.entity.Product
-import com.hs.infrastructure.jpa.persistence.ProductImagePersistence
-import com.hs.infrastructure.jpa.persistence.ProductPersistence
-import com.hs.repository.ProductRepository
+import com.hs.entity.ProductImagePersistence
+import com.hs.entity.ProductPersistence
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import javax.persistence.EntityManager

@@ -9,7 +9,6 @@ include(
     "infrastructure:nosql:redis",
     "infrastructure:rabbitmq",
     "infrastructure:rdbms:jpa",
-    "infrastructure:rdbms:querydsl",
     "infrastructure:restclient",
     "query"
 )
