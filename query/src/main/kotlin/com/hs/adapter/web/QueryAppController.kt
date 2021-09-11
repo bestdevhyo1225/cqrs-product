@@ -1,4 +1,4 @@
-package com.hs.adapter.rest
+package com.hs.adapter.web
 
 import com.hs.application.usecase.ProductAggregateQuery
 import com.hs.config.RedisConfig
