@@ -81,18 +81,18 @@ project(":query") {
     dependencies {
         implementation(project(":common"))
         implementation(project(":domain:mongo"))
-        implementation(project(":infrastructure:restclient"))
         implementation(project(":infrastructure:redis"))
+        implementation(project(":infrastructure:restclient"))
     }
 }
 
-project(":infrastructure:restclient") {
+project(":infrastructure:redis") {
     dependencies {
         implementation(project(":common"))
     }
 }
 
-project(":infrastructure:redis") {
+project(":infrastructure:restclient") {
     dependencies {
         implementation(project(":common"))
     }
