@@ -1,8 +1,8 @@
-package com.hs.infrastructure.rabbitmq
+package com.hs.publisher
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.hs.config.RabbitMqConfig
-import com.hs.infrastructure.rabbitmq.event.PublishProductEvent
+import com.hs.event.PublishProductEvent
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.MessageBuilder
