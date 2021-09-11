@@ -1,7 +1,6 @@
 package com.hs.adapter.web
 
 import com.hs.application.usecase.ProductAggregateQuery
-import com.hs.config.RedisConfig
 import com.hs.response.SuccessResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
