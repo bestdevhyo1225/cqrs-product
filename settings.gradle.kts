@@ -5,11 +5,11 @@ include(
     "common",
     "domain:mysql",
     "domain:mongo",
-    "infrastructure:jpa",
-    "infrastructure:querydsl",
-    "infrastructure:mongodb",
-    "infrastructure:redis",
+    "infrastructure:nosql:mongodb",
+    "infrastructure:nosql:redis",
     "infrastructure:rabbitmq",
+    "infrastructure:rdbms:jpa",
+    "infrastructure:rdbms:querydsl",
     "infrastructure:restclient",
     "query"
 )
