@@ -1,4 +1,4 @@
-package com.hs.infrastructure.mongo.persistence
+package com.hs.doucment
 
 import com.hs.vo.ProductInfo
 import org.springframework.data.annotation.Id

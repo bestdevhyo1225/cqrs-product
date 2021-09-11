@@ -7,7 +7,7 @@ include(
     "domain:mongo",
     "infrastructure:jpa",
     "infrastructure:querydsl",
-    "infrastructure:mongo",
+    "infrastructure:mongodb",
     "infrastructure:redis",
     "infrastructure:rabbitmq",
     "infrastructure:restclient",
