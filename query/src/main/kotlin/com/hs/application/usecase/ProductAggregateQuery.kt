@@ -5,8 +5,8 @@ import com.hs.config.RedisConfig
 import com.hs.dto.FindProductAggregateDto
 import com.hs.dto.FindPaginationDto
 import com.hs.dto.FindProductAggregatePaginationDto
-import com.hs.entity.ProductAggregate
-import com.hs.repository.QueryAppProductAggregateRepository
+import com.hs.jpa.entity.ProductAggregate
+import com.hs.jpa.repository.QueryAppProductAggregateRepository
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 

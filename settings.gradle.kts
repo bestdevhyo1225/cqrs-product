@@ -8,7 +8,7 @@ include(
     "infrastructure:nosql:mongodb",
     "infrastructure:nosql:redis",
     "infrastructure:rabbitmq",
-    "infrastructure:rdbms:jpa",
+    "infrastructure:rdbms",
     "infrastructure:restclient",
     "query"
 )

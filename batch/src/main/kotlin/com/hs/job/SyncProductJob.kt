@@ -1,10 +1,10 @@
 package com.hs.job
 
-import com.hs.entity.ProductAggregate
+import com.hs.jpa.entity.ProductAggregate
 import com.hs.vo.ProductInfo
-import com.hs.entity.ProductPersistence
+import com.hs.jpa.entity.ProductPersistence
 import com.hs.job.reader.JpaPagingFetchItemReader
-import com.hs.repository.BatchAppProductAggregateRepository
+import com.hs.jpa.repository.BatchAppProductAggregateRepository
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory

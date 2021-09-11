@@ -1,6 +1,6 @@
 package com.hs.application.handler.event
 
-import com.hs.entity.Product
+import com.hs.jpa.entity.Product
 
 data class ProductUpdateImageEvent(
     val productId: Long,

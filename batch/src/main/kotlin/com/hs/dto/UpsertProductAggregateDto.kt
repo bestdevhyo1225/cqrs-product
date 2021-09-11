@@ -1,6 +1,6 @@
 package com.hs.dto
 
-import com.hs.entity.ProductAggregate
+import com.hs.jpa.entity.ProductAggregate
 
 data class UpsertProductAggregateDto(
     val productAggregate: ProductAggregate,

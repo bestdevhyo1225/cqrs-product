@@ -1,6 +1,6 @@
 package com.hs.job.partitioner
 
-import com.hs.repository.BatchAppProductQueryRepository
+import com.hs.jpa.repository.BatchAppProductQueryRepository
 import org.springframework.batch.core.partition.support.Partitioner
 import org.springframework.batch.item.ExecutionContext
 import java.time.LocalDateTime
