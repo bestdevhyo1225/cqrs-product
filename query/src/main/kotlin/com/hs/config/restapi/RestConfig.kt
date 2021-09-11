@@ -1,7 +1,7 @@
 package com.hs.config.restapi
 
-import com.hs.infrastructure.rest.RestGetRequestor
-import com.hs.infrastructure.rest.resttemplate.RestTemplateGetRequestor
+import com.hs.RestGetRequestor
+import com.hs.resttemplate.RestTemplateGetRequestor
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

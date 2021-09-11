@@ -1,4 +1,4 @@
-package com.hs.infrastructure.rest
+package com.hs
 
 import com.hs.dto.FindProductDto
 

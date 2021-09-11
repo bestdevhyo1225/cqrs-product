@@ -1,7 +1,7 @@
-package com.hs.infrastructure.rest.webclient
+package com.hs.webclient
 
+import com.hs.RestGetRequestor
 import com.hs.dto.FindProductDto
-import com.hs.infrastructure.rest.RestGetRequestor
 
 class WebClientGetRequestor : RestGetRequestor {
 
