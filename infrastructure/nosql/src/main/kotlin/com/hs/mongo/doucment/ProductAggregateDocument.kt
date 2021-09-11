@@ -1,4 +1,4 @@
-package com.hs.doucment
+package com.hs.mongo.doucment
 
 import com.hs.vo.ProductInfo
 import org.springframework.data.annotation.Id

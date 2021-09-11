@@ -8,8 +8,7 @@ plugins {
 dependencies {
     implementation(project(":common"))
     implementation(project(":domain:mongo"))
-    implementation(project(":infrastructure:nosql:mongodb"))
-    implementation(project(":infrastructure:nosql:redis"))
+    implementation(project(":infrastructure:nosql"))
     implementation(project(":infrastructure:restclient"))
 
     implementation("org.springframework.boot:spring-boot-starter-amqp")
