@@ -1,6 +1,7 @@
 package com.hs.application.usecase
 
 import com.hs.application.exception.QueryAppExceptionMessage
+import com.hs.config.RedisConfig
 import com.hs.dto.FindProductAggregateDto
 import com.hs.dto.FindPaginationDto
 import com.hs.dto.FindProductAggregatePaginationDto
@@ -14,7 +15,7 @@ class ProductAggregateQuery(
     private val productAggregateRepository: QueryAppProductAggregateRepository
 ) {
 
-//    @Cacheable(
+    //    @Cacheable(
 //        value = ["productAggregatePage"],
 //        key = "#page.toString().concat('-').concat(#pageSize)",
 //        cacheManager = "redisCacheManager"
@@ -47,7 +48,10 @@ class ProductAggregateQuery(
         key = "#copyPrefixKey.concat('::').concat(#productId)",
         cacheResolver = "productAggregateCacheableResolver"
     )
-    fun findProductAggregate(copyPrefixKey: String, productId: Long): FindProductAggregateDto {
+    fun findProductAggregate(
+        copyPrefixKey: String = "copy-${(Math.random() * RedisConfig.PRODUCT_AGGREGATE_COPY_COUNT).toInt()}",
+        productId: Long
+    ): FindProductAggregateDto {
         val productAggregate: ProductAggregate = productAggregateRepository.findByProductIdAndIsDisplay(
             productId = productId,
             isDisplay = true
