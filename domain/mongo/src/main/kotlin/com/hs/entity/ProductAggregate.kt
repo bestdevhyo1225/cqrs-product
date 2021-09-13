@@ -1,22 +1,17 @@
 package com.hs.entity
 
-import com.hs.exception.DomainMongoException
-import com.hs.exception.DomainMongoExceptionMessage
+import com.hs.vo.ProductAggregateId
 import com.hs.vo.ProductDatetime
 import com.hs.vo.ProductInfo
 
 class ProductAggregate private constructor(
-    id: String? = null,
-    productId: Long,
+    productAggregateId: ProductAggregateId,
     isDisplay: Boolean,
     productInfo: ProductInfo,
     productDatetime: ProductDatetime,
 ) {
 
-    var id: String? = id
-        private set
-
-    var productId: Long = productId
+    var productAggregateId: ProductAggregateId = productAggregateId
         private set
 
     var isDisplay: Boolean = isDisplay
@@ -29,15 +24,15 @@ class ProductAggregate private constructor(
         private set
 
     override fun toString(): String {
-        return "ProductAggregate(id=$id, productId=$productId, isDisplay=$isDisplay, productInfo=$productInfo, " +
-                "productDatetime=$productDatetime)"
+        return "ProductAggregate(productAggregateId=$productAggregateId, isDisplay=$isDisplay, " +
+                "productInfo=$productInfo, productDatetime=$productDatetime)"
     }
 
     companion object {
         @JvmStatic
         fun create(productId: Long, confirmStatus: String, productInfo: ProductInfo): ProductAggregate {
             return ProductAggregate(
-                productId = productId,
+                productAggregateId = ProductAggregateId.create(productId = productId),
                 isDisplay = confirmStatus == "APPROVE",
                 productInfo = productInfo,
                 productDatetime = ProductDatetime.createWithZeroNanoOfSecond()
@@ -54,8 +49,7 @@ class ProductAggregate private constructor(
             updatedDatetime: String,
         ): ProductAggregate {
             return ProductAggregate(
-                id = id,
-                productId = productId,
+                productAggregateId = ProductAggregateId.create(id = id, productId = productId),
                 isDisplay = isDisplay,
                 productInfo = productInfo,
                 productDatetime = ProductDatetime.createByStringParams(
@@ -67,11 +61,7 @@ class ProductAggregate private constructor(
     }
 
     fun reflectIdAfterPersistence(id: String?) {
-        if (id == null || id.isBlank()) {
-            throw DomainMongoException(DomainMongoExceptionMessage.PRODUCT_ID_IS_NULL_OR_BLANK)
-        }
-
-        this.id = id
+        productAggregateId.reflectIdAfterPersistence(id = id)
     }
 
     fun changeProductAggregateData(productInfo: ProductInfo, confirmStatus: String) {

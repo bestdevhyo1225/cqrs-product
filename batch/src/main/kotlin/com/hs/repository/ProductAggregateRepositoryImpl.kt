@@ -35,7 +35,7 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
 
         val productAggregateDocuments: List<ProductAggregateDocument> = productAggregates.map {
             ProductAggregateDocument.create(
-                productId = it.productId,
+                productId = it.productAggregateId.getProductId(),
                 isDisplay = it.isDisplay,
                 productInfo = it.productInfo,
                 createdDatetime = it.getStringCreatedDatetime(),
@@ -51,8 +51,8 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
         productAggregates.forEach {
             mongoOperations.save(
                 ProductAggregateDocument.create(
-                    id = it.id,
-                    productId = it.productId,
+                    id = it.productAggregateId.getId(),
+                    productId = it.productAggregateId.getProductId(),
                     isDisplay = it.isDisplay,
                     productInfo = it.productInfo,
                     createdDatetime = it.getStringCreatedDatetime(),

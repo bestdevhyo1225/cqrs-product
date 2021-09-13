@@ -81,8 +81,8 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
     override fun insert(productAggregate: ProductAggregate): ProductAggregate? {
         val productAggregateDocument = mongoOperations.insert(
             ProductAggregateDocument.create(
-                id = productAggregate.id,
-                productId = productAggregate.productId,
+                id = productAggregate.productAggregateId.getId(),
+                productId = productAggregate.productAggregateId.getProductId(),
                 isDisplay = productAggregate.isDisplay,
                 productInfo = productAggregate.productInfo,
                 createdDatetime = productAggregate.getStringCreatedDatetime(),
@@ -98,8 +98,8 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
     override fun save(productAggregate: ProductAggregate): ProductAggregate? {
         mongoOperations.save(
             ProductAggregateDocument.create(
-                id = productAggregate.id,
-                productId = productAggregate.productId,
+                id = productAggregate.productAggregateId.getId(),
+                productId = productAggregate.productAggregateId.getProductId(),
                 isDisplay = productAggregate.isDisplay,
                 productInfo = productAggregate.productInfo,
                 createdDatetime = productAggregate.getStringCreatedDatetime(),
