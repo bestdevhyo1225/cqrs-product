@@ -4,21 +4,21 @@ class ProductInfo private constructor(
     private val name: String,
     private val price: Int,
     private val stockQuantity: Int,
-    private val imageUrls: List<String> = listOf(),
+    private val productImageUrls: ProductImageUrls,
 ) {
 
     override fun toString(): String {
-        return "ProductInfo(name=$name, price=$price, stockQuantity=$stockQuantity, imageUrls=$imageUrls)"
+        return "ProductInfo(name=$name, price=$price, stockQuantity=$stockQuantity, productImageUrls=$productImageUrls)"
     }
 
     companion object {
         @JvmStatic
-        fun create(name: String, price: Int, stockQuantity: Int, imageUrls: List<String>): ProductInfo {
+        fun create(name: String, price: Int, stockQuantity: Int, productImageUrls: ProductImageUrls): ProductInfo {
             return ProductInfo(
                 name = name,
                 price = price,
                 stockQuantity = stockQuantity,
-                imageUrls = imageUrls
+                productImageUrls = productImageUrls
             )
         }
     }
@@ -26,5 +26,5 @@ class ProductInfo private constructor(
     fun getName(): String = name
     fun getPrice(): Int = price
     fun getStockQuantity(): Int = stockQuantity
-    fun getImageUrls(): List<String> = imageUrls
+    fun getProductImageUrls(): List<String> = productImageUrls.getProductImageUrls()
 }

@@ -4,6 +4,7 @@ import com.hs.exception.DomainMongoException
 import com.hs.exception.DomainMongoExceptionMessage
 import com.hs.vo.ProductAggregateId
 import com.hs.vo.ProductDatetime
+import com.hs.vo.ProductImageUrls
 import com.hs.vo.ProductInfo
 
 class ProductAggregate private constructor(
@@ -48,7 +49,7 @@ class ProductAggregate private constructor(
                     name = name,
                     price = price,
                     stockQuantity = stockQuantity,
-                    imageUrls = imageUrls
+                    productImageUrls = ProductImageUrls.create(productImageUrls = imageUrls)
                 ),
                 isDisplay = isApproveConfirmStatus(value = confirmStatus),
                 productDatetime = ProductDatetime.createWithZeroNanoOfSecond()
@@ -92,11 +93,16 @@ class ProductAggregate private constructor(
         imageUrls: List<String>,
         confirmStatus: String
     ) {
-        productInfo =
-            ProductInfo.create(name = name, price = price, stockQuantity = stockQuantity, imageUrls = imageUrls)
+        productInfo = ProductInfo.create(
+            name = name,
+            price = price,
+            stockQuantity = stockQuantity,
+            productImageUrls = ProductImageUrls.create(productImageUrls = imageUrls)
+        )
+        productDatetime = ProductDatetime.createWithZeroNanoOfSecond(
+            createdDatetime = productDatetime.getCreatedDatetime()
+        )
         isDisplay = isApproveConfirmStatus(value = confirmStatus)
-        productDatetime =
-            ProductDatetime.createWithZeroNanoOfSecond(createdDatetime = productDatetime.getCreatedDatetime())
     }
 
     fun reflectIdAfterPersistence(id: String?) {
@@ -107,7 +113,7 @@ class ProductAggregate private constructor(
     fun getProductName(): String = productInfo.getName()
     fun getProductPrice(): Int = productInfo.getPrice()
     fun getProductStockQuantity(): Int = productInfo.getStockQuantity()
-    fun getProductImageUrls(): List<String> = productInfo.getImageUrls()
+    fun getProductImageUrls(): List<String> = productInfo.getProductImageUrls()
 
     fun getStringCreatedDatetime(): String = productDatetime.getStringCreatedDatetime()
     fun getStringUpdatedDatetime(): String = productDatetime.getStringUpdatedDatetime()
