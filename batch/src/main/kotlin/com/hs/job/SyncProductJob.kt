@@ -62,24 +62,23 @@ class SyncProductJob(
     @Bean(name = [JOB_NAME + "_Processor"])
     fun processor(): ItemProcessor<ProductPersistence, ProductAggregate> {
         return ItemProcessor<ProductPersistence, ProductAggregate> { product ->
-            val productInfo = ProductInfo.create(
-                name = product.name,
-                price = product.price,
-                stockQuantity = product.stockQuantity,
-                imageUrls = product.createImageUrls()
-            )
-
             var productAggregate: ProductAggregate? =
                 productAggregateRepository.findByProductId(productId = product.id!!)
 
             when (productAggregate) {
                 null -> productAggregate = ProductAggregate.create(
                     productId = product.id!!,
-                    productInfo = productInfo,
+                    name = product.name,
+                    price = product.price,
+                    stockQuantity = product.stockQuantity,
+                    imageUrls = product.createImageUrls(),
                     confirmStatus = product.confirmStatus.toString(),
                 )
                 else -> productAggregate.changeProductAggregateData(
-                    productInfo = productInfo,
+                    name = product.name,
+                    price = product.price,
+                    stockQuantity = product.stockQuantity,
+                    imageUrls = product.createImageUrls(),
                     confirmStatus = product.confirmStatus.toString()
                 )
             }

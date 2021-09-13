@@ -34,10 +34,22 @@ class ProductAggregate private constructor(
 
     companion object {
         @JvmStatic
-        fun create(productId: Long, productInfo: ProductInfo, confirmStatus: String): ProductAggregate {
+        fun create(
+            productId: Long,
+            name: String,
+            price: Int,
+            stockQuantity: Int,
+            imageUrls: List<String>,
+            confirmStatus: String
+        ): ProductAggregate {
             return ProductAggregate(
                 productAggregateId = ProductAggregateId.create(productId = productId),
-                productInfo = productInfo,
+                productInfo = ProductInfo.create(
+                    name = name,
+                    price = price,
+                    stockQuantity = stockQuantity,
+                    imageUrls = imageUrls
+                ),
                 isDisplay = isApproveConfirmStatus(value = confirmStatus),
                 productDatetime = ProductDatetime.createWithZeroNanoOfSecond()
             )
@@ -73,8 +85,15 @@ class ProductAggregate private constructor(
         }
     }
 
-    fun changeProductAggregateData(productInfo: ProductInfo, confirmStatus: String) {
-        this.productInfo = productInfo
+    fun changeProductAggregateData(
+        name: String,
+        price: Int,
+        stockQuantity: Int,
+        imageUrls: List<String>,
+        confirmStatus: String
+    ) {
+        productInfo =
+            ProductInfo.create(name = name, price = price, stockQuantity = stockQuantity, imageUrls = imageUrls)
         isDisplay = isApproveConfirmStatus(value = confirmStatus)
         productDatetime =
             ProductDatetime.createWithZeroNanoOfSecond(createdDatetime = productDatetime.getCreatedDatetime())

@@ -44,14 +44,20 @@ class ProductAggregateCommand(
                 productAggregateRepository.insert(
                     productAggregate = ProductAggregate.create(
                         productId = productDto.productId,
-                        productInfo = productInfo,
+                        name = productDto.name,
+                        price = productDto.price,
+                        stockQuantity = productDto.stockQuantity,
+                        imageUrls = productDto.imageUrls,
                         confirmStatus = productDto.confirmStatus,
                     )
                 )
             }
             else -> {
                 productAggregate.changeProductAggregateData(
-                    productInfo = productInfo,
+                    name = productDto.name,
+                    price = productDto.price,
+                    stockQuantity = productDto.stockQuantity,
+                    imageUrls = productDto.imageUrls,
                     confirmStatus = productDto.confirmStatus
                 )
                 productAggregateRepository.save(productAggregate = productAggregate)
