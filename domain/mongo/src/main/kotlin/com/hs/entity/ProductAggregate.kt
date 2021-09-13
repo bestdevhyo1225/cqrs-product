@@ -61,14 +61,15 @@ class ProductAggregate private constructor(
     }
 
     fun reflectIdAfterPersistence(id: String?) {
-        productAggregateId.reflectIdAfterPersistence(id = id)
+        productAggregateId =
+            ProductAggregateId.createAfterPersistence(id = id, productId = productAggregateId.getProductId())
     }
 
     fun changeProductAggregateData(productInfo: ProductInfo, confirmStatus: String) {
         this.productInfo = productInfo
-        this.isDisplay = confirmStatus == "APPROVE"
-        this.productDatetime =
-            ProductDatetime.createWithZeroNanoOfSecond(createdDatetime = this.productDatetime.getCreatedDatetime())
+        isDisplay = confirmStatus == "APPROVE"
+        productDatetime =
+            ProductDatetime.createWithZeroNanoOfSecond(createdDatetime = productDatetime.getCreatedDatetime())
     }
 
     fun getProductName(): String = productInfo.getName()

@@ -17,14 +17,15 @@ class ProductAggregateId private constructor(
         fun create(id: String? = null, productId: Long): ProductAggregateId {
             return ProductAggregateId(id = id, productId = productId)
         }
-    }
 
-    fun reflectIdAfterPersistence(id: String?) {
-        if (id == null || id.isBlank()) {
-            throw DomainMongoException(DomainMongoExceptionMessage.PRODUCT_ID_IS_NULL_OR_BLANK)
+        @JvmStatic
+        fun createAfterPersistence(id: String?, productId: Long): ProductAggregateId {
+            if (id == null || id.isBlank()) {
+                throw DomainMongoException(DomainMongoExceptionMessage.PRODUCT_ID_IS_NULL_OR_BLANK)
+            }
+
+            return ProductAggregateId(id = id, productId = productId)
         }
-
-        this.id = id
     }
 
     fun getId(): String? = id
