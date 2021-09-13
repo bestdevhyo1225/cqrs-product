@@ -42,6 +42,19 @@ class ProductAggregateCommand(
         return productAggregateRepository.findByProductId(productId = productId)
     }
 
+    private fun insertProductAggregate(productDto: FindProductDto) {
+        productAggregateRepository.insert(
+            productAggregate = ProductAggregate.create(
+                productId = productDto.productId,
+                name = productDto.name,
+                price = productDto.price,
+                stockQuantity = productDto.stockQuantity,
+                imageUrls = productDto.imageUrls,
+                confirmStatus = productDto.confirmStatus,
+            )
+        )
+    }
+
     private fun updateProductAggregate(
         productAggregate: ProductAggregate,
         productDto: FindProductDto
@@ -53,17 +66,7 @@ class ProductAggregateCommand(
             imageUrls = productDto.imageUrls,
             confirmStatus = productDto.confirmStatus
         )
+
         return productAggregateRepository.save(productAggregate = productAggregate)
     }
-
-    private fun insertProductAggregate(productDto: FindProductDto) = productAggregateRepository.insert(
-        productAggregate = ProductAggregate.create(
-            productId = productDto.productId,
-            name = productDto.name,
-            price = productDto.price,
-            stockQuantity = productDto.stockQuantity,
-            imageUrls = productDto.imageUrls,
-            confirmStatus = productDto.confirmStatus,
-        )
-    )
 }
