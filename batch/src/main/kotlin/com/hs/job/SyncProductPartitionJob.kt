@@ -147,13 +147,6 @@ class SyncProductPartitionJob(
 
     private fun processor(): ItemProcessor<ProductPersistence, UpsertProductAggregateDto> {
         return ItemProcessor<ProductPersistence, UpsertProductAggregateDto> { product ->
-            val productInfo = ProductInfo.create(
-                name = product.name,
-                price = product.price,
-                stockQuantity = product.stockQuantity,
-                imageUrls = product.createImageUrls()
-            )
-
             var productAggregate: ProductAggregate? =
                 productAggregateRepository.findByProductId(productId = product.id!!)
 

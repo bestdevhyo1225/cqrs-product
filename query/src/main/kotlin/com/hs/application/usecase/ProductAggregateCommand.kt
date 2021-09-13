@@ -32,13 +32,6 @@ class ProductAggregateCommand(
             async(Dispatchers.IO) { findProductAggregate(productId = productId) }
 
         val productDto: FindProductDto = asyncProductDto.await()
-        val productInfo = ProductInfo.create(
-            name = productDto.name,
-            price = productDto.price,
-            stockQuantity = productDto.stockQuantity,
-            imageUrls = productDto.imageUrls
-        )
-
         when (val productAggregate: ProductAggregate? = asyncProductAggregate.await()) {
             null -> {
                 productAggregateRepository.insert(
