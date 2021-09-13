@@ -7,7 +7,6 @@ import com.hs.job.reader.JpaPagingFetchItemReader
 import com.hs.repository.BatchAppProductAggregateRepository
 import com.hs.repository.BatchAppProductQueryRepository
 import com.hs.dto.UpsertProductAggregateDto
-import com.hs.vo.ProductInfo
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.batch.core.Job

@@ -1,7 +1,6 @@
 package com.hs.job
 
 import com.hs.entity.ProductAggregate
-import com.hs.vo.ProductInfo
 import com.hs.entity.ProductPersistence
 import com.hs.job.reader.JpaPagingFetchItemReader
 import com.hs.repository.BatchAppProductAggregateRepository
