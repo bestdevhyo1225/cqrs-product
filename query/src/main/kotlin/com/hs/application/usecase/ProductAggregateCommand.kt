@@ -33,32 +33,37 @@ class ProductAggregateCommand(
 
         val productDto: FindProductDto = asyncProductDto.await()
         when (val productAggregate: ProductAggregate? = asyncProductAggregate.await()) {
-            null -> {
-                productAggregateRepository.insert(
-                    productAggregate = ProductAggregate.create(
-                        productId = productDto.productId,
-                        name = productDto.name,
-                        price = productDto.price,
-                        stockQuantity = productDto.stockQuantity,
-                        imageUrls = productDto.imageUrls,
-                        confirmStatus = productDto.confirmStatus,
-                    )
-                )
-            }
-            else -> {
-                productAggregate.changeProductAggregateData(
-                    name = productDto.name,
-                    price = productDto.price,
-                    stockQuantity = productDto.stockQuantity,
-                    imageUrls = productDto.imageUrls,
-                    confirmStatus = productDto.confirmStatus
-                )
-                productAggregateRepository.save(productAggregate = productAggregate)
-            }
+            null -> insertProductAggregate(productDto)
+            else -> updateProductAggregate(productAggregate, productDto)
         }
     }
 
     suspend fun findProductAggregate(productId: Long): ProductAggregate? {
         return productAggregateRepository.findByProductId(productId = productId)
     }
+
+    private fun updateProductAggregate(
+        productAggregate: ProductAggregate,
+        productDto: FindProductDto
+    ): ProductAggregate? {
+        productAggregate.changeProductAggregateData(
+            name = productDto.name,
+            price = productDto.price,
+            stockQuantity = productDto.stockQuantity,
+            imageUrls = productDto.imageUrls,
+            confirmStatus = productDto.confirmStatus
+        )
+        return productAggregateRepository.save(productAggregate = productAggregate)
+    }
+
+    private fun insertProductAggregate(productDto: FindProductDto) = productAggregateRepository.insert(
+        productAggregate = ProductAggregate.create(
+            productId = productDto.productId,
+            name = productDto.name,
+            price = productDto.price,
+            stockQuantity = productDto.stockQuantity,
+            imageUrls = productDto.imageUrls,
+            confirmStatus = productDto.confirmStatus,
+        )
+    )
 }
