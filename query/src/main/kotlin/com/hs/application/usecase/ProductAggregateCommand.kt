@@ -44,8 +44,8 @@ class ProductAggregateCommand(
                 productAggregateRepository.insert(
                     productAggregate = ProductAggregate.create(
                         productId = productDto.productId,
+                        productInfo = productInfo,
                         confirmStatus = productDto.confirmStatus,
-                        productInfo = productInfo
                     )
                 )
             }

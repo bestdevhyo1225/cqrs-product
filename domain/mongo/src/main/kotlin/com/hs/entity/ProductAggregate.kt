@@ -1,40 +1,44 @@
 package com.hs.entity
 
+import com.hs.exception.DomainMongoException
+import com.hs.exception.DomainMongoExceptionMessage
 import com.hs.vo.ProductAggregateId
 import com.hs.vo.ProductDatetime
 import com.hs.vo.ProductInfo
 
 class ProductAggregate private constructor(
     productAggregateId: ProductAggregateId,
-    isDisplay: Boolean,
     productInfo: ProductInfo,
+    isDisplay: Boolean,
     productDatetime: ProductDatetime,
 ) {
+
+    enum class ConfirmStatus { WAIT, REJECT, APPROVE }
 
     var productAggregateId: ProductAggregateId = productAggregateId
         private set
 
-    var isDisplay: Boolean = isDisplay
+    var productInfo: ProductInfo = productInfo
         private set
 
-    var productInfo: ProductInfo = productInfo
+    var isDisplay: Boolean = isDisplay
         private set
 
     var productDatetime: ProductDatetime = productDatetime
         private set
 
     override fun toString(): String {
-        return "ProductAggregate(productAggregateId=$productAggregateId, isDisplay=$isDisplay, " +
-                "productInfo=$productInfo, productDatetime=$productDatetime)"
+        return "ProductAggregate(productAggregateId=$productAggregateId, productInfo=$productInfo, " +
+                "isDisplay=$isDisplay, productDatetime=$productDatetime)"
     }
 
     companion object {
         @JvmStatic
-        fun create(productId: Long, confirmStatus: String, productInfo: ProductInfo): ProductAggregate {
+        fun create(productId: Long, productInfo: ProductInfo, confirmStatus: String): ProductAggregate {
             return ProductAggregate(
                 productAggregateId = ProductAggregateId.create(productId = productId),
-                isDisplay = confirmStatus == "APPROVE",
                 productInfo = productInfo,
+                isDisplay = isApproveConfirmStatus(value = confirmStatus),
                 productDatetime = ProductDatetime.createWithZeroNanoOfSecond()
             )
         }
@@ -43,33 +47,42 @@ class ProductAggregate private constructor(
         fun mapOf(
             id: String,
             productId: Long,
-            isDisplay: Boolean,
             productInfo: ProductInfo,
+            isDisplay: Boolean,
             createdDatetime: String,
             updatedDatetime: String,
         ): ProductAggregate {
             return ProductAggregate(
                 productAggregateId = ProductAggregateId.create(id = id, productId = productId),
-                isDisplay = isDisplay,
                 productInfo = productInfo,
+                isDisplay = isDisplay,
                 productDatetime = ProductDatetime.createByStringParams(
                     createdDatetime = createdDatetime,
                     updatedDatetime = updatedDatetime
                 )
             )
         }
+
+        @JvmStatic
+        private fun isApproveConfirmStatus(value: String): Boolean {
+            try {
+                return ConfirmStatus.valueOf(value = value) == ConfirmStatus.APPROVE
+            } catch (exception: Exception) {
+                throw DomainMongoException(DomainMongoExceptionMessage.NOT_EXIST_PRODUCT_CONFIRM_STATUS)
+            }
+        }
+    }
+
+    fun changeProductAggregateData(productInfo: ProductInfo, confirmStatus: String) {
+        this.productInfo = productInfo
+        isDisplay = isApproveConfirmStatus(value = confirmStatus)
+        productDatetime =
+            ProductDatetime.createWithZeroNanoOfSecond(createdDatetime = productDatetime.getCreatedDatetime())
     }
 
     fun reflectIdAfterPersistence(id: String?) {
         productAggregateId =
             ProductAggregateId.createAfterPersistence(id = id, productId = productAggregateId.getProductId())
-    }
-
-    fun changeProductAggregateData(productInfo: ProductInfo, confirmStatus: String) {
-        this.productInfo = productInfo
-        isDisplay = confirmStatus == "APPROVE"
-        productDatetime =
-            ProductDatetime.createWithZeroNanoOfSecond(createdDatetime = productDatetime.getCreatedDatetime())
     }
 
     fun getProductName(): String = productInfo.getName()

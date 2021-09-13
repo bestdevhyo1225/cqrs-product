@@ -162,8 +162,8 @@ class SyncProductPartitionJob(
             when (productAggregate) {
                 null -> productAggregate = ProductAggregate.create(
                     productId = product.id!!,
+                    productInfo = productInfo,
                     confirmStatus = product.confirmStatus.toString(),
-                    productInfo = productInfo
                 )
                 else -> productAggregate.changeProductAggregateData(
                     productInfo = productInfo,

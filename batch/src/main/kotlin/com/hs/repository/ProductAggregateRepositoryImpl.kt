@@ -22,8 +22,8 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
         return ProductAggregate.mapOf(
             id = productAggregateDocument.id!!,
             productId = productAggregateDocument.productId,
-            isDisplay = productAggregateDocument.isDisplay,
             productInfo = productAggregateDocument.productInfo,
+            isDisplay = productAggregateDocument.isDisplay,
             createdDatetime = productAggregateDocument.createdDatetime,
             updatedDatetime = productAggregateDocument.updatedDatetime
         )
