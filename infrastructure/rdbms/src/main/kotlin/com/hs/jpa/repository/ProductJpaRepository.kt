@@ -14,11 +14,11 @@ class ProductJpaRepository(private val entityManager: EntityManager) : ProductRe
 
     override fun save(product: Product): Product {
         val productPersistence = ProductPersistence.create(
-            name = product.name,
-            price = product.price,
-            stockQuantity = product.stockQuantity,
+            name = product.detail.getName(),
+            price = product.detail.getPrice(),
+            stockQuantity = product.detail.getStockQuantity(),
             imageUrls = product.imageUrls.getProductImageUrls(),
-            confirmStatus = product.confirmStatus,
+            confirmStatus = product.detail.getConfirmStatus(),
             createdDate = product.createdDate,
             updatedDate = product.updatedDate,
             deletedDate = product.deletedDate
@@ -44,22 +44,22 @@ class ProductJpaRepository(private val entityManager: EntityManager) : ProductRe
         val productPersistence: ProductPersistence? = getReferenceOne(product.id!!)
 
         productPersistence?.update(
-            name = product.name,
-            price = product.price,
-            stockQuantity = product.stockQuantity
+            name = product.detail.getName(),
+            price = product.detail.getPrice(),
+            stockQuantity = product.detail.getStockQuantity()
         )
     }
 
     override fun updateStockQuantity(product: Product) {
         val productPersistence: ProductPersistence? = getReferenceOne(id = product.id!!)
 
-        productPersistence?.decreaseStockCount(stockQuantity = product.stockQuantity)
+        productPersistence?.decreaseStockCount(stockQuantity = product.detail.getStockQuantity())
     }
 
     override fun updateConfirmStatus(product: Product) {
         val productPersistence: ProductPersistence? = getReferenceOne(id = product.id!!)
 
-        productPersistence?.updateConfirmStatus(confirmStatus = product.confirmStatus)
+        productPersistence?.updateConfirmStatus(confirmStatus = product.detail.getConfirmStatus())
     }
 
     override fun deleteImageByProductId(productId: Long) {
@@ -78,8 +78,8 @@ class ProductJpaRepository(private val entityManager: EntityManager) : ProductRe
             name = productPersistence.name,
             price = productPersistence.price,
             stockQuantity = productPersistence.stockQuantity,
-            imageUrls = listOf(),
             confirmStatus = productPersistence.confirmStatus,
+            imageUrls = listOf(),
             createdDate = productPersistence.createdDate,
             updatedDate = productPersistence.updatedDate,
             deletedDate = productPersistence.deletedDate
@@ -102,8 +102,8 @@ class ProductJpaRepository(private val entityManager: EntityManager) : ProductRe
             name = productPersistence.name,
             price = productPersistence.price,
             stockQuantity = productPersistence.stockQuantity,
-            imageUrls = productPersistence.createImageUrls(),
             confirmStatus = productPersistence.confirmStatus,
+            imageUrls = productPersistence.createImageUrls(),
             createdDate = productPersistence.createdDate,
             updatedDate = productPersistence.updatedDate,
             deletedDate = productPersistence.deletedDate

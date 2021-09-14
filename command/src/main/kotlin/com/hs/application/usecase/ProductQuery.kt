@@ -19,10 +19,10 @@ class ProductQuery(
 
         return FindProductDto(
             productId = product.id!!,
-            name = product.name,
-            price = product.price,
-            stockQuantity = product.stockQuantity,
-            confirmStatus = product.confirmStatus.toString(),
+            name = product.detail.getName(),
+            price = product.detail.getPrice(),
+            stockQuantity = product.detail.getStockQuantity(),
+            confirmStatus = product.detail.getConfirmStatus().toString(),
             imageUrls = product.imageUrls.getProductImageUrls()
         )
     }

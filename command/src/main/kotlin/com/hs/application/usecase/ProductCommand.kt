@@ -9,6 +9,7 @@ import com.hs.application.handler.event.ProductChangeConfirmStatusEvent
 import com.hs.application.handler.event.ProductCreateAndUpdateEvent
 import com.hs.application.handler.event.ProductDecreaseStockQuantityEvent
 import com.hs.application.handler.event.ProductUpdateImageEvent
+import com.hs.entity.ProductDetail
 import com.hs.repository.ProductRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -59,13 +60,11 @@ class ProductCommand(
 
     fun update(updateProductDto: UpdateProductDto) {
         val product: Product = findProduct(id = updateProductDto.id)
-
         product.update(
             name = updateProductDto.name,
             price = updateProductDto.price,
             stockQuantity = updateProductDto.stockQuantity,
         )
-
         productRepository.update(product = product)
 
         publishEvent(
@@ -79,35 +78,31 @@ class ProductCommand(
 
     fun decreaseStockQuantity(id: Long, completeStockQuantity: Int) {
         val product: Product = findProduct(id = id)
-
         product.decreaseStockCount(stockQuantity = completeStockQuantity)
-
         productRepository.updateStockQuantity(product = product)
 
         publishEvent(
             event = ProductDecreaseStockQuantityEvent(
                 productId = product.id!!,
                 status = Product.EventStatus.DECREASE_STOCK_QUANTITY,
-                currentStockQuantity = product.stockQuantity
+                currentStockQuantity = product.detail.getStockQuantity()
             )
         )
     }
 
     fun changeConfirmStatus(id: Long, strProductConfirmStatus: String) {
-        val confirmStatus: Product.ConfirmStatus =
-            Product.convertFromStringToEnumValue(value = strProductConfirmStatus)
+        val confirmStatus: ProductDetail.ConfirmStatus =
+            ProductDetail.convertFromStringToEnumValue(value = strProductConfirmStatus)
 
         val product: Product = findProduct(id = id)
-
         product.updateConfirmStatus(confirmStatus = confirmStatus)
-
         productRepository.updateConfirmStatus(product = product)
 
         publishEvent(
             event = ProductChangeConfirmStatusEvent(
                 productId = product.id!!,
                 status = Product.EventStatus.CHANGE_CONFIRM_STATUS,
-                confirmStatus = product.confirmStatus
+                confirmStatus = product.detail.getConfirmStatus()
             )
         )
     }
@@ -118,7 +113,7 @@ class ProductCommand(
         productRepository.deleteImageByProductId(productId = product.id!!)
         productRepository.saveAllImage(product = product, imageUrls = imageUrls)
 
-        product.updateConfirmStatus(confirmStatus = Product.ConfirmStatus.WAIT)
+        product.updateConfirmStatus(confirmStatus = ProductDetail.ConfirmStatus.WAIT)
         productRepository.updateConfirmStatus(product = product)
 
         publishEvent(

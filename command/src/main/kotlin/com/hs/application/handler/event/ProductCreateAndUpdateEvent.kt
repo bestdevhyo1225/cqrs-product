@@ -8,8 +8,8 @@ data class ProductCreateAndUpdateEvent(
     val product: Product
 ) {
     override fun toString(): String =
-        "Product(name=${product.name}, " +
-                "price=${product.price}, " +
-                "stockQuantity=${product.stockQuantity}, " +
+        "Product(name=${product.detail.getName()}, " +
+                "price=${product.detail.getPrice()}, " +
+                "stockQuantity=${product.detail.getStockQuantity()}, " +
                 "imageUrls=${product.imageUrls}"
 }

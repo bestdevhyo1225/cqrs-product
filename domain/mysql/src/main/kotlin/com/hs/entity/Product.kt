@@ -7,35 +7,22 @@ import java.time.LocalDateTime
 
 class Product private constructor(
     id: Long? = null,
-    name: String,
-    price: Int,
-    stockQuantity: Int,
+    detail: ProductDetail,
     imageUrls: ProductImageUrls,
-    confirmStatus: ConfirmStatus = ConfirmStatus.WAIT,
     createdDate: LocalDateTime = LocalDateTime.now(),
     updatedDate: LocalDateTime = LocalDateTime.now(),
     deletedDate: LocalDateTime? = null,
 ) {
 
-    enum class ConfirmStatus { WAIT, REJECT, APPROVE }
     enum class EventStatus { INSERT, UPDATE, UPDATE_IMAGE, CHANGE_CONFIRM_STATUS, DECREASE_STOCK_QUANTITY, DELETE }
 
     var id: Long? = id
         private set
 
-    var name: String = name
-        private set
-
-    var price: Int = price
-        private set
-
-    var stockQuantity: Int = stockQuantity
+    var detail: ProductDetail = detail
         private set
 
     var imageUrls: ProductImageUrls = imageUrls
-        private set
-
-    var confirmStatus: ConfirmStatus = confirmStatus
         private set
 
     var createdDate: LocalDateTime = createdDate
@@ -47,22 +34,16 @@ class Product private constructor(
     var deletedDate: LocalDateTime? = deletedDate
         private set
 
-    override fun toString(): String {
-        return "Product(" +
-                "id=$id, name=$name, price=$price, stockQuantity=$stockQuantity, imageUrls=$imageUrls, " +
-                "confirmStatus=$confirmStatus, createdDate=$createdDate, updatedDate=$updatedDate, " +
-                "deletedDate=$deletedDate" +
-                ")"
-    }
+    override fun toString(): String =
+        "Product(id=$id, detail=$detail, imageUrls=$imageUrls, " +
+                "createdDate=$createdDate, updatedDate=$updatedDate, deletedDate=$deletedDate)"
 
     companion object {
         @JvmStatic
         fun create(id: Long? = null, name: String, price: Int, stockQuantity: Int, imageUrls: List<String>): Product {
             return Product(
                 id = id,
-                name = name,
-                price = price,
-                stockQuantity = stockQuantity,
+                detail = ProductDetail.create(name = name, price = price, stockQuantity = stockQuantity),
                 imageUrls = ProductImageUrls.create(productImageUrls = imageUrls)
             )
         }
@@ -73,32 +54,25 @@ class Product private constructor(
             name: String,
             price: Int,
             stockQuantity: Int,
+            confirmStatus: ProductDetail.ConfirmStatus,
             imageUrls: List<String>,
-            confirmStatus: ConfirmStatus,
             createdDate: LocalDateTime,
             updatedDate: LocalDateTime,
             deletedDate: LocalDateTime?
         ): Product {
             return Product(
                 id = id,
-                name = name,
-                price = price,
-                stockQuantity = stockQuantity,
+                detail = ProductDetail.create(
+                    name = name,
+                    price = price,
+                    stockQuantity = stockQuantity,
+                    confirmStatus = confirmStatus
+                ),
                 imageUrls = ProductImageUrls.create(productImageUrls = imageUrls),
-                confirmStatus = confirmStatus,
                 createdDate = createdDate,
                 updatedDate = updatedDate,
                 deletedDate = deletedDate
             )
-        }
-
-        @JvmStatic
-        fun convertFromStringToEnumValue(value: String): ConfirmStatus {
-            try {
-                return ConfirmStatus.valueOf(value = value)
-            } catch (exception: Exception) {
-                throw DomainMySqlException(DomainMysqlExceptionMessage.NOT_EXIST_PRODUCT_CONFIRM_STATUS)
-            }
         }
     }
 
@@ -111,24 +85,17 @@ class Product private constructor(
     }
 
     fun update(name: String, price: Int, stockQuantity: Int) {
-        this.name = name
-        this.price = price
-        this.stockQuantity = stockQuantity
-        this.confirmStatus = ConfirmStatus.WAIT
+        this.detail.changeProductDetail(name = name, price = price, stockQuantity = stockQuantity)
         this.updatedDate = LocalDateTime.now()
     }
 
     fun decreaseStockCount(stockQuantity: Int) {
-        if (this.stockQuantity - stockQuantity <= 0) {
-            throw DomainMySqlException(DomainMysqlExceptionMessage.HAVE_EXCEEDED_THE_QUANTITY_AVAILABLE_FOR_PURCHASE)
-        }
-
-        this.stockQuantity -= stockQuantity
+        this.detail.decreaseStockCount(stockQuantity = stockQuantity)
         this.updatedDate = LocalDateTime.now()
     }
 
-    fun updateConfirmStatus(confirmStatus: ConfirmStatus) {
-        this.confirmStatus = confirmStatus
+    fun updateConfirmStatus(confirmStatus: ProductDetail.ConfirmStatus) {
+        this.detail.updateConfirmStatus(confirmStatus = confirmStatus)
         this.updatedDate = LocalDateTime.now()
     }
 }
