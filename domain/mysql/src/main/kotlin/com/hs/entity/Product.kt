@@ -2,6 +2,7 @@ package com.hs.entity
 
 import com.hs.exception.DomainMySqlException
 import com.hs.exception.DomainMysqlExceptionMessage
+import com.hs.vo.ProductImageUrls
 import java.time.LocalDateTime
 
 class Product private constructor(
@@ -9,7 +10,7 @@ class Product private constructor(
     name: String,
     price: Int,
     stockQuantity: Int,
-    imageUrls: List<String> = listOf(),
+    imageUrls: ProductImageUrls,
     confirmStatus: ConfirmStatus = ConfirmStatus.WAIT,
     createdDate: LocalDateTime = LocalDateTime.now(),
     updatedDate: LocalDateTime = LocalDateTime.now(),
@@ -31,7 +32,7 @@ class Product private constructor(
     var stockQuantity: Int = stockQuantity
         private set
 
-    var imageUrls: List<String> = imageUrls
+    var imageUrls: ProductImageUrls = imageUrls
         private set
 
     var confirmStatus: ConfirmStatus = confirmStatus
@@ -57,7 +58,13 @@ class Product private constructor(
     companion object {
         @JvmStatic
         fun create(id: Long? = null, name: String, price: Int, stockQuantity: Int, imageUrls: List<String>): Product {
-            return Product(id = id, name = name, price = price, stockQuantity = stockQuantity, imageUrls = imageUrls)
+            return Product(
+                id = id,
+                name = name,
+                price = price,
+                stockQuantity = stockQuantity,
+                imageUrls = ProductImageUrls.create(productImageUrls = imageUrls)
+            )
         }
 
         @JvmStatic
@@ -77,7 +84,7 @@ class Product private constructor(
                 name = name,
                 price = price,
                 stockQuantity = stockQuantity,
-                imageUrls = imageUrls,
+                imageUrls = ProductImageUrls.create(productImageUrls = imageUrls),
                 confirmStatus = confirmStatus,
                 createdDate = createdDate,
                 updatedDate = updatedDate,

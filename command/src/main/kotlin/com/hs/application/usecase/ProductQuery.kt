@@ -23,7 +23,7 @@ class ProductQuery(
             price = product.price,
             stockQuantity = product.stockQuantity,
             confirmStatus = product.confirmStatus.toString(),
-            imageUrls = product.imageUrls
+            imageUrls = product.imageUrls.getProductImageUrls()
         )
     }
 }

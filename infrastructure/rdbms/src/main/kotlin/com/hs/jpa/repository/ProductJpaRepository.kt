@@ -17,7 +17,7 @@ class ProductJpaRepository(private val entityManager: EntityManager) : ProductRe
             name = product.name,
             price = product.price,
             stockQuantity = product.stockQuantity,
-            imageUrls = product.imageUrls,
+            imageUrls = product.imageUrls.getProductImageUrls(),
             confirmStatus = product.confirmStatus,
             createdDate = product.createdDate,
             updatedDate = product.updatedDate,
