@@ -2,6 +2,7 @@ package com.hs.vo
 
 import com.hs.exception.DomainMongoException
 import com.hs.exception.DomainMongoExceptionMessage
+import java.util.*
 
 /*
 * [ 정적 팩토리 메서드 패턴 ]
@@ -23,6 +24,18 @@ import com.hs.exception.DomainMongoExceptionMessage
 class ProductAggregateId private constructor(private var id: String?) {
 
     override fun toString(): String = "ProductAggregateId(id=$id)"
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+
+        if (other is ProductAggregateId) {
+            return this.id == other.id
+        }
+
+        return false
+    }
+
+    override fun hashCode(): Int = Objects.hash(id)
 
     companion object {
         @JvmStatic
