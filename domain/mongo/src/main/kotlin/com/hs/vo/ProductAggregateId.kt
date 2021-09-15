@@ -24,14 +24,12 @@ import java.util.*
 class ProductAggregateId private constructor(private var id: String?) {
 
     override fun toString(): String = "ProductAggregateId(id=$id)"
-
+    override fun hashCode(): Int = Objects.hash(id)
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other is ProductAggregateId) return this.id == other.id
         return false
     }
-
-    override fun hashCode(): Int = Objects.hash(id)
 
     companion object {
         @JvmStatic
