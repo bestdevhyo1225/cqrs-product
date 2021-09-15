@@ -27,7 +27,7 @@ class ProductAggregateId private constructor(private var id: String?) {
     override fun hashCode(): Int = Objects.hash(id)
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other is ProductAggregateId) return this.id == other.id
+        if (other is ProductAggregateId) return id == other.id
         return false
     }
 
