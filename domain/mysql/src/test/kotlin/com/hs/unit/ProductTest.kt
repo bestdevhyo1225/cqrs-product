@@ -1,7 +1,6 @@
 package com.hs.unit
 
 import com.hs.entity.Product
-import com.hs.entity.ProductDetail
 import com.hs.exception.DomainMySqlException
 import com.hs.exception.DomainMysqlExceptionMessage
 import org.assertj.core.api.Assertions.assertThat
@@ -51,10 +50,10 @@ class ProductTest {
         product.update(name = fixtureName, price = fixturePrice, stockQuantity = fixtureStockQuantity)
 
         // then
-        assertThat(product.detail.getName()).isEqualTo(fixtureName)
-        assertThat(product.detail.getPrice()).isEqualTo(fixturePrice)
-        assertThat(product.detail.getStockQuantity()).isEqualTo(fixtureStockQuantity)
-        assertThat(product.detail.getConfirmStatus()).isEqualTo(ProductDetail.ConfirmStatus.WAIT)
+        assertThat(product.name).isEqualTo(fixtureName)
+        assertThat(product.price).isEqualTo(fixturePrice)
+        assertThat(product.stockQuantity).isEqualTo(fixtureStockQuantity)
+        assertThat(product.confirmStatus).isEqualTo(Product.ConfirmStatus.WAIT)
         assertThat(product.updatedDate).isNotEqualTo(fixtureUpdateDate)
     }
 
@@ -68,14 +67,14 @@ class ProductTest {
             imageUrls = listOf("imageUrl1", "imageUrl2")
         )
         val fixtureUpdateDate: LocalDateTime = product.updatedDate
-        val fixtureStockQuantity = product.detail.getStockQuantity()
+        val fixtureStockQuantity = product.stockQuantity
         val requestStockQuantity = 5
 
         // when
         product.decreaseStockCount(stockQuantity = requestStockQuantity)
 
         // then
-        assertThat(product.detail.getStockQuantity()).isEqualTo(fixtureStockQuantity - requestStockQuantity)
+        assertThat(product.stockQuantity).isEqualTo(fixtureStockQuantity - requestStockQuantity)
         assertThat(product.updatedDate).isNotEqualTo(fixtureUpdateDate)
     }
 
@@ -105,7 +104,7 @@ class ProductTest {
 
     @ParameterizedTest
     @CsvSource(value = ["APPROVE", "REJECT", "WAIT"])
-    fun `상품의 상태를 변경한다`(confirmStatus: ProductDetail.ConfirmStatus) {
+    fun `상품의 상태를 변경한다`(confirmStatus: Product.ConfirmStatus) {
         // given
         val product = Product.create(
             name = "상품 이름",
@@ -118,7 +117,7 @@ class ProductTest {
         product.updateConfirmStatus(confirmStatus = confirmStatus)
 
         // then
-        assertThat(product.detail.getConfirmStatus()).isEqualTo(confirmStatus)
+        assertThat(product.confirmStatus).isEqualTo(confirmStatus)
     }
 
     @Test
@@ -129,7 +128,7 @@ class ProductTest {
         val price = 100_000
         val stockQuantity = 30
         val imageUrls: List<String> = listOf("testUrl")
-        val confirmStatus = ProductDetail.ConfirmStatus.REJECT
+        val confirmStatus = Product.ConfirmStatus.REJECT
         val createdDate = LocalDateTime.now()
         val updatedDate = LocalDateTime.now()
         val deletedDate: LocalDateTime? = null
@@ -149,11 +148,11 @@ class ProductTest {
 
         // then
         assertThat(product.id).isEqualTo(id)
-        assertThat(product.detail.getName()).isEqualTo(name)
-        assertThat(product.detail.getPrice()).isEqualTo(price)
+        assertThat(product.name).isEqualTo(name)
+        assertThat(product.price).isEqualTo(price)
         assertThat(product.imageUrls.getProductImageUrls()).hasSize(1)
         assertThat(product.imageUrls.getProductImageUrls().first()).isEqualTo(imageUrls.first())
-        assertThat(product.detail.getConfirmStatus()).isEqualTo(confirmStatus)
+        assertThat(product.confirmStatus).isEqualTo(confirmStatus)
         assertThat(product.createdDate).isEqualTo(createdDate)
         assertThat(product.updatedDate).isEqualTo(updatedDate)
         assertThat(product.deletedDate).isEqualTo(deletedDate)

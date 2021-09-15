@@ -14,11 +14,11 @@ class ProductJpaRepository(private val entityManager: EntityManager) : ProductRe
 
     override fun save(product: Product): Product {
         val productPersistence = ProductPersistence.create(
-            name = product.detail.getName(),
-            price = product.detail.getPrice(),
-            stockQuantity = product.detail.getStockQuantity(),
+            name = product.name,
+            price = product.price,
+            stockQuantity = product.stockQuantity,
             imageUrls = product.imageUrls.getProductImageUrls(),
-            confirmStatus = product.detail.getConfirmStatus(),
+            confirmStatus = product.confirmStatus,
             createdDate = product.createdDate,
             updatedDate = product.updatedDate,
             deletedDate = product.deletedDate
@@ -44,22 +44,22 @@ class ProductJpaRepository(private val entityManager: EntityManager) : ProductRe
         val productPersistence: ProductPersistence? = getReferenceOne(product.id!!)
 
         productPersistence?.update(
-            name = product.detail.getName(),
-            price = product.detail.getPrice(),
-            stockQuantity = product.detail.getStockQuantity()
+            name = product.name,
+            price = product.price,
+            stockQuantity = product.stockQuantity
         )
     }
 
     override fun updateStockQuantity(product: Product) {
         val productPersistence: ProductPersistence? = getReferenceOne(id = product.id!!)
 
-        productPersistence?.decreaseStockCount(stockQuantity = product.detail.getStockQuantity())
+        productPersistence?.decreaseStockCount(stockQuantity = product.stockQuantity)
     }
 
     override fun updateConfirmStatus(product: Product) {
         val productPersistence: ProductPersistence? = getReferenceOne(id = product.id!!)
 
-        productPersistence?.updateConfirmStatus(confirmStatus = product.detail.getConfirmStatus())
+        productPersistence?.updateConfirmStatus(confirmStatus = product.confirmStatus)
     }
 
     override fun deleteImageByProductId(productId: Long) {

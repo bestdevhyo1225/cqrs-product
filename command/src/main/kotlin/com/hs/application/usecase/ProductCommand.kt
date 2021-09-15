@@ -9,7 +9,6 @@ import com.hs.application.handler.event.ProductChangeConfirmStatusEvent
 import com.hs.application.handler.event.ProductCreateAndUpdateEvent
 import com.hs.application.handler.event.ProductDecreaseStockQuantityEvent
 import com.hs.application.handler.event.ProductUpdateImageEvent
-import com.hs.entity.ProductDetail
 import com.hs.repository.ProductRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -85,14 +84,14 @@ class ProductCommand(
             event = ProductDecreaseStockQuantityEvent(
                 productId = product.id!!,
                 status = Product.EventStatus.DECREASE_STOCK_QUANTITY,
-                currentStockQuantity = product.detail.getStockQuantity()
+                currentStockQuantity = product.stockQuantity
             )
         )
     }
 
     fun changeConfirmStatus(id: Long, strProductConfirmStatus: String) {
-        val confirmStatus: ProductDetail.ConfirmStatus =
-            ProductDetail.convertFromStringToEnumValue(value = strProductConfirmStatus)
+        val confirmStatus: Product.ConfirmStatus =
+            Product.convertFromStringToEnumValue(value = strProductConfirmStatus)
 
         val product: Product = findProduct(id = id)
         product.updateConfirmStatus(confirmStatus = confirmStatus)
@@ -102,7 +101,7 @@ class ProductCommand(
             event = ProductChangeConfirmStatusEvent(
                 productId = product.id!!,
                 status = Product.EventStatus.CHANGE_CONFIRM_STATUS,
-                confirmStatus = product.detail.getConfirmStatus()
+                confirmStatus = product.confirmStatus
             )
         )
     }
@@ -113,7 +112,7 @@ class ProductCommand(
         productRepository.deleteImageByProductId(productId = product.id!!)
         productRepository.saveAllImage(product = product, imageUrls = imageUrls)
 
-        product.updateConfirmStatus(confirmStatus = ProductDetail.ConfirmStatus.WAIT)
+        product.updateConfirmStatus(confirmStatus = Product.ConfirmStatus.WAIT)
         productRepository.updateConfirmStatus(product = product)
 
         publishEvent(
