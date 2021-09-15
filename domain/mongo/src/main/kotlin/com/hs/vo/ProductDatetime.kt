@@ -3,6 +3,7 @@ package com.hs.vo
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatter.ofPattern
+import java.util.*
 
 /*
 * [ 정적 팩토리 메서드 패턴 ]
@@ -29,6 +30,15 @@ class ProductDatetime private constructor(
 
     override fun toString(): String =
         "ProductDatetime(createdDatetime=$createdDatetime, updatedDatetime=$updatedDatetime)"
+
+    override fun hashCode(): Int = Objects.hash(createdDatetime, updatedDatetime)
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other is ProductDatetime) {
+            return createdDatetime == other.createdDatetime && updatedDatetime == other.updatedDatetime
+        }
+        return false
+    }
 
     companion object {
         @JvmStatic
