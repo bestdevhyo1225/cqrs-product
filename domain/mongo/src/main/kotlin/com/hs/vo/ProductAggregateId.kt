@@ -27,11 +27,7 @@ class ProductAggregateId private constructor(private var id: String?) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-
-        if (other is ProductAggregateId) {
-            return this.id == other.id
-        }
-
+        if (other is ProductAggregateId) return this.id == other.id
         return false
     }
 
