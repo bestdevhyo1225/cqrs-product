@@ -27,9 +27,8 @@ class ProductDatetime private constructor(
     private var updatedDatetime: LocalDateTime,
 ) {
 
-    override fun toString(): String {
-        return "ProductDatetime(createdDatetime=$createdDatetime, updatedDatetime=$updatedDatetime)"
-    }
+    override fun toString(): String =
+        "ProductDatetime(createdDatetime=$createdDatetime, updatedDatetime=$updatedDatetime)"
 
     companion object {
         @JvmStatic
