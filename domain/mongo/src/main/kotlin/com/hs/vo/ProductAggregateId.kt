@@ -20,32 +20,23 @@ import com.hs.exception.DomainMongoExceptionMessage
 * - 상속을 하려면, public, protected 생성자가 필요하니, 정적 팩터리 메서드만 제공하면, 하위 클래스를 만들 수 없다.
 * - 정적 팩터리 메서드는 프로그래머가 찾기 어렵다.
 * */
+class ProductAggregateId private constructor(private var id: String?) {
 
-class ProductAggregateId private constructor(
-    private var id: String?,
-    private val productId: Long
-) {
-
-    override fun toString(): String {
-        return "ProductAggregateId(id=$id, productId=$productId)"
-    }
+    override fun toString(): String = "ProductAggregateId(id=$id)"
 
     companion object {
         @JvmStatic
-        fun create(id: String? = null, productId: Long): ProductAggregateId {
-            return ProductAggregateId(id = id, productId = productId)
-        }
+        fun create(id: String? = null): ProductAggregateId = ProductAggregateId(id = id)
 
         @JvmStatic
-        fun createAfterPersistence(id: String?, productId: Long): ProductAggregateId {
+        fun createAfterPersistence(id: String?): ProductAggregateId {
             if (id == null || id.isBlank()) {
                 throw DomainMongoException(DomainMongoExceptionMessage.PRODUCT_ID_IS_NULL_OR_BLANK)
             }
 
-            return ProductAggregateId(id = id, productId = productId)
+            return ProductAggregateId(id = id)
         }
     }
 
     fun getId(): String? = id
-    fun getProductId(): Long = productId
 }

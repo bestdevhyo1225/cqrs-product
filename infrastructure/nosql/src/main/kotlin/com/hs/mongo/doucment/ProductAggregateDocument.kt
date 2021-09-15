@@ -1,6 +1,6 @@
 package com.hs.mongo.doucment
 
-import com.hs.vo.ProductInfo
+import com.hs.mongo.vo.ProductData
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 
@@ -9,7 +9,7 @@ class ProductAggregateDocument private constructor(
     id: String? = null,
     productId: Long,
     isDisplay: Boolean,
-    productInfo: ProductInfo,
+    data: ProductData,
     createdDatetime: String,
     updatedDatetime: String,
 ) {
@@ -24,7 +24,7 @@ class ProductAggregateDocument private constructor(
     var isDisplay: Boolean = isDisplay
         protected set
 
-    var productInfo: ProductInfo = productInfo
+    var data: ProductData = data
         protected set
 
     var createdDatetime: String = createdDatetime
@@ -35,7 +35,7 @@ class ProductAggregateDocument private constructor(
 
     override fun toString(): String {
         return "ProductAggregateDocument(id=$id, productId=$productId, isDisplay=$isDisplay, " +
-                "productInfo=$productInfo, createdDatetime=$createdDatetime, updatedDatetime=$updatedDatetime)"
+                "data=$data, createdDatetime=$createdDatetime, updatedDatetime=$updatedDatetime)"
     }
 
     companion object {
@@ -44,7 +44,7 @@ class ProductAggregateDocument private constructor(
             id: String? = null,
             productId: Long,
             isDisplay: Boolean,
-            productInfo: ProductInfo,
+            data: ProductData,
             createdDatetime: String,
             updatedDatetime: String
         ): ProductAggregateDocument {
@@ -52,7 +52,7 @@ class ProductAggregateDocument private constructor(
                 id = id,
                 productId = productId,
                 isDisplay = isDisplay,
-                productInfo = productInfo,
+                data = data,
                 createdDatetime = createdDatetime,
                 updatedDatetime = updatedDatetime
             )

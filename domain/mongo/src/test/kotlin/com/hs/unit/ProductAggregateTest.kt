@@ -1,8 +1,6 @@
 package com.hs.unit
 
 import com.hs.entity.ProductAggregate
-import com.hs.vo.ProductImageUrls
-import com.hs.vo.ProductInfo
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -34,13 +32,13 @@ class ProductAggregateTest {
 
         // then
         assertThat(productAggregate.productAggregateId.getId()).isNull()
-        assertThat(productAggregate.productAggregateId.getProductId()).isEqualTo(productId)
+        assertThat(productAggregate.productInfo.getId()).isEqualTo(productId)
         assertThat(productAggregate.productInfo.getName()).isEqualTo(name)
         assertThat(productAggregate.productInfo.getPrice()).isEqualTo(price)
         assertThat(productAggregate.productInfo.getStockQuantity()).isEqualTo(stockQuantity)
         assertThat(productAggregate.productInfo.getProductImageUrls()).hasSize(imageUrls.size)
         assertThat(productAggregate.productInfo.getProductImageUrls().first()).isEqualTo(imageUrls.first())
-        assertThat(productAggregate.isDisplay).isEqualTo(isDisplay)
+        assertThat(productAggregate.productInfo.getIsDisplay()).isEqualTo(isDisplay)
     }
 
     @Test
@@ -48,9 +46,10 @@ class ProductAggregateTest {
         // given
         val id = "id1234567"
         val productId = 1L
-        val productImageUrls = ProductImageUrls.create(productImageUrls = listOf("http://test123124.com"))
-        val productInfo =
-            ProductInfo.create(name = "상품 이름", price = 21_000, stockQuantity = 30, productImageUrls = productImageUrls)
+        val name = "상품 이름"
+        val price = 21_000
+        val stockQuantity = 30
+        val imageUrls: List<String> = listOf("https://test123124.com")
         val isDisplay = true
         val createdDatetime = "2021-10-10 00:30:30"
         val updatedDatetime = "2021-11-11 12:56:28"
@@ -59,23 +58,24 @@ class ProductAggregateTest {
         val productAggregate = ProductAggregate.mapOf(
             id = id,
             productId = productId,
-            productInfo = productInfo,
+            name = name,
+            price = price,
             isDisplay = isDisplay,
+            stockQuantity = stockQuantity,
+            imageUrls = imageUrls,
             createdDatetime = createdDatetime,
             updatedDatetime = updatedDatetime
         )
 
         // then
         assertThat(productAggregate.productAggregateId.getId()).isEqualTo(id)
-        assertThat(productAggregate.productAggregateId.getProductId()).isEqualTo(productId)
-        assertThat(productAggregate.productInfo.getName()).isEqualTo(productInfo.getName())
-        assertThat(productAggregate.productInfo.getPrice()).isEqualTo(productInfo.getPrice())
-        assertThat(productAggregate.productInfo.getStockQuantity()).isEqualTo(productInfo.getStockQuantity())
-        assertThat(productAggregate.productInfo.getProductImageUrls()).hasSize(productInfo.getProductImageUrls().size)
-        assertThat(
-            productAggregate.productInfo.getProductImageUrls().first()
-        ).isEqualTo(productInfo.getProductImageUrls().first())
-        assertThat(productAggregate.isDisplay).isEqualTo(isDisplay)
+        assertThat(productAggregate.productInfo.getId()).isEqualTo(productId)
+        assertThat(productAggregate.productInfo.getName()).isEqualTo(name)
+        assertThat(productAggregate.productInfo.getPrice()).isEqualTo(price)
+        assertThat(productAggregate.productInfo.getStockQuantity()).isEqualTo(stockQuantity)
+        assertThat(productAggregate.productInfo.getProductImageUrls()).hasSize(imageUrls.size)
+        assertThat(productAggregate.productInfo.getProductImageUrls().first()).isEqualTo(imageUrls.first())
+        assertThat(productAggregate.productInfo.getIsDisplay()).isEqualTo(isDisplay)
         assertThat(productAggregate.productDatetime.getStringCreatedDatetime()).isEqualTo(createdDatetime)
         assertThat(productAggregate.productDatetime.getStringUpdatedDatetime()).isEqualTo(updatedDatetime)
     }
@@ -112,12 +112,12 @@ class ProductAggregateTest {
         )
 
         // then
-        assertThat(productAggregate.productAggregateId.getProductId()).isEqualTo(productId)
+        assertThat(productAggregate.productInfo.getId()).isEqualTo(productId)
         assertThat(productAggregate.productInfo.getName()).isEqualTo(changeName)
         assertThat(productAggregate.productInfo.getPrice()).isEqualTo(changePrice)
         assertThat(productAggregate.productInfo.getStockQuantity()).isEqualTo(changeStockQuantity)
         assertThat(productAggregate.productInfo.getProductImageUrls().first()).isEqualTo(changeImageUrls.first())
-        assertThat(productAggregate.isDisplay).isEqualTo(isDisplay)
+        assertThat(productAggregate.productInfo.getIsDisplay()).isEqualTo(isDisplay)
     }
 
     @Test

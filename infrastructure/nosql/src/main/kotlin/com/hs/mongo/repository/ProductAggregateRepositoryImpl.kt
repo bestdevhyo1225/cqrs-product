@@ -2,6 +2,7 @@ package com.hs.mongo.repository
 
 import com.hs.mongo.doucment.ProductAggregateDocument
 import com.hs.entity.ProductAggregate
+import com.hs.mongo.vo.ProductData
 import com.hs.repository.QueryAppProductAggregateRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -24,7 +25,10 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
         return ProductAggregate.mapOf(
             id = productAggregateDocument.id!!,
             productId = productAggregateDocument.productId,
-            productInfo = productAggregateDocument.productInfo,
+            name = productAggregateDocument.data.getName(),
+            price = productAggregateDocument.data.getPrice(),
+            stockQuantity = productAggregateDocument.data.getStockQuantity(),
+            imageUrls = productAggregateDocument.data.getImageUrls(),
             isDisplay = productAggregateDocument.isDisplay,
             createdDatetime = productAggregateDocument.createdDatetime,
             updatedDatetime = productAggregateDocument.updatedDatetime
@@ -42,7 +46,10 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
         return ProductAggregate.mapOf(
             id = productAggregateDocument.id!!,
             productId = productAggregateDocument.productId,
-            productInfo = productAggregateDocument.productInfo,
+            name = productAggregateDocument.data.getName(),
+            price = productAggregateDocument.data.getPrice(),
+            stockQuantity = productAggregateDocument.data.getStockQuantity(),
+            imageUrls = productAggregateDocument.data.getImageUrls(),
             isDisplay = productAggregateDocument.isDisplay,
             createdDatetime = productAggregateDocument.createdDatetime,
             updatedDatetime = productAggregateDocument.updatedDatetime
@@ -66,7 +73,10 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
                 ProductAggregate.mapOf(
                     id = it.id!!,
                     productId = it.productId,
-                    productInfo = it.productInfo,
+                    name = it.data.getName(),
+                    price = it.data.getPrice(),
+                    stockQuantity = it.data.getStockQuantity(),
+                    imageUrls = it.data.getImageUrls(),
                     isDisplay = it.isDisplay,
                     createdDatetime = it.createdDatetime,
                     updatedDatetime = it.updatedDatetime
@@ -79,18 +89,22 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
     }
 
     override fun insert(productAggregate: ProductAggregate): ProductAggregate? {
-        val productAggregateDocument = mongoOperations.insert(
+        val productDataAggregateDocument = mongoOperations.insert(
             ProductAggregateDocument.create(
-                id = productAggregate.productAggregateId.getId(),
-                productId = productAggregate.productAggregateId.getProductId(),
-                isDisplay = productAggregate.isDisplay,
-                productInfo = productAggregate.productInfo,
+                productId = productAggregate.productInfo.getId(),
+                isDisplay = productAggregate.productInfo.getIsDisplay(),
+                data = ProductData.create(
+                    name = productAggregate.getProductName(),
+                    price = productAggregate.getProductPrice(),
+                    stockQuantity = productAggregate.getProductStockQuantity(),
+                    imageUrls = productAggregate.getProductImageUrls()
+                ),
                 createdDatetime = productAggregate.getStringCreatedDatetime(),
                 updatedDatetime = productAggregate.getStringUpdatedDatetime()
             )
         )
 
-        productAggregate.reflectIdAfterPersistence(id = productAggregateDocument.id)
+        productAggregate.reflectIdAfterPersistence(id = productDataAggregateDocument.id)
 
         return productAggregate
     }
@@ -99,9 +113,14 @@ class ProductAggregateRepositoryImpl(private val mongoOperations: MongoOperation
         mongoOperations.save(
             ProductAggregateDocument.create(
                 id = productAggregate.productAggregateId.getId(),
-                productId = productAggregate.productAggregateId.getProductId(),
-                isDisplay = productAggregate.isDisplay,
-                productInfo = productAggregate.productInfo,
+                productId = productAggregate.productInfo.getId(),
+                isDisplay = productAggregate.productInfo.getIsDisplay(),
+                data = ProductData.create(
+                    name = productAggregate.getProductName(),
+                    price = productAggregate.getProductPrice(),
+                    stockQuantity = productAggregate.getProductStockQuantity(),
+                    imageUrls = productAggregate.getProductImageUrls()
+                ),
                 createdDatetime = productAggregate.getStringCreatedDatetime(),
                 updatedDatetime = productAggregate.getStringUpdatedDatetime()
             )

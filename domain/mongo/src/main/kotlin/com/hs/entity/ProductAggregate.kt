@@ -1,11 +1,7 @@
 package com.hs.entity
 
-import com.hs.exception.DomainMongoException
-import com.hs.exception.DomainMongoExceptionMessage
 import com.hs.vo.ProductAggregateId
 import com.hs.vo.ProductDatetime
-import com.hs.vo.ProductImageUrls
-import com.hs.vo.ProductInfo
 
 /*
 * [ 정적 팩토리 메서드 패턴 ]
@@ -28,11 +24,8 @@ import com.hs.vo.ProductInfo
 class ProductAggregate private constructor(
     productAggregateId: ProductAggregateId,
     productInfo: ProductInfo,
-    isDisplay: Boolean,
     productDatetime: ProductDatetime,
 ) {
-
-    enum class ConfirmStatus { WAIT, REJECT, APPROVE }
 
     var productAggregateId: ProductAggregateId = productAggregateId
         private set
@@ -40,15 +33,12 @@ class ProductAggregate private constructor(
     var productInfo: ProductInfo = productInfo
         private set
 
-    var isDisplay: Boolean = isDisplay
-        private set
-
     var productDatetime: ProductDatetime = productDatetime
         private set
 
     override fun toString(): String {
-        return "ProductAggregate(productAggregateId=$productAggregateId, productInfo=$productInfo, " +
-                "isDisplay=$isDisplay, productDatetime=$productDatetime)"
+        return "ProductAggregate(productAggregateId=$productAggregateId, " +
+                "productInfo=$productInfo, productDatetime=$productDatetime)"
     }
 
     companion object {
@@ -62,14 +52,15 @@ class ProductAggregate private constructor(
             confirmStatus: String
         ): ProductAggregate {
             return ProductAggregate(
-                productAggregateId = ProductAggregateId.create(productId = productId),
+                productAggregateId = ProductAggregateId.create(),
                 productInfo = ProductInfo.create(
+                    id = productId,
                     name = name,
                     price = price,
+                    confirmStatus = confirmStatus,
                     stockQuantity = stockQuantity,
-                    productImageUrls = ProductImageUrls.create(productImageUrls = imageUrls)
+                    imageUrls = imageUrls
                 ),
-                isDisplay = isApproveConfirmStatus(value = confirmStatus),
                 productDatetime = ProductDatetime.createWithZeroNanoOfSecond()
             )
         }
@@ -78,29 +69,29 @@ class ProductAggregate private constructor(
         fun mapOf(
             id: String,
             productId: Long,
-            productInfo: ProductInfo,
+            name: String,
+            price: Int,
+            stockQuantity: Int,
+            imageUrls: List<String>,
             isDisplay: Boolean,
             createdDatetime: String,
             updatedDatetime: String,
         ): ProductAggregate {
             return ProductAggregate(
-                productAggregateId = ProductAggregateId.create(id = id, productId = productId),
-                productInfo = productInfo,
-                isDisplay = isDisplay,
+                productAggregateId = ProductAggregateId.create(id = id),
+                productInfo = ProductInfo.mapOf(
+                    id = productId,
+                    name = name,
+                    price = price,
+                    isDisplay = isDisplay,
+                    stockQuantity = stockQuantity,
+                    imageUrls = imageUrls
+                ),
                 productDatetime = ProductDatetime.createByStringParams(
                     createdDatetime = createdDatetime,
                     updatedDatetime = updatedDatetime
                 )
             )
-        }
-
-        @JvmStatic
-        private fun isApproveConfirmStatus(value: String): Boolean {
-            try {
-                return ConfirmStatus.valueOf(value = value) == ConfirmStatus.APPROVE
-            } catch (exception: Exception) {
-                throw DomainMongoException(DomainMongoExceptionMessage.NOT_EXIST_PRODUCT_CONFIRM_STATUS)
-            }
         }
     }
 
@@ -111,21 +102,20 @@ class ProductAggregate private constructor(
         imageUrls: List<String>,
         confirmStatus: String
     ) {
-        productInfo = ProductInfo.create(
+        productInfo.changeProductInfo(
             name = name,
             price = price,
             stockQuantity = stockQuantity,
-            productImageUrls = ProductImageUrls.create(productImageUrls = imageUrls)
+            imageUrls = imageUrls,
+            confirmStatus= confirmStatus,
         )
         productDatetime = ProductDatetime.createWithZeroNanoOfSecond(
             createdDatetime = productDatetime.getCreatedDatetime()
         )
-        isDisplay = isApproveConfirmStatus(value = confirmStatus)
     }
 
     fun reflectIdAfterPersistence(id: String?) {
-        productAggregateId =
-            ProductAggregateId.createAfterPersistence(id = id, productId = productAggregateId.getProductId())
+        productAggregateId = ProductAggregateId.createAfterPersistence(id = id)
     }
 
     fun getProductName(): String = productInfo.getName()

@@ -16,23 +16,21 @@ package com.hs.vo
 * */
 
 class ProductImageUrls private constructor(
-    private val productImageUrls: List<String>
+    private val imageUrls: List<String>
 ) {
 
     override fun toString(): String {
-        return "ProductImageUrls(productImageUrls=$productImageUrls)"
+        return "ProductImageUrls(imageUrls=$imageUrls)"
     }
 
     companion object {
         @JvmStatic
-        fun create(productImageUrls: List<String>): ProductImageUrls {
-            return ProductImageUrls(productImageUrls = productImageUrls)
-        }
+        fun create(imageUrls: List<String>): ProductImageUrls = ProductImageUrls(imageUrls = imageUrls)
     }
 
-    fun getProductImageUrls(): List<String> = productImageUrls
+    fun getProductImageUrls(): List<String> = imageUrls
 
     fun getImageUrlsWithLengthLessThanFifty(): List<String> {
-        return productImageUrls.filter { it.length < 50 }
+        return imageUrls.filter { it.length < 50 }
     }
 }
